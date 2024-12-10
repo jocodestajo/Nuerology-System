@@ -1,0 +1,449 @@
+* {
+  font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #006400;
+  --blue-color: #107e73;
+  --red-color: #bf0603;
+  --yellow-color: #ffd700;
+  --beige-color: #f5f5dc;
+  --white-color: #ffffff;
+}
+
+body {
+  line-height: 2;
+  background-color: #f0f0f0;
+  margin: 0;
+}
+
+/* header logo, navbars, footer */
+.header-1 {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100px;
+  padding: 0 100px;
+  background-color: var(--primary-color);
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  /* Ensure it stays on top */
+  z-index: 5;
+}
+.header-1 .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.header-1 img {
+  width: 80px;
+  height: auto;
+}
+.header-1 h2 {
+  font-size: 1.8rem;
+  color: #ffff;
+}
+.header-1 .navbar .btn-navbar {
+  color: #ffff;
+  text-decoration: none;
+  /* margin-left: 35px; */
+}
+.header-1 select:focus {
+  border: none;
+  outline: none;
+}
+.menu-icon {
+  display: none;
+}
+.nav-list {
+  display: flex;
+  gap: 35px;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+
+  width: 100%;
+  height: 30px;
+
+  /* background-color: var(--primary-color);
+  color: #ffffff; */
+
+  text-align: center;
+}
+.footer h4 {
+  font-size: 0.7rem;
+  font-style: italic;
+  color: #333333;
+}
+
+.container-1 {
+  margin-top: 150px;
+  width: 100%;
+  height: 100%;
+}
+
+.navbar-2 {
+  display: flex;
+  justify-content: center;
+}
+
+.tab {
+  background-color: var(--blue-color);
+  color: #ffff;
+  padding: 10px 60px 10px 60px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 1s;
+}
+.tab:hover {
+  box-shadow: inset 0px 0px 15px 1px var(--beige-color);
+}
+.tab.active {
+  color: #000;
+  background-color: var(--yellow-color);
+  border-left: 1px solid var(--blue-color);
+  border-top: 1px solid var(--blue-color);
+  border-right: 1px solid var(--blue-color);
+  box-shadow: inset 0px 0px 15px 1px var(--beige-color);
+}
+.tab #tab-f2f {
+  display: none;
+}
+
+.container-2 {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: var(--white-color);
+  padding: 0 100px 0 100px;
+  box-shadow: 0px 0px 10px rgba(101, 101, 101, 0.3);
+}
+
+.content {
+  display: none;
+  width: 100%;
+  background-color: white;
+  margin: 32px 0 50px 0;
+}
+
+.content.active {
+  display: block;
+}
+
+/* form */
+.form-content {
+  display: flex;
+  justify-content: center;
+}
+.box {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  width: 1000px;
+  padding: 45px;
+  border: #dddddd;
+  box-shadow: 0px 0px 10px rgba(101, 101, 101, 0.3);
+  gap: 20px;
+  background-color: #fff;
+}
+
+.box div:nth-child(3),
+.box div:nth-child(5),
+.box div:nth-child(7),
+.box div:nth-child(9),
+.box div:nth-child(15) {
+  grid-column: span 2;
+}
+.box div:nth-child(11),
+.box div:nth-child(12) {
+  grid-column: span 3;
+}
+
+.box div:nth-child(2),
+.box div:nth-child(6),
+.box div:nth-child(8),
+.box div:nth-child(10) {
+  grid-column: span 4;
+}
+.box div:nth-child(1),
+.box div:nth-child(4),
+.box div:nth-child(13),
+.box div:nth-child(15),
+.box div:nth-child(16),
+.box div:nth-child(17),
+.box div:nth-child(18) {
+  grid-column: span 6;
+}
+.box div:nth-child(14) {
+  grid-row: span 2;
+}
+
+/* .box div child */
+.box label,
+.box div h3 {
+  font-weight: bold;
+}
+.box .input {
+  display: flex;
+  flex-direction: column;
+}
+
+/* asterisk in input fields */
+.box .asterisk {
+  color: var(--red-color);
+}
+
+/*box child element 1 / DATE */
+.box .currentdate {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}
+.box .currentdate input {
+  border: none;
+  border-bottom: 1px solid #dddddd;
+}
+.box .datetime {
+  text-align: center;
+}
+
+/*box child element 2 / Type of appointment */
+.box .input .appointment {
+  width: 50%;
+}
+
+.box .col-2 {
+  display: flex;
+  flex-direction: row;
+
+  border: 1px solid #dddddd;
+  padding: 20px;
+  gap: 20px;
+}
+.box .col-2 div {
+  width: 100%;
+}
+
+.box .input .old_new {
+  width: 100%;
+}
+/* Type of Consultation / H3 */
+.box .col-2 div h3 {
+  margin-top: 20px;
+}
+.box .input .radio-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.borderbox {
+  margin-top: 20px;
+}
+.borderbox .col-2 .calendar .calendar-date input {
+  width: 100%;
+}
+.borderbox .col-2 .calendar .calendar-btn .btn {
+  display: block;
+  width: 100%;
+  padding: 5px;
+  border-radius: 24px;
+  margin-top: 20px;
+}
+.borderbox .col-2 .calendar .calendar-btn .btn:hover {
+  border-color: var(--blue-color);
+  box-shadow: 0px 0px 10px var(--blue-color);
+}
+
+.box #complaint {
+  margin-top: 20px;
+}
+
+.box .referal {
+  margin-top: 20px;
+}
+
+/* Registration page submit button  */
+.div-btn-submit {
+  grid-column: span 6;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 30px;
+}
+.div-btn-submit .btn {
+  width: 150px;
+  padding: 12px;
+  margin-left: 20px;
+  border-radius: 2px;
+}
+.div-btn-submit .btn:hover {
+  cursor: pointer;
+  transition: 0.35s;
+  height: auto;
+}
+.div-btn-submit .btn-red:hover {
+  border-color: var(--red-color);
+  box-shadow: 0px 0px 10px var(--red-color);
+}
+.div-btn-submit .btn-green:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0px 0px 10px var(--primary-color);
+}
+
+/* for all fields code */
+input,
+select {
+  border: 1px solid #dddddd;
+  padding: 10px;
+}
+button,
+input,
+select,
+textarea {
+  border: 1px solid #dddddd;
+}
+textarea {
+  resize: none;
+}
+
+/* EDIT RECORDS FORM */
+.box .close-btn-tablet {
+  display: none;
+}
+
+/* BUTTONS */
+.btn {
+  text-decoration: none;
+  text-align: center;
+  border: 1px solid #dddddd;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.btn-green {
+  background-color: var(--primary-color);
+  color: #ffff;
+}
+.btn-red {
+  background-color: var(--red-color);
+  color: #ffff;
+}
+.btn-blue {
+  background-color: var(--blue-color);
+  color: #ffff;
+}
+.btn-clearData {
+  border: 1px solid #006400;
+  background-color: inherit;
+}
+.btn-clearData:hover {
+  box-shadow: 0px 0px 10px var(--primary-color);
+}
+
+.custom-radio,
+.custom-checkbox {
+  cursor: pointer;
+}
+
+/* TAB 2 / Pending Appointments */
+table {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+th,
+td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: center;
+  /* width: 200px; */
+}
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  border-top: 1px solid #dddddd;
+  white-space: nowrap;
+}
+td {
+  text-overflow: ellipsis; /* Optionally, add ellipsis if content overflows */
+  overflow: hidden;
+  white-space: nowrap; /* Prevent text from wrapping */
+}
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+table .action-img {
+  width: 20px;
+  cursor: pointer;
+  margin-inline: 5px;
+}
+tr .th-check,
+tr .th-check {
+  width: 3%;
+}
+
+tr .th-hrn {
+  width: 10%;
+}
+tr .th-action {
+  width: 12%;
+}
+tr .th-contact,
+tr .th-schedule {
+  width: 10%;
+}
+tr .th-name {
+  text-align: left;
+  width: 28%;
+}
+tr .th-complaint {
+  width: 27%;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+.label-border {
+  border: 1px solid #ddd;
+  border-radius: 18px;
+  padding: 8px 14px;
+  text-align: center;
+}
+
+/* border-none class in date filters */
+.content div label .border-none {
+  border: none;
+  border-left: 1px solid #ddd;
+  padding: 8px 0 8px 5px;
+  outline-style: none;
+}
+
+/* GENERAL USE */
+input,
+label,
+textarea,
+select {
+  outline-style: none;
+}

@@ -1,27 +1,28 @@
 <?php
 ?>    
     <!-- Modal (hidden by default) -->
-    <div id="myModal" class="modal">
+    <div id="myModal" class="viewRecordsModal">
         <div class="modal-content">
-            <span class="cancelBtn close-btn">&times;</span>
+             <a href="javascript:void(0);" class="cancelBtn close-btn close-btn-desktop">Close &times;</a>
+
+            
 
             <div class="edit-content">
                 <div class="form-content">
                     <form action="api/post/updateData.php" method="post" class="box">
-                        
-                        <!-- div.box Child element 1 -->
-                        <div class="currentdate ">
-                            <div class="date-of-request-div">
-                                <label for="date_request">Date of Request:</label> 
-                                <input type="text" name="date_request" class="datetime" disabled>
-                            </div>
+
+                        <!-- div.box Child element 1 / hidden -->
+                        <div class="currentdate">
+                            <label for="date_request">Date of Request:
+                                <input type="text" name="date_request" class="datetime" readonly>
+                            </label> 
                         </div>
                         
                         <!-- div.box Child element 2 -->
                         <div class="input appointment-type">
                             <label>Type of appointment:</label>
                             <select name="typeofappoint" class="appointment">
-                                <option class="select" value="" hidden disabled selected>---Select Option---</option>
+                                <option class="select" hidden disabled selected>---Select Option---</option>
                                 <option value="SMS">SMS</option>
                                 <option value="Recveive Call">Call</option>
                                 <option value="Online">Online</option>
@@ -33,31 +34,31 @@
                         <!-- div.box Child element 3 -->
                         <div class="input">
                             <label for="hrn">HRN:</label>
-                            <input type="text" name="hrn" class="hrn" disabled>
+                            <input type="text" name="hrn" class="hrn" id="view-hrn">
                         </div>
 
                         <!-- div.box Child element 4 -->
                         <div class="input">
                             <label for="name">Name:</label>
-                            <input type="text" name="name" class="name" disabled>
+                            <input type="text" name="name" class="name" id="view-name">
                         </div>
                         
                         <!-- div.box Child element 5 -->
                         <div class="input">
                             <label for="age">Age:</label>
-                            <input type="text" name="age" class="age" disabled>
+                            <input type="text" name="age" class="age" id="view-age">
                         </div>
                         
                         <!-- div.box Child element 6 -->
                         <div class="input">
                             <label for="address" class="address">Address:</label>
-                            <input type="text" name="address" class="address" disabled>
+                            <input type="text" name="address" class="address" id="view-address">
                         </div>
                         
                         <!-- div.box Child element 7 -->
                         <div class="input">
                             <label for="birthday" class="b_day">Birthdate:</label>
-                            <input type="text"  name="birthday" class="b_day" placeholder="mm/dd/yyyy" disabled>
+                            <input type="text"  name="birthday" class="birthday" placeholder="mm/dd/yyyy" id="view-birthday">
                         </div>
 
                         <!-- div.box Child element 8 -->
@@ -69,7 +70,7 @@
                         <!-- div.box Child element 9 -->
                         <div class="input">
                             <label for="contact">Contact No:</label>
-                            <input type="text"  name="contact" class="contact" disabled>
+                            <input type="text"  name="contact" class="contact" id="view-contact">
                         </div>
 
                         <!-- div.box Child element 10 -->
@@ -96,21 +97,24 @@
                                 <div>
                                     <div class="client-type">
                                         <label for="options">Type of Client:</label>
-                                        <select name="old_new" class="old_new" id="patientSelect" required>
-                                            <option value="" class="select" hidden disabled selected>---Select Option---</option>
-                                            <option value="New Patient">New Patient</option>
-                                            <option value="Old Patient">Old Patient</option>
+                                        <select name="old_new" class="old_new" id="view-clientSelect" required>
+                                            <option class="select" hidden disabled selected>---Select Option---</option>
+                                            <option value="New">New</option>
+                                            <option value="Old">Old</option>
                                         </select>
                                     </div>
 
-                                    <div class="radio-div">
-                                        <div>
-                                            <input type="radio" name="consultation" id="faceToFace" value="Face to face">
-                                            <label for="faceToFace">Face to face consult</label>
-                                        </div>
-                                        <div>
-                                            <input type="radio" name="consultation" id="teleconsultation" value="Teleconsultation">
-                                            <label for="teleconsultation">Teleconsultation</label>
+                                    <div>
+                                        <h3>Type of Consultation:</h3>
+                                        <div class="radio-div">
+                                            <div>
+                                                <input type="radio" name="consultation" id="faceToFace" value="Face to face">
+                                                <label for="faceToFace">Face to face</label>
+                                            </div>
+                                            <div>
+                                                <input type="radio" name="consultation" id="teleconsultation" value="Teleconsultation">
+                                                <label for="teleconsultation">Teleconsultation</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -147,15 +151,15 @@
                                 </select>
                             </div>
                             
-                            <!-- div.box Child element 18 -->
+                            <!-- div.box Child element 16 -->
                         <div class="input">
                             <label for="history" class="">Brief history of illness</label>
                             <textarea rows="5"  name="history" class="form-control"></textarea>
                         </div>
 
-                         <!-- div.box Child element 16 -->
+                         <!-- div.box Child element 17 -->
                         <div class="input referal">
-                            <label for="referal" >Referal Source:</label>
+                            <label for="referal" >Referral Source:</label>
                             <input type="text"  name="referal">
                         </div>
 
@@ -165,7 +169,7 @@
                         <!-- div.box Child element 19 -->
                         <div class="div-btn-submit">
                             <a href="javascript:void(0);" class="cancelBtn btn btn-red">Cancel</a>
-                            <button type="submit" name="save_record" class="btn btn-green">Save</button>
+                            <button type="submit" name="update_record" class="btn btn-green">Save</button>
                         </div>
                     </form>
                 </div>

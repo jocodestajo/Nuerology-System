@@ -1,0 +1,286 @@
+@media (max-width: 1024px) {
+  /* Make the table container scrollable horizontally on small screens */
+  .content {
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    overflow: auto;
+  }
+
+  table {
+    width: 100%;
+    /* set the limit for scrolable */
+    min-width: 1024px;
+  }
+  .header-1 {
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding: 10px 20px 10px 20px;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    font-size: 1rem;
+  }
+  .header-1 img {
+    width: 16%;
+  }
+  .header-1 h2 {
+    font-size: 1.35rem;
+  }
+  .menu-icon {
+    display: block;
+    align-items: center;
+    font-size: 2rem;
+  }
+  .menu-icon:active {
+    color: var(--yellow-color);
+  }
+
+  .nav-list {
+    display: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    overflow: auto;
+    top: 82px;
+    right: 0;
+
+    width: 100%;
+    height: auto;
+    border-radius: 2px;
+    background-color: var(--blue-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  .nav-list.show {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+
+    /* Ensure it stays on top */
+    z-index: 5;
+  }
+  .header-1 .btn-navbar {
+    display: flex;
+    flex-direction: strecth;
+    align-items: center;
+    justify-content: center;
+
+    padding: 8px;
+    border-bottom: 1px solid #1e8e83;
+  }
+
+  .container-1 {
+    margin: 0;
+  }
+  .container-2 {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    /* height: 100vh; */
+  }
+
+  /* NAVBAR-2 */
+  .tab {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 8px 2% 8px 2%;
+  }
+
+  .content {
+    margin-bottom: 0;
+  }
+
+  .box {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    padding: 24px;
+    padding-bottom: 45px;
+    gap: 10px;
+  }
+
+  /* Adjust grid columns for smaller screens */
+  .box div:nth-child(2),
+  .box div:nth-child(3),
+  .box div:nth-child(5),
+  .box div:nth-child(6),
+  .box div:nth-child(7),
+  .box div:nth-child(8),
+  .box div:nth-child(9),
+  .box div:nth-child(10),
+  .box div:nth-child(11),
+  .box div:nth-child(12) {
+    grid-column: span 1;
+  }
+  .box div:nth-child(1),
+  .box div:nth-child(4),
+  .box div:nth-child(13),
+  .box div:nth-child(14),
+  .box div:nth-child(15),
+  .box div:nth-child(16),
+  .box div:nth-child(17),
+  .box div:nth-child(18),
+  .box div:nth-child(19) {
+    grid-column: span 2;
+  }
+
+  .box div:nth-child(14) {
+    grid-row: span 2;
+  }
+
+  /* all input fields in .box */
+  .box .input select,
+  .box .input input[type-text],
+  .box .input textarea {
+    width: 100%;
+  }
+
+  .box .currentdate {
+    display: none !important;
+  }
+
+  /*box child element 2 / Type of appointment */
+  .box .input .appointment {
+    width: 100%;
+  }
+
+  .box .input .old_new {
+    width: 100%;
+  }
+
+  /* Make the submit button take full width */
+  .div-btn-submit {
+    display: inline-flex;
+    justify-content: center;
+  }
+
+  /* EDIT RECORDS FORM */
+  .modal-content {
+    margin: 0;
+  }
+  .edit-content {
+    padding-top: 0;
+    margin-bottom: 0;
+  }
+  .form-content {
+    display: flex;
+    justify-content: unset;
+  }
+  .modal-content .close-btn {
+    margin: 0;
+  }
+  .close-btn-desktop {
+    /* display: block; */
+    /* float: right; */
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+  }
+  .date-of-request-div {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .tab #tab-f2f {
+    display: block;
+  }
+  .tab #tab-face-to-face {
+    display: none;
+  }
+  .tab,
+  .tab #tab-f2f {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 0.9rem;
+    text-align: start;
+    width: 100%;
+
+    padding: 4px 4px 4px 4px;
+  }
+
+  .box .input .radio-div {
+    display: unset;
+    flex-direction: unset;
+    justify-content: unset;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-2 {
+    padding: 0;
+  }
+  .tab,
+  .tab #tab-f2f {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 0.9rem;
+    text-align: start;
+    width: 100%;
+
+    padding: 4px 4px 4px 4px;
+  }
+
+  .box {
+    padding: 10px;
+  }
+
+  /* Adjust grid columns for smaller screens */
+  .box div:nth-child(1),
+  .box div:nth-child(2),
+  .box div:nth-child(3),
+  .box div:nth-child(5),
+  .box div:nth-child(6),
+  .box div:nth-child(7),
+  .box div:nth-child(8),
+  .box div:nth-child(9),
+  .box div:nth-child(10),
+  .box div:nth-child(11),
+  .box div:nth-child(12) {
+    grid-column: span 2;
+  }
+  .box div:nth-child(4),
+  .box div:nth-child(13),
+  .box div:nth-child(14),
+  .box div:nth-child(15),
+  .box div:nth-child(16),
+  .box div:nth-child(17),
+  .box div:nth-child(18) {
+    grid-column: span 2;
+  }
+
+  .box div:nth-child(14) {
+    grid-row: span 2;
+  }
+
+  .box .col-2 {
+    display: unset;
+    flex-direction: unset;
+    border: 1px solid #dddddd;
+    padding: 30px;
+    width: 100%;
+    gap: 10px;
+  }
+  .box .input .radio-div {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  .box .col-2 div {
+    width: 100%;
+  }
+
+  .box .input .old_new {
+    width: 100%;
+  }
+  .borderbox .col-2 .calendar .calendar-btn .btn {
+    margin-top: 10px;
+  }
+}

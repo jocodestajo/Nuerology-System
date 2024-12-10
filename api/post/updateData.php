@@ -2,47 +2,61 @@
 session_start();
 require '../../config/dbcon.php';
 
-if (isset($_POST['approve_record']))
-{
+// Initialize response
+$response = ['success' => false, 'message' => ''];
+
+if (isset($_POST['approve_record'])) {
+    // Sanitize the input
     $records_id = mysqli_real_escape_string($conn, $_POST['approve_record']);
 
+    // Update the record status to "Approved"
     $query = "UPDATE neurology_records SET status='Approved' WHERE id='$records_id'";
     $query_run = mysqli_query($conn, $query);
 
-    if($query_run)
-    {
-        $_SESSION['message'] = "Appointment Approved";
-        header("Location: ../../index.php");
-        exit(0);
+    if ($query_run) {
+        // Success response
+        $response['success'] = true;
+        $response['message'] = "Appointment Approved";
+    } else {
+        // Failure response
+        $response['message'] = "Appointment Not Approved";
     }
-    else
-    {
-        $_SESSION['message'] = "Appointment Not approve";
-        header("Location: ../../index.php");
-        exit(0);
-    }
-}
-elseif (isset($_POST['update_record']))
-{
-    $records_id = mysqli_real_escape_string($conn, $_POST['update_record']);
+} elseif (isset($_POST['processed_record'])) {
+    // Sanitize the input
+    $records_id = mysqli_real_escape_string($conn, $_POST['processed_record']);
 
+    // Update the record status to "Cancelled"
     $query = "UPDATE neurology_records SET status='Processed' WHERE id='$records_id'";
     $query_run = mysqli_query($conn, $query);
 
-    if($query_run)
-    {
-        $_SESSION['message'] = "Updated Successfully";
-        header("Location: ../../index.php");
-        exit(0);
+    if ($query_run) {
+        // Success response
+        $response['success'] = true;
+        $response['message'] = "Appointment Processed";
+    } else {
+        // Failure response
+        $response['message'] = "Appointment Not Processed";
     }
-    else
-    {
-        $_SESSION['message'] = "Update unsuccessful";
-        header("Location: ../../index.php");
-        exit(0);
+} elseif (isset($_POST['cancel_record'])) {
+    // Sanitize the input
+    $records_id = mysqli_real_escape_string($conn, $_POST['cancel_record']);
+
+    // Update the record status to "Cancelled"
+    $query = "UPDATE neurology_records SET status='Cancelled' WHERE id='$records_id'";
+    $query_run = mysqli_query($conn, $query);
+
+    if ($query_run) {
+        // Success response
+        $response['success'] = true;
+        $response['message'] = "Appointment Cancelled";
+    } else {
+        // Failure response
+        $response['message'] = "Appointment Not Cancelled";
     }
-}
-elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_record'])) {
+} 
+
+// MODAL / VIEW RECORDS
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_record'])) {
     // Sanitize and validate input data
     $record_id = mysqli_real_escape_string($conn, $_POST['record_id']);
     $hrn = mysqli_real_escape_string($conn, $_POST['hrn']);
@@ -56,10 +70,13 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_record'])) {
     $informant = mysqli_real_escape_string($conn, $_POST['informant']);
     $informant_relation = mysqli_real_escape_string($conn, $_POST['informant_relation']);
     $old_new = mysqli_real_escape_string($conn, $_POST['old_new']);
+    $date_sched = mysqli_real_escape_string($conn, $_POST['date_sched']);
     $complaint = mysqli_real_escape_string($conn, $_POST['complaint']);
     $history = mysqli_real_escape_string($conn, $_POST['history']);
     $referal = mysqli_real_escape_string($conn, $_POST['referal']);
+    $appointment_type = mysqli_real_escape_string($conn, $_POST['typeofappoint']); 
     $consultation = isset($_POST['consultation']) ? mysqli_real_escape_string($conn, $_POST['consultation']) : '';
+
 
     // Update the record in the database
     $query = "UPDATE neurology_records SET 
@@ -74,21 +91,30 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_record'])) {
                 informant = '$informant',
                 informant_relation = '$informant_relation',
                 old_new = '$old_new',
+                consultation = '$consultation',
+                date_sched = '$date_sched',
                 complaint = '$complaint',
                 history = '$history',
                 referal = '$referal',
-                consultation = '$consultation'
-              WHERE id = '$record_id'";
+                appointment_type = '$appointment_type'
+                WHERE id = '$record_id'";
+
+
 
     if (mysqli_query($conn, $query)) {
-        $_SESSION['message'] = "Updated Successfully";
-        header("Location: ../../index.php");
-        exit(0);
-        // echo "Record updated successfully!";
-        // header("Location: index.php"); // Redirect after success
+        echo "Record updated successfully!";
+        header("Location: ../../index.php"); // Redirect after success
         exit;
     } else {
         echo "Error updating record: " . mysqli_error($conn);
     }
 }
+
+// Output the response as JSON
+header('Content-Type: application/json');
+echo json_encode($response);
+exit;
 ?>
+
+
+

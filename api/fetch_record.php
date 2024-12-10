@@ -14,7 +14,7 @@ if(isset($_GET['id'])) {
         // Return the record as JSON
         echo json_encode($record);
     } else {
-        echo json_encode(['error' => 'Record not found']);
+        // echo json_encode(['error' => 'Record not found']);
     }
 } else {
     echo json_encode(['error' => 'Invalid ID']);

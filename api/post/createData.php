@@ -37,13 +37,13 @@ if (isset($_POST['save_btn']))
     if($query_run)
     {
         $_SESSION['message'] = "Appoinmtment Created Successfully";
-        // header("Location: ../../index.php");
+        header("Location: ../../index.php");
         exit(0);
     }
     else
     {
         $_SESSION['message'] = "Appointment Unsuccessful!";
-        // header("Location: ../../index.php");
+        header("Location: ../../index.php");
         exit(0);
     }
 }
