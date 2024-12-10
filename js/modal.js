@@ -13,6 +13,7 @@ viewButtons.forEach((button) => {
     e.preventDefault();
     var recordId = this.getAttribute("data-record-id"); // Get the record ID
 
+    // check if working
     console.log(recordId);
 
     // Make an AJAX request to fetch the data for this record
@@ -49,67 +50,36 @@ viewButtons.forEach((button) => {
         document.querySelector('select[name="complaint"]').value =
           data.complaint;
 
-        // Optionally set other fields or radio buttons based on data
+        // const viewClientSelect = document.getElementById("view-clientSelect");
+        // const teleconsultationRadio =
+        //   document.getElementById("teleconsultation");
+
+        // if (viewClientSelect.value === "New") {
+        //   // Disable teleconsultation and check face-to-face
+        //   faceToFaceRadio.checked = true;
+        //   teleconsultRadio.disabled = true;
+        //   teleconsultRadio.checked = false;
+        // } else if (viewClientSelect.value === "Old") {
+        //   // Enable teleconsultation
+        //   teleconsultRadio.disabled = false;
+        // }
+
+        // Handle enabling/disabling of teleconsultation based on `old_new` value
+        if (data.old_new === "New") {
+          document.getElementById("faceToFace").checked = true;
+          document.getElementById("teleconsultation").disabled = true;
+          document.getElementById("teleconsultation").checked = false;
+        } else if (data.old_new === "Old") {
+          document.getElementById("teleconsultation").disabled = false;
+        }
+
+        // Handle consultation type selection
         if (data.consultation === "Face to face") {
           document.getElementById("faceToFace").checked = true;
         } else if (data.consultation === "Teleconsultation") {
           document.getElementById("teleconsultation").checked = true;
         }
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-        // RADIO BUTTON IF NEW OR OLD PATIENT ///////////////////////////////////////////
-        const viewClientSelect = document.getElementById("view-clientSelect");
-        const teleconsultationRadio =
-          document.getElementById("teleconsultation");
-
-        viewClientSelect.addEventListener("change", function () {
-          if (this.value === "New") {
-            // check radio button "face to face"
-            document.getElementById("faceToFace").checked = true;
-
-            teleconsultationRadio.disabled = true;
-            // Optionally uncheck the radio button if it's selected
-            if (teleconsultationRadio.checked) {
-              teleconsultationRadio.checked = false;
-            }
-          } else {
-            teleconsultationRadio.disabled = false;
-          }
-        });
-
-        // Function to handle enabling/disabling radio buttons based on the dropdown value
-        function handleClientSelectChange() {
-          const clientSelect = document.getElementById("view-clientSelect");
-          const teleconsultRadio = document.getElementById("teleconsultation");
-          const faceToFaceRadio = document.getElementById("faceToFace");
-
-          if (clientSelect.value === "New") {
-            // Disable teleconsultation and check face-to-face
-            faceToFaceRadio.checked = true;
-            teleconsultRadio.disabled = true;
-            teleconsultRadio.checked = false;
-          } else if (clientSelect.value === "Old") {
-            // Enable teleconsultation
-            teleconsultRadio.disabled = false;
-          }
-        }
-
-        // Add event listener for dropdown changes
-        document
-          .getElementById("view-clientSelect")
-          .addEventListener("change", handleClientSelectChange);
-
-        // Handle the current value when the page loads
-        window.addEventListener("load", handleClientSelectChange);
-
-        // If there's a "View" button, add a click event listener
-        document
-          .getElementById("viewButton")
-          ?.addEventListener("click", handleClientSelectChange);
-
-        //
-        //
-        //
         // Set hidden record_id field
         document.querySelector('input[name="record_id"]').value = recordId;
 
@@ -136,3 +106,52 @@ cancelBtn.forEach((button) => {
     modal.style.display = "none";
   };
 });
+
+// RADIO BUTTON IF NEW OR OLD PATIENT ///////////////////////////////////////////
+const viewClientSelect = document.getElementById("view-clientSelect");
+const teleconsultationRadio = document.getElementById("teleconsultation");
+
+viewClientSelect.addEventListener("change", function () {
+  if (this.value === "New") {
+    // check radio button "face to face"
+    document.getElementById("faceToFace").checked = true;
+
+    teleconsultationRadio.disabled = true;
+    // Optionally uncheck the radio button if it's selected
+    if (teleconsultationRadio.checked) {
+      teleconsultationRadio.checked = false;
+    }
+  } else {
+    teleconsultationRadio.disabled = false;
+  }
+});
+
+// // Function to handle enabling/disabling radio buttons based on the dropdown value
+// function handleClientSelectChange() {
+//   const clientSelect = document.getElementById("view-clientSelect");
+//   const teleconsultRadio = document.getElementById("teleconsultation");
+//   const faceToFaceRadio = document.getElementById("faceToFace");
+
+//   if (clientSelect.value === "New") {
+//     // Disable teleconsultation and check face-to-face
+//     faceToFaceRadio.checked = true;
+//     teleconsultRadio.disabled = true;
+//     teleconsultRadio.checked = false;
+//   } else if (clientSelect.value === "Old") {
+//     // Enable teleconsultation
+//     teleconsultRadio.disabled = false;
+//   }
+// }
+
+// // Add event listener for dropdown changes
+// document
+//   .getElementById("view-clientSelect")
+//   .addEventListener("change", handleClientSelectChange);
+
+// // Handle the current value when the page loads
+// window.addEventListener("load", handleClientSelectChange);
+
+// // If there's a "View" button, add a click event listener
+// document
+//   .querySelectorAll(".view-button")
+//   ?.addEventListener("click", handleClientSelectChange);
