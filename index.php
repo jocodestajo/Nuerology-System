@@ -20,6 +20,7 @@ require 'dateTime.php';
         <!-- HEADER -->
         <?php include('includes/header'); ?>
 
+        <!-- navigation bar / TAB -->
         <div class="navbar-2">
             <div class="tab active" onclick="showContent(0)">Inquiry</div>
             <div class="tab" onclick="showContent(1)">For Approval</div>
@@ -31,6 +32,7 @@ require 'dateTime.php';
 
         <div class="container-2">
 
+            <!-- MODAL and Alert messages -->
             <?php include('includes/messages/message.php'); ?>
             <?php include('includes/messages/cancelConfirmation.php'); ?>
             <?php include('includes/editRecords.php'); ?>
@@ -156,10 +158,18 @@ require 'dateTime.php';
                                 <div class="calendar">
                                     <div class="calendar-date">
                                         <label for="date">Date Schedule: <i class="asterisk">*</i></label>
-                                        <input type="date" id="date" name="date_sched" required>
+                                        <input type="date" id="date" class="date" name="date_sched" readonly>
                                     </div>
                                     <div class="calendar-btn">
-                                        <span class="btn btn-blue">Calendar</span>
+                                        <span class="btn-trigger btn btn-blue">Calendar</span>
+                                    </div>
+                                    <div id="calendarContainer" style="display: none;">
+                                        <div id="calendarMonthTitle"></div>
+                                        <table id="calendarTable"></table>
+                                        <div class="calendar-controls">
+                                            <button onclick="changeMonth('previous')">Previous</button>
+                                            <button onclick="changeMonth('next')">Next</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -211,28 +221,15 @@ require 'dateTime.php';
             <div class="content ">
                 <div class="flex">
 
-                    <!-- <label class="label-border"> -->
-                        <!-- Month: -->
-                    <!-- </label> -->
-
-                    <!-- <label class="label-border"> -->
-                        <!-- Day: -->
-                    <!-- </label> -->
-
-                    <!-- <label class="label-border"> -->
-                        <!-- Year: -->
-                    <!-- </label> -->
-
-                    
-                    <select name="" class="sortData-Day label-border" id="dayFilter1">
-                        <option value="" hidden disabled selected>Select Day</option>
-                    </select>
-                    
-                    <select name="" class="sortData-Pending label-border" id="monthFilter1">
+                    <select name="" class="sortData-Pending selectDate-border" id="monthFilter1">
                         <option value="" hidden disabled selected>Select Month</option>
                     </select>
 
-                    <select name="" class="sortData-Year label-border" id="yearFilter1">
+                    <select name="" class="sortData-Day selectDate-border" id="dayFilter1">
+                        <option value="" hidden disabled selected>Select Day</option>
+                    </select>
+                    
+                    <select name="" class="sortData-Year selectDate-border" id="yearFilter1">
                         <option value="" hidden disabled selected>Select Year</option>
                     </select>
 
@@ -299,16 +296,16 @@ require 'dateTime.php';
             <!-- TAB 3 / FACE TO FACE CHECK-UP -->
             <div class="content">
                 <div class="flex">
-
-                    <select name="" class="sortData-Day label-border" id="dayFilter2">
-                        <option value="" hidden disabled selected>Select Day</option>
-                    </select>
-
-                    <select name="" class="sortData-Pending label-border" id="monthFilter2">
+                    
+                    <select name="" class="sortData-Pending selectDate-border" id="monthFilter2">
                         <option value="" hidden disabled selected>Select Month</option>
                     </select>
 
-                    <select name="" class="sortData-Year label-border" id="yearFilter2">
+                    <select name="" class="sortData-Day selectDate-border" id="dayFilter2">
+                        <option value="" hidden disabled selected>Select Day</option>
+                    </select>
+
+                    <select name="" class="sortData-Year selectDate-border" id="yearFilter2">
                         <option value="" hidden disabled selected>Select Year</option>
                     </select>
 
@@ -365,18 +362,18 @@ require 'dateTime.php';
             <!-- TAB 4 / TELECONSULTATION -->
             <div class="content">
                 <div class="flex">
+                    
+                    <select name="" class="sortData-Pending selectDate-border" id="monthFilter3">
+                        <option value="" hidden disabled selected>Select Month</option>
+                    </select>
+    
+                    <select name="" class="sortData-Day selectDate-border" id="dayFilter3">
+                        <option value="" hidden disabled selected>Select Day</option>
+                    </select>
 
-                <select name="" class="sortData-Day label-border" id="dayFilter3">
-                    <option value="" hidden disabled selected>Select Day</option>
-                </select>
-
-                <select name="" class="sortData-Pending label-border" id="monthFilter3">
-                    <option value="" hidden disabled selected>Select Month</option>
-                </select>
-
-                <select name="" class="sortData-Year label-border" id="yearFilter3">
-                    <option value="" hidden disabled selected>Select Year</option>
-                </select>
+                    <select name="" class="sortData-Year selectDate-border" id="yearFilter3">
+                        <option value="" hidden disabled selected>Select Year</option>
+                    </select>
                
                 </div>
                     
@@ -430,11 +427,21 @@ require 'dateTime.php';
 
             <!-- TAB 5 / CALENDAR -->
             <div class="content">
-                <?php include('calendarTable.php'); ?>
+                <div class="flex">
+                    <span class="calendarMonth-border" onclick="changeMonth('previous')">Previous Month</span>
+                    <span class="calendarMonth-border" onclick="changeMonth('current')">Current Month</span>
+                    <span class="calendarMonth-border" onclick="changeMonth('next')">Next Month</span>
+                </div>
+                
+                <h2 id="calendarMonthTitle" class="flex"></h2>
+                
+                <table id="calendarTable_schedule">
+                    <!-- calendar here -->
+                </table>
             </div>
 
-             <!-- TAB 6 / SEARCH -->
-             <div class="content">
+            <!-- TAB 6 / SEARCH -->
+            <div class="content">
                     THIS IS SEARCH TAB
             </div>
         </div>
@@ -445,197 +452,8 @@ require 'dateTime.php';
     </div>
 
     <!-- Javascript -->
-     <!-- <script>
-        // Get today's date
-        var today = new Date();
-
-        // Function to populate months and years dropdown
-        function populateMonthAndYearDropdowns() {
-            var currentYear = today.getFullYear();
-            var currentMonth = today.getMonth();
-
-            // Populate months (January to December)
-            var monthSelect = document.getElementById("monthFilter");
-            for (var month = 0; month < 12; month++) {
-                var option = document.createElement("option");
-                option.value = month + 1; // 1 to 12 for months
-                option.textContent = new Date(currentYear, month).toLocaleString("default", { month: "long" }); // Month name
-                monthSelect.appendChild(option);
-            }
-
-            // Populate years (e.g., 2023, 2024, etc.)
-            var yearSelect = document.getElementById("yearFilter");
-            for (var year = currentYear - 5; year <= currentYear + 5; year++) {  // Show years from 5 years ago to 5 years ahead
-                var option = document.createElement("option");
-                option.value = year;
-                option.textContent = year;
-                yearSelect.appendChild(option);
-            }
-        }
-
-        // Function to get the first day of the selected month and year (dynamically)
-        function getFirstDayOfMonth(month, year) {
-            return new Date(year, month - 1, 1); // The first day of the month
-        }
-
-        // Function to get the last day of the selected month and year
-        function getLastDayOfMonth(month, year) {
-            return new Date(year, month, 0); // Last day of the selected month
-        }
-
-        // Function to get the number of days in the selected month
-        function getDaysInMonth(month, year) {
-            return new Date(year, month, 0).getDate(); // Gets the number of days in the selected month
-        }
-
-        // Function to update the day dropdown based on selected month and year
-        function updateDayDropdown(month, year) {
-            var daySelect = document.getElementById("dayFilter");
-            daySelect.innerHTML = ""; // Clear existing options
-
-            // Get the number of days in the selected month
-            var daysInMonth = getDaysInMonth(month, year);
-
-            // Populate the day dropdown with days from 1 to the last day of the selected month
-            for (var day = 1; day <= daysInMonth; day++) {
-                var option = document.createElement("option");
-                option.value = day;
-                option.textContent = day;
-                daySelect.appendChild(option);
-            }
-        }
-
-        // Function to update the date picker to the selected month, year, and day
-        function updateDatePicker(month, year, day) {
-            var selectedDate = new Date(year, month - 1, day); // Create a date object for the selected day
-            var formattedDate = selectedDate.toISOString().split('T')[0]; // Format to YYYY-MM-DD
-            
-            // Update the date picker input field with the formatted date
-            document.querySelector(".dateFilterPending").value = formattedDate;
-        }
-
-        // Function to filter the table rows based on the selected day, month, and year
-        function filterTableByDayMonthYear(tableClass, selectedDay, selectedMonth, selectedYear) {
-            var rows = document.querySelectorAll(tableClass + " tbody tr");
-            var selectedDate = new Date(selectedYear, selectedMonth - 1, selectedDay); // Create a date object
-
-            rows.forEach(function (row) {
-                var scheduleCell = row.querySelector(".th-schedule");
-                if (scheduleCell) {
-                    var scheduleDate = new Date(scheduleCell.textContent.trim());
-
-                    // Filter rows by matching the exact selected date
-                    if (scheduleDate.toDateString() === selectedDate.toDateString()) {
-                        row.style.display = "";
-                    } else {
-                        row.style.display = "none";
-                    }
-                }
-            });
-
-            // Check if no rows are visible (i.e., no matching records)
-            var tableBody = document.querySelector(tableClass + " tbody");
-            var existingNoRecordsRow = tableBody.querySelector(".no-records");
-
-            var visibleRows = Array.from(rows).filter((row) => row.style.display !== "none");
-
-            if (visibleRows.length === 0) {
-                // If "No records found" row doesn't exist, create and append it
-                if (!existingNoRecordsRow) {
-                    var noRecordsRow = document.createElement("tr");
-                    noRecordsRow.classList.add("no-records");
-                    noRecordsRow.innerHTML =
-                        '<td colspan="7" style="text-align: center; font-size: 2rem; padding: 32px 0 32px 0;">No records found</td>';
-                    tableBody.appendChild(noRecordsRow);
-                }
-            } else {
-                // Remove the "No records found" row if matching records are found
-                if (existingNoRecordsRow) {
-                    existingNoRecordsRow.remove();
-                }
-            }
-        }
-
-        // Event listener for the month change
-        document.getElementById("monthFilter").addEventListener("change", function () {
-            var selectedMonth = parseInt(this.value);
-            var selectedYear = document.getElementById("yearFilter").value;
-            var selectedDay = document.getElementById("dayFilter").value;
-
-            if (selectedMonth && selectedYear) {
-                // Update day dropdown based on selected month and year
-                updateDayDropdown(selectedMonth, selectedYear);
-
-                // Set the date picker to the first day of the selected month
-                updateDatePicker(selectedMonth, selectedYear, 1);
-
-                // Apply the filter to the tables
-                filterTableByDayMonthYear(".table-pending", selectedDay, selectedMonth, selectedYear);
-                filterTableByDayMonthYear(".table-face-to-face", selectedDay, selectedMonth, selectedYear);
-                filterTableByDayMonthYear(".table-teleconsultation", selectedDay, selectedMonth, selectedYear);
-            }
-        });
-
-        // Event listener for the year change
-        document.getElementById("yearFilter").addEventListener("change", function () {
-            var selectedYear = parseInt(this.value);
-            var selectedMonth = document.getElementById("monthFilter").value;
-            var selectedDay = document.getElementById("dayFilter").value;
-
-            if (selectedYear && selectedMonth) {
-                // Update day dropdown based on selected month and year
-                updateDayDropdown(selectedMonth, selectedYear);
-
-                // Set the date picker to the first day of the selected month
-                updateDatePicker(selectedMonth, selectedYear, 1);
-
-                // Apply the filter to the tables
-                filterTableByDayMonthYear(".table-pending", selectedDay, selectedMonth, selectedYear);
-                filterTableByDayMonthYear(".table-face-to-face", selectedDay, selectedMonth, selectedYear);
-                filterTableByDayMonthYear(".table-teleconsultation", selectedDay, selectedMonth, selectedYear);
-            }
-        });
-
-        // Event listener for the day change
-        document.getElementById("dayFilter").addEventListener("change", function () {
-            var selectedDay = parseInt(this.value);
-            var selectedMonth = document.getElementById("monthFilter").value;
-            var selectedYear = document.getElementById("yearFilter").value;
-
-            if (selectedDay && selectedMonth && selectedYear) {
-                // Set the date picker to the selected day
-                updateDatePicker(selectedMonth, selectedYear, selectedDay);
-
-                // Apply the filter to the tables
-                filterTableByDayMonthYear(".table-pending", selectedDay, selectedMonth, selectedYear);
-                filterTableByDayMonthYear(".table-face-to-face", selectedDay, selectedMonth, selectedYear);
-                filterTableByDayMonthYear(".table-teleconsultation", selectedDay, selectedMonth, selectedYear);
-            }
-        });
-
-        // Event listener for the "Show All" filter option
-        document.getElementById("filterOption").addEventListener("change", function () {
-            var selectedOption = this.value;
-            var selectedDay = document.getElementById("dayFilter").value;
-            var selectedMonth = document.getElementById("monthFilter").value;
-            var selectedYear = document.getElementById("yearFilter").value;
-
-            if (selectedOption === "showAll") {
-                // Show all rows
-                document.querySelectorAll(".table-pending tbody tr").forEach(row => row.style.display = "");
-                document.querySelectorAll(".table-face-to-face tbody tr").forEach(row => row.style.display = "");
-                document.querySelectorAll(".table-teleconsultation tbody tr").forEach(row => row.style.display = "");
-            }
-        });
-
-        // Initialize dropdowns and date picker on page load
-        window.onload = function () {
-            populateMonthAndYearDropdowns(); // Populate months and years
-        };
-
-
-     </script> -->
     <script src="js/mainScript.js"></script>
     <script src="js/modal.js"></script>
+    <script src="js/calendar_booking.js"></script>
 </body>
 </html>

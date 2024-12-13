@@ -88,6 +88,8 @@ function build_calendar($month, $year) {
 }
 ?>
 
+                <!-- <?php include('calendarTable.php'); ?> -->
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -195,6 +197,7 @@ function build_calendar($month, $year) {
             background-color: #f9f9f9; /* Light background */
         }
     </style> -->
+    
 </head>
 <body>
     <div class="container">

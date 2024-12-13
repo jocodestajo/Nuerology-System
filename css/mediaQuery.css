@@ -184,6 +184,23 @@
   .date-of-request-div {
     display: none;
   }
+
+  #calendarContainer {
+    position: absolute;
+    /* top: 50; */
+    left: 50;
+    transform: translate(-51%);
+    width: 80%;
+    background: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    /* margin-top: 10px; */
+  }
+
+  #calendarContainer table {
+    min-width: 100%;
+  }
 }
 
 @media (max-width: 700px) {

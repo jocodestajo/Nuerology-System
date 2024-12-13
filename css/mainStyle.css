@@ -257,6 +257,9 @@ body {
 }
 .borderbox .col-2 .calendar .calendar-date input {
   width: 100%;
+  border: none;
+  border-bottom: 1px solid #dddddd;
+  text-align: center;
 }
 .borderbox .col-2 .calendar .calendar-btn .btn {
   display: block;
@@ -425,11 +428,13 @@ tr .th-complaint {
   gap: 14px;
   margin-bottom: 32px;
 }
-.label-border {
-  border: 1px solid #ddd;
+.selectDate-border {
+  border: 1px solid var(--blue-color);
+
   border-radius: 18px;
   padding: 8px 14px;
   text-align: center;
+  cursor: pointer;
 }
 
 /* border-none class in date filters */
@@ -446,4 +451,70 @@ label,
 textarea,
 select {
   outline-style: none;
+}
+
+/* CALENDAR */
+.calendarMonth-border {
+  border: 1px solid var(--blue-color);
+  border-radius: 18px;
+  padding: 2px 24px;
+  text-align: center;
+  cursor: pointer;
+}
+
+#calendarMonthTitle {
+  text-align: center;
+  font-weight: bold;
+  color: var(--white-color);
+  background-color: var(--blue-color);
+}
+
+.clickable-date {
+  cursor: pointer;
+}
+.clickable-date:hover {
+  background-color: var(--yellow-color);
+  /* color: #ffff; */
+}
+
+#calendarContainer {
+  position: absolute;
+  /* top: 50; */
+  left: 50;
+  transform: translate(-51%);
+  width: 1000px;
+  background: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  /* margin-top: 10px; */
+}
+
+#calendarTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#calendarTable td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.clickable-date {
+  cursor: pointer;
+}
+
+.clickable-date:hover {
+  background-color: var(--yellow-color);
+}
+
+.calendar-controls {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.calendar-controls button {
+  margin: 0 5px;
+  padding: 5px 10px;
 }
