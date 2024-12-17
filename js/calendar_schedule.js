@@ -1,10 +1,10 @@
-let currentDate = new Date();
+let todayDate = new Date();
 
 // Function to update the calendar display
 function updateCalendar(monthOffset = 0) {
   const date = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth() + monthOffset,
+    todayDate.getFullYear(),
+    todayDate.getMonth() + monthOffset,
     1
   );
   const month = date.getMonth();
@@ -26,7 +26,7 @@ function updateCalendar(monthOffset = 0) {
     "December",
   ];
   document.getElementById(
-    "calendarMonthTitle"
+    "MonthTitle"
   ).innerText = `${monthNames[month]} ${year}`;
 
   // Create the calendar table
@@ -38,6 +38,7 @@ function updateCalendar(monthOffset = 0) {
   for (let day of daysOfWeek) {
     const cell = row.insertCell();
     cell.textContent = day;
+    cell.className = "calendarTable-header";
   }
 
   const firstDay = new Date(year, month, 1).getDay();
@@ -52,6 +53,7 @@ function updateCalendar(monthOffset = 0) {
         cell.textContent = "";
       } else if (dayCount <= lastDate) {
         cell.textContent = dayCount;
+        cell.className = "clickable-date";
         dayCount++;
       }
     }
@@ -61,11 +63,11 @@ function updateCalendar(monthOffset = 0) {
 // Function to handle button clicks
 function changeMonth(action) {
   if (action === "previous") {
-    currentDate.setMonth(currentDate.getMonth() - 1);
+    todayDate.setMonth(todayDate.getMonth() - 1);
   } else if (action === "next") {
-    currentDate.setMonth(currentDate.getMonth() + 1);
+    todayDate.setMonth(todayDate.getMonth() + 1);
   } else {
-    currentDate = new Date();
+    todayDate = new Date();
   }
   updateCalendar(0);
 }

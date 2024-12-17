@@ -433,7 +433,7 @@ require 'dateTime.php';
                     <span class="calendarMonth-border" onclick="changeMonth('next')">Next Month</span>
                 </div>
                 
-                <h2 id="calendarMonthTitle" class="flex"></h2>
+                <h2 id="MonthTitle" class="flex"></h2>
                 
                 <table id="calendarTable_schedule">
                     <!-- calendar here -->
@@ -455,5 +455,6 @@ require 'dateTime.php';
     <script src="js/mainScript.js"></script>
     <script src="js/modal.js"></script>
     <script src="js/calendar_booking.js"></script>
+    <script src="js/calendar_schedule.js"></script>
 </body>
 </html>

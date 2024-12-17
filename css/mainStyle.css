@@ -501,12 +501,10 @@ select {
   border: 1px solid #ddd;
 }
 
-.clickable-date {
-  cursor: pointer;
-}
-
-.clickable-date:hover {
-  background-color: var(--yellow-color);
+#MonthTitle {
+  background-color: var(--blue-color);
+  color: var(--white-color);
+  font-weight: bold;
 }
 
 .calendar-controls {
@@ -517,4 +515,9 @@ select {
 .calendar-controls button {
   margin: 0 5px;
   padding: 5px 10px;
+}
+
+.calendarTable-header {
+  background-color: var(--beige-color);
+  font-weight: bold;
 }
