@@ -1,5 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// TABS FUNCTION ////////////////////////////////////////////////////////////////////
+// TABS FUNCTION (navbar-2) ////////////////////////////////////////////////////////////////////
 function showContent(index) {
   // Hide all content sections
   let contents = document.querySelectorAll(".content");
@@ -16,9 +15,43 @@ function showContent(index) {
     tab.classList.remove("active");
   });
   tabs[index].classList.add("active");
+
+  // Save the current tab index
+  localStorage.setItem("activeTab", index);
+
+  // // Your existing tab switching logic
+  // const contents = document.getElementsByClassName("content");
+  // const tabs = document.getElementsByClassName("tab");
+
+  for (let i = 0; i < contents.length; i++) {
+    contents[i].classList.remove("active");
+    tabs[i].classList.remove("active");
+  }
+
+  contents[index].classList.add("active");
+  tabs[index].classList.add("active");
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+// Add this to restore the active tab on page load
+document.addEventListener("DOMContentLoaded", function () {
+  // Get the saved tab index from localStorage
+  const activeTab = localStorage.getItem("activeTab");
+
+  // If there was a saved tab, switch to it
+  if (activeTab !== null) {
+    showContent(parseInt(activeTab));
+  }
+});
+
+// NAV-LIST in TABLET MODE //////////////////////////////////////////////////////
+const menuToggle = document.getElementById("menu-toggle");
+const navList = document.querySelector(".nav-list");
+
+// Add event listener to toggle the visibility of the nav-list
+menuToggle.addEventListener("click", () => {
+  navList.classList.toggle("show");
+});
+
 // SEARCH QUERY ///////////////////////////////////////////////////////////////////
 const searchResult = document.getElementById("result");
 const nameInput = document.getElementById("name");
@@ -172,9 +205,7 @@ document.addEventListener("click", function (event) {
 //   }
 // });
 
-//
-// ALERT MESSAGE ON INQUIRY
-const floatingAlert = document.getElementById("floatingAlert");
+// ALERT MESSAGE ON INQUIRY ////////////////////////////////////////////////////////
 // Close the modal when clicking on the "X" and "close" button
 document.querySelectorAll(".close-floatingAlert").forEach(function (button) {
   button.addEventListener("click", function () {
@@ -183,7 +214,6 @@ document.querySelectorAll(".close-floatingAlert").forEach(function (button) {
   });
 });
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
 // RADIO BUTTON IF NEW OR OLD PATIENT ///////////////////////////////////////////
 const clientSelect = document.getElementById("clientSelect");
 const teleconsultRadio = document.getElementById("teleconsult");
@@ -203,7 +233,6 @@ clientSelect.addEventListener("change", function () {
   }
 });
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
 // CLEAR DATA and REMOVE DISABLED ATTRIBUTES ///////////////////////////////////////
 document
   .querySelector("[name='clear_data_btn']")
@@ -236,7 +265,7 @@ document
     });
   });
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
 // Function to handle CHECKBOXES behavior per TABLE //////////////////////////////////////
 document.querySelectorAll(".checkbox-header").forEach((headerCheckbox) => {
   // Select all checkboxes in the current table
@@ -265,17 +294,6 @@ document.querySelectorAll(".checkbox-header").forEach((headerCheckbox) => {
   });
 });
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// NAV-LIST in TABLET MODE //////////////////////////////////////////////////////
-const menuToggle = document.getElementById("menu-toggle");
-const navList = document.querySelector(".nav-list");
-
-// Add event listener to toggle the visibility of the nav-list
-menuToggle.addEventListener("click", () => {
-  navList.classList.toggle("show");
-});
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
 // DOM CONTENT FILTER FOR DATE, MONTH, YEAR ////////////////////////////////////////////////////////
 document.addEventListener("DOMContentLoaded", function () {
   const tableConfigs = [
@@ -445,7 +463,6 @@ document.addEventListener("DOMContentLoaded", function () {
   tableConfigs.forEach(setupTable);
 });
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
 // UPDATE DATA AS APPROVE ////////////////////////////////////////////////////////////////////////
 document.querySelectorAll(".update-approve").forEach(function (button) {
   button.addEventListener("click", function () {
@@ -476,7 +493,6 @@ document.querySelectorAll(".update-approve").forEach(function (button) {
   });
 });
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
 // UPDATE DATA AS PROCESSED ////////////////////////////////////////////////////////////////////////
 document.querySelectorAll(".update-processed").forEach(function (button) {
   button.addEventListener("click", function () {
@@ -507,7 +523,6 @@ document.querySelectorAll(".update-processed").forEach(function (button) {
   });
 });
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
 // UPDATE DATA AS CANCELLED with confirmation /////////////////////////////////////////////////////
 document.querySelectorAll(".update-cancelled").forEach(function (button) {
   button.addEventListener("click", function () {
@@ -572,3 +587,25 @@ document.querySelectorAll(".update-cancelled").forEach(function (button) {
 function removeData(recordID) {
   document.getElementById(`patient_${recordID}`).remove();
 }
+
+function toggleDropdown() {
+  const dropdown = document.getElementById("weekdayDropdown");
+  dropdown.classList.toggle("show");
+}
+
+// Close the dropdown if clicked outside
+document.addEventListener("click", function (event) {
+  const dropdown = document.getElementById("weekdayDropdown");
+  const weekdayCheckboxes = document.querySelector(".weekday-checkboxes");
+
+  if (!weekdayCheckboxes.contains(event.target)) {
+    dropdown.classList.remove("show");
+  }
+});
+
+// Prevent dropdown from closing when clicking inside
+document
+  .querySelector(".checkbox-group")
+  .addEventListener("click", function (event) {
+    event.stopPropagation();
+  });

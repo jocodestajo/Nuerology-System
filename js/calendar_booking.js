@@ -1,60 +1,39 @@
-// Declare these variables globally
-let currentDate = new Date();
-// let monthOffset = 0;
-
-// Make changeMonth function global
-window.changeMonth = function (action) {
-  if (action === "previous") {
-    currentDate.setMonth(currentDate.getMonth() - 1);
-  } else if (action === "next") {
-    currentDate.setMonth(currentDate.getMonth() + 1);
-  } else {
-    currentDate = new Date();
-  }
-  updateCalendar(0);
-};
-
+// Initialize calendar when DOM is loaded
 document.addEventListener("DOMContentLoaded", function () {
-  // Debug logs
-  console.log("DOM Content Loaded");
+  let currentDate = new Date();
 
-  const calendarBtn = document.querySelector(".btn-trigger");
-  const calendarContainer = document.getElementById("calendarContainer");
+  // Make changeMonth function global
+  window.changeMonth = function (action) {
+    // Prevent the default form submission
+    event.preventDefault();
 
-  // console.log("Calendar Button:", calendarBtn);
-  // console.log("Calendar Container:", calendarContainer);
-
-  if (!calendarBtn || !calendarContainer) {
-    console.log("calendar elements not found!");
-    return;
-  }
-
-  // Add click event to the calendar button
-  calendarBtn.addEventListener("click", function (e) {
-    // console.log("Calendar button clicked");
-
-    // Force initial display state check
-    const currentDisplay = window.getComputedStyle(calendarContainer).display;
-    // console.log("Current display state:", currentDisplay);
-
-    if (currentDisplay === "none") {
-      calendarContainer.style.display = "block";
-      // console.log("Showing calendar");
-      updateCalendar(); // Initialize calendar when showing
+    if (action === "previous") {
+      currentDate.setMonth(currentDate.getMonth() - 1);
+    } else if (action === "next") {
+      currentDate.setMonth(currentDate.getMonth() + 1);
     } else {
-      calendarContainer.style.display = "none";
-      // console.log("Hiding calendar");
+      currentDate = new Date();
     }
-  });
+    updateCalendar();
+  };
 
-  // Initialize the calendar table structure
-  function updateCalendar(monthOffset = 0) {
-    console.log("Updating calendar with offset:", monthOffset);
+  // Define updateCalendar function globally
+  function updateCalendar() {
     const table = document.getElementById("calendarTable");
-    if (!table) {
-      console.error("Calendar table not found!");
+    const monthTitle = document.getElementById("calendarMonthTitle");
+
+    // Debug logs
+    // console.log("Updating calendar");
+    // console.log("Table element:", table);
+    // console.log("Month title element:", monthTitle);
+
+    if (!table || !monthTitle) {
+      console.error("Calendar elements not found!");
       return;
     }
+
+    // Get enabled weekdays from checkboxes
+    const enabledDays = getEnabledWeekdays();
 
     // Clear existing table content
     table.innerHTML = "";
@@ -67,13 +46,15 @@ document.addEventListener("DOMContentLoaded", function () {
       cell.className = "calendarTable-header";
     });
 
-    // Calculate dates and populate calendar
-    const date = new Date();
-    date.setMonth(date.getMonth() + monthOffset);
-    const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+    // Calculate dates for the current month
+    const firstDay = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      1
+    ).getDay();
     const lastDate = new Date(
-      date.getFullYear(),
-      date.getMonth() + 1,
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
       0
     ).getDate();
 
@@ -92,9 +73,9 @@ document.addEventListener("DOMContentLoaded", function () {
       "November",
       "December",
     ];
-    document.getElementById("calendarMonthTitle").textContent = `${
-      monthNames[date.getMonth()]
-    } ${date.getFullYear()}`;
+    monthTitle.textContent = `${
+      monthNames[currentDate.getMonth()]
+    } ${currentDate.getFullYear()}`;
 
     // Fill in the calendar dates
     let dayCount = 1;
@@ -106,121 +87,188 @@ document.addEventListener("DOMContentLoaded", function () {
           cell.textContent = "";
         } else if (dayCount <= lastDate) {
           cell.textContent = dayCount;
-          cell.className = "clickable-date";
-          // cell.value = dayCount;
-          cell.onclick = () => {
-            // console.log("Text inside cell:", cell);
 
-            // Call the handleDateClick function
-            handleDateClick(
-              date.getFullYear(),
-              date.getMonth(),
-              cell.textContent
-            );
-          };
+          // Check if this weekday is enabled
+          const date = new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            dayCount
+          );
+          const isEnabled = enabledDays.includes(date.getDay());
 
+          if (isEnabled) {
+            cell.className = "clickable-date";
+            cell.onclick = () => {
+              handleDateClick(
+                currentDate.getFullYear(),
+                currentDate.getMonth(),
+                cell.textContent
+              );
+            };
+          } else {
+            cell.className = "disabled-date";
+          }
           dayCount++;
         }
       }
     }
   }
 
+  // Handle date clicks
   function handleDateClick(year, month, dayCount) {
-    // Set the time to noon (12:00 PM) to avoid time zone issues
-    const selectedDate = new Date(year, month, dayCount, 12, 0, 0);
-
-    // Format the date as YYYY-MM-DD for the input field
+    const selectedDate = new Date(year, month, parseInt(dayCount), 12, 0, 0);
     const formattedDate = selectedDate.toISOString().split("T")[0];
 
-    // Update the date input field(s)
-    const dateInputs = document.querySelectorAll(".date");
-    dateInputs.forEach((dateInput) => {
+    const dateInput = document.getElementById("date-sched");
+    if (dateInput) {
       dateInput.value = formattedDate;
-    });
+      // console.log(dateInput.value);
+    }
 
-    // Hide the calendar after selection
     const calendarContainer = document.getElementById("calendarContainer");
     if (calendarContainer) {
       calendarContainer.style.display = "none";
     }
   }
 
-  // Add this new function to handle bookings
-  function handleBooking(year, month, dayCount) {
-    const bookingDate = new Date(year, month, dayCount); // Use dayCount instead of day
-    const formattedDate = bookingDate.toLocaleDateString();
-    // You can customize this part to handle the booking action
-    console.log(`Booking requested for: ${formattedDate}`);
-    // Add your booking logic here
+  const calendarBtn = document.querySelector(".btn-trigger");
+  const calendarContainer = document.getElementById("calendarContainer");
+
+  if (!calendarBtn || !calendarContainer) {
+    console.error("Calendar elements not found!");
+    return;
   }
 
-  // Initialize the calendar with the current month
-  updateCalendar(0);
+  // Add click event to the calendar button
+  calendarBtn.addEventListener("click", function (e) {
+    e.preventDefault(); // Prevent any default action
+
+    // Toggle calendar visibility
+    if (calendarContainer.style.display === "none") {
+      calendarContainer.style.display = "block";
+      updateCalendar(); // Update calendar when showing
+    } else {
+      calendarContainer.style.display = "none";
+    }
+  });
+
+  // Close calendar when clicking outside
+  document.addEventListener("click", function (e) {
+    if (
+      !calendarContainer.contains(e.target) &&
+      !calendarBtn.contains(e.target) &&
+      calendarContainer.style.display === "block"
+    ) {
+      calendarContainer.style.display = "none";
+    }
+  });
+
+  // Initialize the calendar
+  updateCalendar();
+
+  // New function to get enabled weekdays
+  function getEnabledWeekdays() {
+    const weekdays = {
+      sunday: 0,
+      monday: 1,
+      tuesday: 2,
+      wednesday: 3,
+      thursday: 4,
+      friday: 5,
+      saturday: 6,
+    };
+
+    const enabledDays = [];
+
+    Object.keys(weekdays).forEach((day) => {
+      const checkbox = document.getElementById(day);
+      if (checkbox && checkbox.checked) {
+        enabledDays.push(weekdays[day]);
+      }
+    });
+
+    return enabledDays;
+  }
+
+  // Function to save checkbox states to database
+  async function saveCheckboxStates() {
+    const checkboxStates = {};
+    const checkboxes = document.querySelectorAll(
+      '.weekday-checkboxes input[type="checkbox"]'
+    );
+    checkboxes.forEach((checkbox) => {
+      checkboxStates[checkbox.id] = checkbox.checked;
+    });
+
+    try {
+      const response = await fetch("api/post/saveWeekdays.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(checkboxStates),
+      });
+      const data = await response.json();
+      if (!data.success) {
+        console.error("Failed to save weekday settings");
+      }
+    } catch (error) {
+      console.error("Error saving weekday settings:", error);
+    }
+  }
+
+  // Function to load checkbox states from database
+  async function loadCheckboxStates() {
+    try {
+      const response = await fetch("api/get/getWeekdays.php");
+      const checkboxStates = await response.json();
+
+      Object.keys(checkboxStates).forEach((id) => {
+        const checkbox = document.getElementById(id);
+        if (checkbox) {
+          checkbox.checked = checkboxStates[id];
+        }
+      });
+
+      // Update calendar after loading states
+      updateCalendar();
+    } catch (error) {
+      console.error("Error loading weekday settings:", error);
+    }
+  }
+
+  // Modify the event listeners in DOMContentLoaded
+  document.addEventListener("DOMContentLoaded", function () {
+    // Load saved checkbox states
+    loadCheckboxStates();
+
+    // Add change event listeners to checkboxes
+    const checkboxes = document.querySelectorAll(
+      '.weekday-checkboxes input[type="checkbox"]'
+    );
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", () => {
+        saveCheckboxStates(); // Save states when changed
+        updateCalendar(); // Update calendar display
+      });
+    });
+
+    // ... rest of your existing DOMContentLoaded code ...
+  });
+
+  // Add this CSS to your stylesheet
+  const style = document.createElement("style");
+  style.textContent = `
+    .disabled-date {
+      color: #ccc;
+      cursor: not-allowed;
+      background-color: #f5f5f5;
+    }
+  `;
+  document.head.appendChild(style);
 });
 
-/// Function to update the calendar display
-// function updateCalendar(monthOffset = 0) {
-//   const date = new Date(
-//     currentDate.getFullYear(),
-//     currentDate.getMonth() + monthOffset,
-//     1
-//   );
-//   const month = date.getMonth();
-//   const year = date.getFullYear();
-
-//   // Update the month title
-//   const monthNames = [
-//     "January",
-//     "February",
-//     "March",
-//     "April",
-//     "May",
-//     "June",
-//     "July",
-//     "August",
-//     "September",
-//     "October",
-//     "November",
-//     "December",
-//   ];
-//   document.getElementById(
-//     "calendarMonthTitle"
-//   ).innerText = `${monthNames[month]} ${year}`;
-
-//   // Create the calendar table
-//   const table = document.getElementById("calendarTable");
-//   table.innerHTML = "";
-
-//   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-//   let row = table.insertRow();
-//   for (let day of daysOfWeek) {
-//     const cell = row.insertCell();
-//     cell.textContent = day;
-//   }
-
-//   const firstDay = new Date(year, month, 1).getDay();
-//   const lastDate = new Date(year, month + 1, 0).getDate();
-
-//   let dayCount = 1;
-//   for (let i = 0; dayCount <= lastDate; i++) {
-//     row = table.insertRow();
-//     for (let j = 0; j < 7; j++) {
-//       const cell = row.insertCell();
-//       if (i === 0 && j < firstDay) {
-//         cell.textContent = "";
-//       } else if (dayCount <= lastDate) {
-//         cell.textContent = dayCount;
-//         cell.className = "clickable-date";
-
-//         // Use a closure to capture the correct value of dayCount for each cell
-//         cell.onclick = (function (dayCount) {
-//           return function () {
-//             handleBooking(year, month, dayCount);
-//           };
-//         })(dayCount);
-
-//         dayCount++;
-//       }
-//     }
-//   }
-// }
+const calendarContainer = document.getElementById("calendarContainer");
+if (!calendarContainer) {
+  calendarContainer.style.display = "none";
+}

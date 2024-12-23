@@ -58,10 +58,12 @@ function updateCalendar(monthOffset = 0) {
       }
     }
   }
+
+  updateCalendarBasedOnWeeklySchedule();
 }
 
 // Function to handle button clicks
-function changeMonth(action) {
+function monthChange(action) {
   if (action === "previous") {
     todayDate.setMonth(todayDate.getMonth() - 1);
   } else if (action === "next") {
@@ -74,3 +76,80 @@ function changeMonth(action) {
 
 // Initialize the calendar with the current month
 updateCalendar(0);
+
+// WEEKLY SCHEDULE DROPDOWN /////////////////////////////////////
+function toggleDropdown() {
+  const dropdown = document.getElementById("weekdayDropdown");
+  dropdown.classList.toggle("show");
+}
+
+// Close the dropdown if clicked outside
+document.addEventListener("click", function (event) {
+  const dropdown = document.getElementById("weekdayDropdown");
+  const weekdayCheckboxes = document.querySelector(".weekday-checkboxes");
+
+  if (!weekdayCheckboxes.contains(event.target)) {
+    dropdown.classList.remove("show");
+  }
+});
+
+// Prevent dropdown from closing when clicking inside
+document
+  .querySelector(".checkbox-group")
+  .addEventListener("click", function (event) {
+    event.stopPropagation();
+  });
+
+// WEEKLY SCHEDULE /////////////////////////////////////
+function updateCalendarBasedOnWeeklySchedule() {
+  const calendar = document.getElementById("calendarTable_schedule");
+  const cells = calendar.getElementsByTagName("td");
+  const selectedDays = getSelectedWeekdays();
+
+  for (let cell of cells) {
+    if (cell.textContent !== "") {
+      // Skip empty cells
+      const date = new Date(
+        currentYear,
+        currentMonth,
+        parseInt(cell.textContent)
+      );
+      const dayName = date.toLocaleDateString("en-US", { weekday: "long" });
+
+      // If no days are selected, all days are available
+      if (selectedDays.length === 0) {
+        cell.classList.remove("disabled");
+        continue;
+      }
+
+      // Enable/disable based on selected weekdays
+      if (selectedDays.includes(dayName)) {
+        cell.classList.remove("disabled");
+      } else {
+        cell.classList.add("disabled");
+      }
+    }
+  }
+}
+
+function getSelectedWeekdays() {
+  const checkboxes = document.querySelectorAll(
+    '.checkbox-item input[type="checkbox"]'
+  );
+  const selectedDays = [];
+
+  checkboxes.forEach((checkbox) => {
+    if (checkbox.checked) {
+      selectedDays.push(checkbox.value);
+    }
+  });
+
+  return selectedDays;
+}
+
+// Add event listeners to checkboxes
+document
+  .querySelectorAll('.checkbox-item input[type="checkbox"]')
+  .forEach((checkbox) => {
+    checkbox.addEventListener("change", updateCalendarBasedOnWeeklySchedule);
+  });

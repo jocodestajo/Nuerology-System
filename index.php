@@ -157,18 +157,20 @@ require 'dateTime.php';
                                 
                                 <div class="calendar">
                                     <div class="calendar-date">
-                                        <label for="date">Date Schedule: <i class="asterisk">*</i></label>
-                                        <input type="date" id="date" class="date" name="date_sched" readonly>
+                                        <label for="date-sched">Date Schedule: <i class="asterisk">*</i></label>
+                                        <input type="date" id="date-sched" class="date" name="date_sched" readonly>
                                     </div>
                                     <div class="calendar-btn">
                                         <span class="btn-trigger btn btn-blue">Calendar</span>
                                     </div>
                                     <div id="calendarContainer" style="display: none;">
-                                        <div id="calendarMonthTitle"></div>
-                                        <table id="calendarTable"></table>
+                                        <div id="calendarMonthTitle" class="calendarMonth"></div>
+                                        <table id="calendarTable">
+                                            <!-- Calendar content will be generated here -->
+                                        </table>
                                         <div class="calendar-controls">
-                                            <button onclick="changeMonth('previous')">Previous</button>
-                                            <button onclick="changeMonth('next')">Next</button>
+                                            <button type="button" onclick="changeMonth('previous')">Previous</button>
+                                            <button type="button" onclick="changeMonth('next')">Next</button>
                                         </div>
                                     </div>
                                 </div>
@@ -427,13 +429,55 @@ require 'dateTime.php';
 
             <!-- TAB 5 / CALENDAR -->
             <div class="content">
+                <div class="weekday-checkboxes">
+                    <div class="weekday-title" onclick="toggleDropdown()">Weekly Schedule ▼</div>
+                    <div class="checkbox-group" id="weekdayDropdown">
+                        <div class="checkbox-item">
+                              <label for="monday">
+                                <input type="checkbox" id="monday" name="days[]" value="Monday">
+                            Monday</label>
+                        </div>
+                        <div class="checkbox-item">
+                              <label for="tuesday">
+                                <input type="checkbox" id="tuesday" name="days[]" value="Tuesday">
+                            Tuesday</label>
+                        </div>
+                        <div class="checkbox-item">
+                              <label for="wednesday">
+                                <input type="checkbox" id="wednesday" name="days[]" value="Wednesday">
+                            Wednesday</label>
+                        </div>
+                        <div class="checkbox-item">
+                              <label for="thursday">
+                                <input type="checkbox" id="thursday" name="days[]" value="Thursday">
+                            Thursday</label>
+                        </div>
+                        <div class="checkbox-item">
+                              <label for="friday">
+                                <input type="checkbox" id="friday" name="days[]" value="Friday">
+                            Friday</label>
+                        </div>
+                        <div class="checkbox-item">
+                              <label for="saturday">
+                                <input type="checkbox" id="saturday" name="days[]" value="Saturday">
+                            Saturday</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <label for="sunday">
+                                <input type="checkbox" id="sunday" name="days[]" value="Sunday">
+                            Sunday</label>
+                        </div>
+                    </div>
+                </div>
                 <div class="flex">
-                    <span class="calendarMonth-border" onclick="changeMonth('previous')">Previous Month</span>
-                    <span class="calendarMonth-border" onclick="changeMonth('current')">Current Month</span>
-                    <span class="calendarMonth-border" onclick="changeMonth('next')">Next Month</span>
+                    <span class="calendarMonth-border" onclick="monthChange('previous')">Previous Month</span>
+                    <span class="calendarMonth-border" onclick="monthChange('current')">Current Month</span>
+                    <span class="calendarMonth-border" onclick="monthChange('next')">Next Month</span>
                 </div>
                 
-                <h2 id="MonthTitle" class="flex"></h2>
+                
+                
+                <h2 id="MonthTitle" class="calendarMonth flex"></h2>
                 
                 <table id="calendarTable_schedule">
                     <!-- calendar here -->
