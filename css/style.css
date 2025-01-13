@@ -16,11 +16,6 @@ body {
   --red-color: #bf0603;
   --yellow-color: #ffd700;
   --beige-color: #f5f5dc;
-
-  /* --primary-color: #006400;
-  --blue-color: rgb(26, 179, 255);
-  --red-color: rgb(220, 49, 49);
-  --yellow-color: gold; */
 }
 
 /* header logo and navbars */
@@ -94,17 +89,17 @@ body {
 }
 #floatingAlert {
   position: fixed;
-  top: 30%; /* distance from the top */
-  left: 38%; /* distance from the right */
-  z-index: 1; /* ensures it appears above other content */
-  width: 500px; /* max width for the alert */
+  top: 30%;
+  left: 38%;
+  z-index: 1;
+  width: 500px;
   height: 300px;
   padding: 0 30px 0 30px;
   background-color: var(--beige-color);
 
   border: 1px solid #fefae0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* adds a shadow */
-  transition: opacity 0.5s ease; /* smooth transition */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.5s ease;
 }
 
 .alert {

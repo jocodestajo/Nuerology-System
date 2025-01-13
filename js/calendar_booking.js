@@ -1,5 +1,19 @@
 // Initialize calendar when DOM is loaded
 document.addEventListener("DOMContentLoaded", function () {
+  loadCheckboxStates();
+
+  // Add change event listeners to checkboxes
+  const checkboxes = document.querySelectorAll(
+    '.weekday-checkboxes input[type="checkbox"]'
+  );
+
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", () => {
+      saveCheckboxStates();
+      updateCalendar();
+    });
+  });
+
   let currentDate = new Date();
 
   // Make changeMonth function global
@@ -22,20 +36,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const table = document.getElementById("calendarTable");
     const monthTitle = document.getElementById("calendarMonthTitle");
 
-    // Debug logs
-    // console.log("Updating calendar");
-    // console.log("Table element:", table);
-    // console.log("Month title element:", monthTitle);
-
     if (!table || !monthTitle) {
       console.error("Calendar elements not found!");
       return;
     }
 
-    // Get enabled weekdays from checkboxes
     const enabledDays = getEnabledWeekdays();
 
-    // Clear existing table content
     table.innerHTML = "";
 
     // Add header row with days of week
@@ -58,7 +65,6 @@ document.addEventListener("DOMContentLoaded", function () {
       0
     ).getDate();
 
-    // Update month title
     const monthNames = [
       "January",
       "February",
@@ -122,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const dateInput = document.getElementById("date-sched");
     if (dateInput) {
       dateInput.value = formattedDate;
-      // console.log(dateInput.value);
+      console.log(dateInput.value);
     }
 
     const calendarContainer = document.getElementById("calendarContainer");
@@ -192,15 +198,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to save checkbox states to database
   async function saveCheckboxStates() {
-    const checkboxStates = {};
-    const checkboxes = document.querySelectorAll(
-      '.weekday-checkboxes input[type="checkbox"]'
-    );
-    checkboxes.forEach((checkbox) => {
-      checkboxStates[checkbox.id] = checkbox.checked;
-    });
-
+    // alert("you are now saving the cgange");
     try {
+      const checkboxStates = {};
+      const checkboxes = document.querySelectorAll(
+        '.weekday-checkboxes input[type="checkbox"]'
+      );
+      checkboxes.forEach((checkbox) => {
+        checkboxStates[checkbox.id] = checkbox.checked;
+      });
+
+      // console.log("Saving checkbox states:", checkboxStates);
+
       const response = await fetch("api/post/saveWeekdays.php", {
         method: "POST",
         headers: {
@@ -208,8 +217,11 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         body: JSON.stringify(checkboxStates),
       });
-      const data = await response.json();
-      if (!data.success) {
+
+      const result = await response.json();
+      // console.log("Save response:", result);
+
+      if (!result.success) {
         console.error("Failed to save weekday settings");
       }
     } catch (error) {
@@ -223,38 +235,49 @@ document.addEventListener("DOMContentLoaded", function () {
       const response = await fetch("api/get/getWeekdays.php");
       const checkboxStates = await response.json();
 
-      Object.keys(checkboxStates).forEach((id) => {
+      // Set default checked state if no data exists
+      const defaultCheckedDays = {
+        monday: true,
+        tuesday: true,
+        wednesday: true,
+        thursday: true,
+        friday: true,
+        saturday: true,
+        sunday: true,
+      };
+
+      // Combine default states with saved states
+      const finalStates = { ...defaultCheckedDays, ...checkboxStates };
+
+      Object.keys(finalStates).forEach((id) => {
         const checkbox = document.getElementById(id);
         if (checkbox) {
-          checkbox.checked = checkboxStates[id];
+          checkbox.checked = finalStates[id];
         }
       });
+
+      // If no states were saved yet, save the default states
+      if (Object.keys(checkboxStates).length === 0) {
+        saveCheckboxStates();
+      }
 
       // Update calendar after loading states
       updateCalendar();
     } catch (error) {
       console.error("Error loading weekday settings:", error);
+
+      // If there's an error, set all checkboxes to checked
+      const checkboxes = document.querySelectorAll(
+        '.weekday-checkboxes input[type="checkbox"]'
+      );
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = true;
+      });
+
+      // Try to save the default states
+      saveCheckboxStates();
     }
   }
-
-  // Modify the event listeners in DOMContentLoaded
-  document.addEventListener("DOMContentLoaded", function () {
-    // Load saved checkbox states
-    loadCheckboxStates();
-
-    // Add change event listeners to checkboxes
-    const checkboxes = document.querySelectorAll(
-      '.weekday-checkboxes input[type="checkbox"]'
-    );
-    checkboxes.forEach((checkbox) => {
-      checkbox.addEventListener("change", () => {
-        saveCheckboxStates(); // Save states when changed
-        updateCalendar(); // Update calendar display
-      });
-    });
-
-    // ... rest of your existing DOMContentLoaded code ...
-  });
 
   // Add this CSS to your stylesheet
   const style = document.createElement("style");

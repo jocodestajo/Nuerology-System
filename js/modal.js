@@ -17,7 +17,7 @@ viewButtons.forEach((button) => {
     console.log(recordId);
 
     // Make an AJAX request to fetch the data for this record
-    fetch("api/fetch_record.php?id=" + recordId)
+    fetch("api/get/fetch_record.php?id=" + recordId)
       .then((response) => response.json())
       .then((data) => {
         // check data

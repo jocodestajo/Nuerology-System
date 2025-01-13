@@ -1,28 +1,18 @@
 <?php
-require '../../config/dbcon.php';
+require 'dbcon.php';
 
-// First, check if any settings exist
+// Check if table is empty
 $checkQuery = "SELECT COUNT(*) as count FROM weekday_settings";
 $checkResult = mysqli_query($conn, $checkQuery);
 $row = mysqli_fetch_assoc($checkResult);
 
 if ($row['count'] == 0) {
-    // If no settings exist, create default settings (all days enabled)
+    // Initialize with all days enabled
     $defaultDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+    
     foreach ($defaultDays as $day) {
         $query = "INSERT INTO weekday_settings (day_name, is_enabled) VALUES ('$day', 1)";
         mysqli_query($conn, $query);
     }
 }
-
-// Get the settings
-$query = "SELECT * FROM weekday_settings";
-$result = mysqli_query($conn, $query);
-
-$weekdays = [];
-while ($row = mysqli_fetch_assoc($result)) {
-    $weekdays[$row['day_name']] = (bool)$row['is_enabled'];
-}
-
-echo json_encode($weekdays);
 ?> 

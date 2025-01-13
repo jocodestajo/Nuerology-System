@@ -501,13 +501,13 @@ select {
   font-weight: bold;
 }
 
-.clickable-date {
+/* .clickable-date {
   cursor: pointer;
 }
 
 .clickable-date:hover {
   background-color: var(--yellow-color);
-}
+} */
 
 .calendar-controls {
   display: flex;
@@ -603,19 +603,78 @@ select {
 }
 
 #calendarTable_schedule td:not(.disabled):hover {
-  background-color: #e0e0e0;
+  /* background-color: #e0e0e0; */
 }
 
 .disabled-date {
-  color: #ccc;
+  /* color: #ccc; */
   cursor: not-allowed;
   background-color: #f5f5f5;
 }
 
 .clickable-date {
   cursor: pointer;
+  background-color: #fff;
+  height: 80px;
+  padding: 5px;
 }
 
 .clickable-date:hover {
-  background-color: #e0e0e0;
+  color: var(--yellow-color);
+  background-color: var(--primary-color);
+}
+
+/* Style for disabled dates */
+.clickable-date.disabled {
+  background-color: #f0f0f0;
+}
+
+.clickable-date.disabled .calendar-btn {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Add styles for the date number */
+.date-number {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Add styles for the button container */
+.button-container {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+/* Style the calendar buttons */
+.calendar-btn {
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  min-width: 80px;
+  transition: background-color 0.3s;
+}
+
+/* F2F button specific styles */
+.f2f-btn {
+  background-color: #107e73;
+  color: white;
+}
+
+.f2f-btn:hover {
+  background-color: #0a5c54;
+}
+
+/* Telecon button specific styles */
+.telecon-btn {
+  background-color: #812828;
+  color: white;
+}
+
+.telecon-btn:hover {
+  background-color: #601e1e;
 }

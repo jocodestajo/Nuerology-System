@@ -1,7 +1,21 @@
 let todayDate = new Date();
+let appointmentCounts = {};
+
+// Update the fetch function to get both F2F and Telecon counts
+async function fetchAppointmentCounts(year, month) {
+  try {
+    const response = await fetch(
+      `api/get/getAppointmentCounts.php?year=${year}&month=${month}`
+    );
+    const data = await response.json();
+    appointmentCounts = data;
+  } catch (error) {
+    console.error("Error fetching appointment counts:", error);
+  }
+}
 
 // Function to update the calendar display
-function updateCalendar(monthOffset = 0) {
+async function updateCalendar(monthOffset = 0) {
   const date = new Date(
     todayDate.getFullYear(),
     todayDate.getMonth() + monthOffset,
@@ -9,6 +23,9 @@ function updateCalendar(monthOffset = 0) {
   );
   const month = date.getMonth();
   const year = date.getFullYear();
+
+  // Fetch appointment counts before updating calendar
+  await fetchAppointmentCounts(year, month + 1);
 
   // Update the month title
   const monthNames = [
@@ -44,22 +61,67 @@ function updateCalendar(monthOffset = 0) {
   const firstDay = new Date(year, month, 1).getDay();
   const lastDate = new Date(year, month + 1, 0).getDate();
 
-  let dayCount = 1;
-  for (let i = 0; dayCount <= lastDate; i++) {
+  for (let i = 0, dayCount = 1; dayCount <= lastDate; i++) {
     row = table.insertRow();
     for (let j = 0; j < 7; j++) {
       const cell = row.insertCell();
       if (i === 0 && j < firstDay) {
         cell.textContent = "";
       } else if (dayCount <= lastDate) {
-        cell.textContent = dayCount;
+        // Create a container for the date and buttons
         cell.className = "clickable-date";
+
+        // Add the date number
+        const dateNumber = document.createElement("div");
+        dateNumber.textContent = dayCount;
+        dateNumber.className = "date-number";
+        cell.appendChild(dateNumber);
+
+        // Add button container
+        const buttonContainer = document.createElement("div");
+        buttonContainer.className = "button-container";
+
+        const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(
+          dayCount
+        ).padStart(2, "0")}`;
+
+        // Get counts from appointmentCounts
+        const f2fCount = appointmentCounts[dateStr]?.f2f || 0;
+        const teleconCount = appointmentCounts[dateStr]?.telecon || 0;
+
+        // Conditionally add F2F button if count > 0
+        if (f2fCount > 0) {
+          const f2fButton = document.createElement("button");
+          f2fButton.textContent = `F2F (${f2fCount})`;
+          f2fButton.className = "calendar-btn f2f-btn";
+          f2fButton.onclick = (e) => {
+            e.stopPropagation();
+            handleDateClick("f2f", year, month, cell);
+          };
+          buttonContainer.appendChild(f2fButton);
+        }
+
+        // Conditionally add Telecon button if count > 0
+        if (teleconCount > 0) {
+          const teleconButton = document.createElement("button");
+          teleconButton.textContent = `Telecon (${teleconCount})`;
+          teleconButton.className = "calendar-btn telecon-btn";
+          teleconButton.onclick = (e) => {
+            e.stopPropagation();
+            handleDateClick("telecon", year, month, cell);
+          };
+          buttonContainer.appendChild(teleconButton);
+        }
+
+        // Append button container if there are any buttons
+        if (f2fCount > 0 || teleconCount > 0) {
+          cell.appendChild(buttonContainer);
+        }
+
         dayCount++;
       }
     }
   }
-
-  updateCalendarBasedOnWeeklySchedule();
 }
 
 // Function to handle button clicks
@@ -74,7 +136,6 @@ function monthChange(action) {
   updateCalendar(0);
 }
 
-// Initialize the calendar with the current month
 updateCalendar(0);
 
 // WEEKLY SCHEDULE DROPDOWN /////////////////////////////////////
@@ -100,56 +161,28 @@ document
     event.stopPropagation();
   });
 
-// WEEKLY SCHEDULE /////////////////////////////////////
-function updateCalendarBasedOnWeeklySchedule() {
-  const calendar = document.getElementById("calendarTable_schedule");
-  const cells = calendar.getElementsByTagName("td");
-  const selectedDays = getSelectedWeekdays();
+function handleDateClick(type, year, month, cell) {
+  const dateNumber = cell.querySelector(".date-number").textContent;
+  const selectedDate = new Date(year, month, parseInt(dateNumber), 12, 0, 0);
 
-  for (let cell of cells) {
-    if (cell.textContent !== "") {
-      // Skip empty cells
-      const date = new Date(
-        currentYear,
-        currentMonth,
-        parseInt(cell.textContent)
-      );
-      const dayName = date.toLocaleDateString("en-US", { weekday: "long" });
+  // Format date to YYYY-MM-DD
+  const formattedDate = selectedDate.toISOString().split("T")[0];
+  console.log(`Selected ${type} appointment for ${formattedDate}`);
 
-      // If no days are selected, all days are available
-      if (selectedDays.length === 0) {
-        cell.classList.remove("disabled");
-        continue;
-      }
+  // Determine table and filters to update based on the type
+  const tableId = type === "f2f" ? "table2" : "table3";
+  const dayFilterId = type === "f2f" ? "dayFilter2" : "dayFilter3";
+  const monthFilterId = type === "f2f" ? "monthFilter2" : "monthFilter3";
+  const yearFilterId = type === "f2f" ? "yearFilter2" : "yearFilter3";
 
-      // Enable/disable based on selected weekdays
-      if (selectedDays.includes(dayName)) {
-        cell.classList.remove("disabled");
-      } else {
-        cell.classList.add("disabled");
-      }
-    }
-  }
+  // Set the date filters dynamically
+  const [yearStr, monthStr, dayStr] = formattedDate.split("-");
+  document.getElementById(dayFilterId).value = dayStr;
+  document.getElementById(monthFilterId).value = monthStr;
+  document.getElementById(yearFilterId).value = yearStr;
+
+  filterTable(tableId, dayFilterId, monthFilterId, yearFilterId);
+
+  const tabIndex = type === "f2f" ? 2 : 3; // Adjust index based on tab setup
+  showContent(tabIndex);
 }
-
-function getSelectedWeekdays() {
-  const checkboxes = document.querySelectorAll(
-    '.checkbox-item input[type="checkbox"]'
-  );
-  const selectedDays = [];
-
-  checkboxes.forEach((checkbox) => {
-    if (checkbox.checked) {
-      selectedDays.push(checkbox.value);
-    }
-  });
-
-  return selectedDays;
-}
-
-// Add event listeners to checkboxes
-document
-  .querySelectorAll('.checkbox-item input[type="checkbox"]')
-  .forEach((checkbox) => {
-    checkbox.addEventListener("change", updateCalendarBasedOnWeeklySchedule);
-  });

@@ -81,8 +81,8 @@ require 'dateTime.php';
                         
                         <!-- div.box Child element 5 / AGE -->
                         <div class="input">
-                            <label for="" class="age">Age:</label>
-                            <input type="text" id="age" name="age" class="age">
+                            <label for="" class="age">Age: <i class="asterisk">*</i></label>
+                            <input type="text" id="age" name="age" class="age" require>
                         </div>
                         
                         <!-- div.box Child element 6 / ADDRESS -->
@@ -117,14 +117,14 @@ require 'dateTime.php';
                         
                         <!-- div.box Child element 11 -->
                         <div class="input">
-                            <label for="" class="informant_name">Informant's Name:</label>
-                            <input type="text" name="informant" class="informant_name">
+                            <label for="" class="informant_name">Informant's Name: <i class="asterisk">*</i></label>
+                            <input type="text" name="informant" class="informant_name" require>
                         </div>
                         
                         <!-- div.box Child element 12 -->
                         <div class="input">
-                            <label for="" class="rel_informant">Relation to informant:</label>
-                            <input type="text" name="informant_relation" class="rel_informant">
+                            <label for="" class="rel_informant">Relation to informant: <i class="asterisk">*</i></label>
+                            <input type="text" name="informant_relation" class="rel_informant" require>
                         </div>
                         
                         <!-- div.box Child element 13 -->
@@ -475,8 +475,6 @@ require 'dateTime.php';
                     <span class="calendarMonth-border" onclick="monthChange('next')">Next Month</span>
                 </div>
                 
-                
-                
                 <h2 id="MonthTitle" class="calendarMonth flex"></h2>
                 
                 <table id="calendarTable_schedule">
@@ -498,6 +496,7 @@ require 'dateTime.php';
     <!-- Javascript -->
     <script src="js/mainScript.js"></script>
     <script src="js/modal.js"></script>
+    <script src="js/approval-f2f-telecon.js"></script>
     <script src="js/calendar_booking.js"></script>
     <script src="js/calendar_schedule.js"></script>
 </body>
