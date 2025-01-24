@@ -46,21 +46,18 @@ const searchResultModal = document.getElementById("searchResult-modal");
 
 let debounceTimeout;
 
-// let cachedResults = "";
-
 function closeModal() {
   searchResult.style.display = "none";
   searchResultModal.style.display = "none";
 }
 
-// Input keyup event for search
 nameInput.addEventListener("keyup", function () {
   console.log("Keyup", nameInput.value);
   clearTimeout(debounceTimeout);
 
   debounceTimeout = setTimeout(function () {
-    let query = nameInput.value.trim(); // Trim whitespace
-    if (query !== "") {
+    let inquery = nameInput.value.trim(); // Trim whitespace
+    if (inquery !== "") {
       searchResult.style.display = "block";
       searchResultModal.style.display = "block";
 
@@ -68,7 +65,7 @@ nameInput.addEventListener("keyup", function () {
       let xhr = new XMLHttpRequest();
       xhr.open(
         "GET",
-        "api/get/search.php?query=" + encodeURIComponent(query),
+        "api/get/search.php?inquery=" + encodeURIComponent(inquery),
         true
       );
       xhr.onreadystatechange = function () {
@@ -77,10 +74,8 @@ nameInput.addEventListener("keyup", function () {
           console.log("AJAX response: ", xhr.responseText);
           if (xhr.responseText.trim() !== "") {
             searchResult.innerHTML = xhr.responseText;
-            // cachedResults = xhr.responseText; // Cache the results
           } else {
             searchResult.innerHTML = "<p>No results found</p>";
-            // cachedResults = "";
           }
         } else if (xhr.readyState === 4) {
           console.error("Error with request:", xhr.status);
@@ -89,7 +84,6 @@ nameInput.addEventListener("keyup", function () {
       xhr.send();
     } else {
       closeModal();
-      // cachedResults = "";
     }
   }, 300);
 });
@@ -104,8 +98,8 @@ document.addEventListener("click", function (event) {
       let name = resultItem.getAttribute("data-name");
       let id = resultItem.getAttribute("data-id");
 
-      console.log("ID:", id);
-      console.log("Name:", name);
+      // console.log("ID:", id);
+      // console.log("Name:", name);
 
       // Fetch full details for the selected item
       let xhr = new XMLHttpRequest();
@@ -151,52 +145,6 @@ document.addEventListener("click", function (event) {
     closeModal();
   }
 });
-
-// // Event listener for clicking on a result item
-// document.addEventListener("click", function (e) {
-//   console.log(e.target.classList.contains("result-item"));
-
-//   if (e.target.classList.contains("result-item")) {
-//     let name = e.target.getAttribute("data-name");
-//     let id = e.target.getAttribute("data-id");
-
-//     // Check data if working/showing
-//     console.log(id);
-
-//     // AJAX request to fetch full details for the selected item
-//     let xhr = new XMLHttpRequest();
-//     xhr.open("GET", "api/fetch_data.php?id=" + id, true);
-//     xhr.onreadystatechange = function () {
-//       if (xhr.readyState === 4 && xhr.status === 200) {
-//         let data = JSON.parse(xhr.responseText);
-//         console.log(data);
-
-//         document.getElementById("hrn").value = data.hrn;
-//         document.getElementById("name").value = data.name;
-//         document.getElementById("age").value = data.currentage;
-//         document.getElementById("birthday").value = data.birthday;
-//         document.getElementById("contact").value = data.contactnumber;
-//         document.getElementById("address").value = data.address;
-
-//         // Set fields to disabled
-//         document.getElementById("hrn").readOnly = true;
-//         document.getElementById("name").readOnly = true;
-//         document.getElementById("age").readOnly = true;
-//         document.getElementById("birthday").readOnly = true;
-//         document.getElementById("address").readOnly = true;
-//         document.getElementById("clientSelect").readOnly = true;
-
-//         const contact = document.getElementById("contact");
-//         if (contact.value !== "") {
-//           contact.readOnly = true;
-//         }
-
-//         closeModal();
-//       }
-//     };
-//     xhr.send();
-//   }
-// });
 
 // ALERT MESSAGE ON INQUIRY ////////////////////////////////////////////////////////
 // Close the modal when clicking on the "X" and "close" button

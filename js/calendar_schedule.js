@@ -69,7 +69,7 @@ async function updateCalendar(monthOffset = 0) {
         cell.textContent = "";
       } else if (dayCount <= lastDate) {
         // Create a container for the date and buttons
-        cell.className = "clickable-date";
+        cell.className = "dateCell";
 
         // Add the date number
         const dateNumber = document.createElement("div");

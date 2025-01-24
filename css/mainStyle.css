@@ -7,6 +7,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --primary-color: #006400;
   --blue-color: #107e73;
@@ -105,7 +109,7 @@ body {
 }
 
 .tab {
-  background-color: var(--blue-color);
+  background-color: var(--primary-color);
   color: #ffff;
   padding: 10px 60px 10px 60px;
   text-align: center;
@@ -326,6 +330,13 @@ textarea {
   resize: none;
 }
 
+input:focus,
+select:focus,
+textarea:focus {
+  /* border-color: var(--primary-color); */
+  box-shadow: 0px 0px 10px var(--primary-color);
+}
+
 /* EDIT RECORDS FORM */
 .box .close-btn-tablet {
   display: none;
@@ -344,13 +355,24 @@ textarea {
   background-color: var(--primary-color);
   color: #ffff;
 }
+.btn-green:hover {
+  background-color: var(--primary-color);
+
+  box-shadow: 0px 0px 10px var(--primary-color);
+}
 .btn-red {
   background-color: var(--red-color);
   color: #ffff;
 }
+.btn-red:hover {
+  box-shadow: 0px 0px 10px var(--red-color);
+}
 .btn-blue {
   background-color: var(--blue-color);
   color: #ffff;
+}
+.btn-blue:hover {
+  box-shadow: 0px 0px 10px var(--primary-color);
 }
 .btn-clearData {
   border: 1px solid #006400;
@@ -382,7 +404,9 @@ td {
   /* width: 200px; */
 }
 th {
-  background-color: #f2f2f2;
+  /* #f2f2f2 */
+  background-color: var(--blue-color);
+  color: var(--white-color);
   font-weight: bold;
   border-top: 1px solid #dddddd;
   white-space: nowrap;
@@ -400,6 +424,10 @@ table .action-img {
   cursor: pointer;
   margin-inline: 5px;
 }
+table .action-img:hover {
+  box-shadow: 0px 0px 10px var(--blue-color);
+}
+
 tr .th-check,
 tr .th-check {
   width: 3%;
@@ -437,6 +465,9 @@ tr .th-complaint {
   padding: 8px 14px;
   text-align: center;
   cursor: pointer;
+}
+.selectDate-border:focus {
+  box-shadow: 0px 0px 10px var(--blue-color);
 }
 
 /* border-none class in date filters */
@@ -501,14 +532,6 @@ select {
   font-weight: bold;
 }
 
-/* .clickable-date {
-  cursor: pointer;
-}
-
-.clickable-date:hover {
-  background-color: var(--yellow-color);
-} */
-
 .calendar-controls {
   display: flex;
   justify-content: space-between;
@@ -531,26 +554,28 @@ select {
 /* Make sure the calendar container's parent has position: relative */
 .calendarMonth-border {
   border: 1px solid var(--blue-color);
-
   border-radius: 24px;
   padding: 2px 24px;
   text-align: center;
   cursor: pointer;
 }
 
+.calendarMonth-border:hover {
+  box-shadow: 0px 0px 10px var(--blue-color);
+}
+
 .weekday-checkboxes {
   position: relative;
-  padding: 2px 24px;
-  width: fit-content;
   border: 1px solid var(--blue-color);
-
-  /* border-radius: 24px; */
   cursor: pointer;
+}
+.weekday-checkboxes:hover {
+  box-shadow: 0px 0px 10px var(--blue-color);
 }
 
 .weekday-title {
   font-weight: bold;
-  padding: 5px;
+  padding: 10px;
 }
 
 .checkbox-group {
@@ -563,7 +588,7 @@ select {
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 10px;
-  z-index: 1000;
+  /* z-index: 1000; */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -589,6 +614,29 @@ select {
 .checkbox-item label {
   cursor: pointer;
   width: 100%;
+}
+
+.cal_header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.cal_header .limit {
+  border: 1px solid var(--blue-color);
+  padding: 5px;
+  /* border-radius: 5px; */
+}
+
+.cal_header .limit .limit_form button {
+  border-radius: 24px;
+  border-color: var(--primary-color);
+  margin-left: 12px;
+}
+
+.cal_header .limit select {
+  border-radius: 5px;
+  text-align: center;
 }
 
 #calendarTable_schedule td.disabled {
@@ -634,6 +682,12 @@ select {
   cursor: not-allowed;
 }
 
+.dateCell {
+  background-color: #fff;
+  height: 100px;
+  padding: 5px;
+}
+
 /* Add styles for the date number */
 .date-number {
   font-size: 1rem;
@@ -667,6 +721,7 @@ select {
 
 .f2f-btn:hover {
   background-color: #0a5c54;
+  box-shadow: 0px 0px 10px var(--blue-color);
 }
 
 /* Telecon button specific styles */
@@ -677,4 +732,77 @@ select {
 
 .telecon-btn:hover {
   background-color: #601e1e;
+  box-shadow: 0px 0px 10px var(--red-color);
+}
+
+/* SEARCH TAB */
+.search_scrolltab {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.searchDiv {
+  display: inline-flex;
+}
+
+#searchQuery {
+  width: 500px;
+  padding: 14px;
+  border-top-left-radius: 24px;
+  border-bottom-left-radius: 24px;
+  margin: 0;
+}
+#searchQuery:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0px 0px 10px var(--primary-color);
+}
+
+.searchDiv button {
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  padding: 14px;
+  border-color: var(--primary-color);
+  border-top-right-radius: 24px;
+  border-bottom-right-radius: 24px;
+  margin: 0;
+}
+.searchDiv button:hover {
+  box-shadow: 0px 0px 10px var(--primary-color);
+}
+
+.scrollTab {
+  display: inline-flex;
+  margin-bottom: 20px;
+}
+
+.scrollBtn {
+  text-decoration: none;
+  color: #000;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  /* margin-right: 10px; */
+}
+
+.scrollBtn:hover {
+  background-color: #ddd;
+}
+
+.tableResultTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #000;
+  /* text-align: center; */
+  margin-top: 2rem;
+  /* margin-bottom: 8px; */
+}
+
+#pendingTable,
+#faceToFaceTable,
+#teleconsultationTable,
+#processedTable,
+#cancelledTable {
+  padding-top: 70px; /* Add padding to push the content down */
 }

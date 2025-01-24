@@ -31,7 +31,7 @@ if (isset($_POST['save_btn']))
 
     $query = 
     "INSERT INTO neurology_records (hrn, name, age, birthday, contact, address, email, viber, informant, informant_relation, old_new, consultation, date_request, date_sched, complaint, history, referal, appointment_type, status) 
-    VALUES ('$hrn', '$name', '$age', '$birthday', '$contact', '$address', '$email', '$viber', '$informant', '$informant_relation', '$old_new', '$consultation', '$date_request', '$date_sched', '$complaint', '$history', '$referal', '$appointment_type', 'pending')";
+    VALUES ('$hrn', '$name', '$age', '$birthday', '$contact', '$address', '$email', '$viber', '$informant', '$informant_relation', '$old_new', '$consultation', '$date_request', '$date_sched', '$complaint', '$history', '$referal', '$appointment_type', '0')";
 
     $query_run = mysqli_query($conn, $query);
     if($query_run)
@@ -49,3 +49,11 @@ if (isset($_POST['save_btn']))
 }
 
 ?>
+
+<!-- 
+Status:
+    0 = pending
+    1 = approved
+    2 = Processed
+    3 = cancelled
+-->

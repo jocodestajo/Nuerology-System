@@ -2,7 +2,7 @@
 require '../../config/dbcon.php';
 
 // First, check if any settings exist
-$checkQuery = "SELECT COUNT(*) as count FROM weekday_settings";
+$checkQuery = "SELECT COUNT(*) as count FROM neurology_weekdaySettings";
 $checkResult = mysqli_query($conn, $checkQuery);
 $row = mysqli_fetch_assoc($checkResult);
 
@@ -16,7 +16,7 @@ if ($row['count'] == 0) {
 }
 
 // Get the settings
-$query = "SELECT * FROM weekday_settings";
+$query = "SELECT * FROM neurology_weekdaySettings";
 $result = mysqli_query($conn, $query);
 
 $weekdays = [];

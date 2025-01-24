@@ -1,18 +1,7 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "ihoms_inventory";
+require('../../config/dbcon.php');
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-$searchTerm = $_GET['query'] ?? '';
+$searchTerm = $_GET['inquery'] ?? '';
 
 // Split the search term into individual words
 $searchTermsArray = explode(' ', $searchTerm);

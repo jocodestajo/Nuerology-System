@@ -1,7 +1,7 @@
 <?php
 session_start();
 require 'config/dbcon.php';
-require 'dateTime.php';
+require 'includes/dateTime.php';
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +18,7 @@ require 'dateTime.php';
     <div class="container-1" id="container">
         
         <!-- HEADER -->
-        <?php include('includes/header'); ?>
+        <?php include('includes/header.php'); ?>
 
         <!-- navigation bar / TAB -->
         <div class="navbar-2">
@@ -38,6 +38,7 @@ require 'dateTime.php';
             <?php include('includes/editRecords.php'); ?>
 
             <!-- TAB 1 / INQUIRY -->
+            <!-- pag isahin na lang yung form ng inquiry at edit form sa f2f at telecon -->
             <div class="content active">
                 <div class="form-content">
                     <form action="api/post/createData.php" method="post" class="box" autocomplete="off"> 
@@ -160,19 +161,13 @@ require 'dateTime.php';
                                         <label for="date-sched">Date Schedule: <i class="asterisk">*</i></label>
                                         <input type="date" id="date-sched" class="date" name="date_sched" readonly>
                                     </div>
+
                                     <div class="calendar-btn">
                                         <span class="btn-trigger btn btn-blue">Calendar</span>
                                     </div>
-                                    <div id="calendarContainer" style="display: none;">
-                                        <div id="calendarMonthTitle" class="calendarMonth"></div>
-                                        <table id="calendarTable">
-                                            <!-- Calendar content will be generated here -->
-                                        </table>
-                                        <div class="calendar-controls">
-                                            <button type="button" onclick="changeMonth('previous')">Previous</button>
-                                            <button type="button" onclick="changeMonth('next')">Next</button>
-                                        </div>
-                                    </div>
+
+                                    <?php include('includes/calendarTable_modal.php'); ?>
+
                                 </div>
                             </div>
                         </div>
@@ -251,13 +246,11 @@ require 'dateTime.php';
                     </thead>
                     <tbody>
                         <?php
-                            // calling data in db table
                             $query = "SELECT * FROM neurology_records WHERE status = 'pending'";
 
                             // Para mag work yung $query need niya tawagin yung db kaya may $query_run para ideclare both  $query and $con
                             $query_run = mysqli_query($conn, $query);
 
-                            // condition if what data will be called
                             if(mysqli_num_rows($query_run) > 0)
                             {
                                 foreach($query_run as $records)
@@ -429,46 +422,65 @@ require 'dateTime.php';
 
             <!-- TAB 5 / CALENDAR -->
             <div class="content">
-                <div class="weekday-checkboxes">
-                    <div class="weekday-title" onclick="toggleDropdown()">Weekly Schedule ▼</div>
-                    <div class="checkbox-group" id="weekdayDropdown">
-                        <div class="checkbox-item">
-                              <label for="monday">
-                                <input type="checkbox" id="monday" name="days[]" value="Monday">
-                            Monday</label>
-                        </div>
-                        <div class="checkbox-item">
-                              <label for="tuesday">
-                                <input type="checkbox" id="tuesday" name="days[]" value="Tuesday">
-                            Tuesday</label>
-                        </div>
-                        <div class="checkbox-item">
-                              <label for="wednesday">
-                                <input type="checkbox" id="wednesday" name="days[]" value="Wednesday">
-                            Wednesday</label>
-                        </div>
-                        <div class="checkbox-item">
-                              <label for="thursday">
-                                <input type="checkbox" id="thursday" name="days[]" value="Thursday">
-                            Thursday</label>
-                        </div>
-                        <div class="checkbox-item">
-                              <label for="friday">
-                                <input type="checkbox" id="friday" name="days[]" value="Friday">
-                            Friday</label>
-                        </div>
-                        <div class="checkbox-item">
-                              <label for="saturday">
-                                <input type="checkbox" id="saturday" name="days[]" value="Saturday">
-                            Saturday</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <label for="sunday">
-                                <input type="checkbox" id="sunday" name="days[]" value="Sunday">
-                            Sunday</label>
+                <div class="cal_header">
+                    <div class="weekday-checkboxes">
+                        <div class="weekday-title" onclick="toggleDropdown()">Weekly Schedule ▼</div>
+                        <div class="checkbox-group" id="weekdayDropdown">
+                            <div class="checkbox-item">
+                                <label for="monday">
+                                    <input type="checkbox" id="monday" name="days[]" value="Monday">
+                                Monday</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <label for="tuesday">
+                                    <input type="checkbox" id="tuesday" name="days[]" value="Tuesday">
+                                Tuesday</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <label for="wednesday">
+                                    <input type="checkbox" id="wednesday" name="days[]" value="Wednesday">
+                                Wednesday</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <label for="thursday">
+                                    <input type="checkbox" id="thursday" name="days[]" value="Thursday">
+                                Thursday</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <label for="friday">
+                                    <input type="checkbox" id="friday" name="days[]" value="Friday">
+                                Friday</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <label for="saturday">
+                                    <input type="checkbox" id="saturday" name="days[]" value="Saturday">
+                                Saturday</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <label for="sunday">
+                                    <input type="checkbox" id="sunday" name="days[]" value="Sunday">
+                                Sunday</label>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="limit">
+                        <form action="" class="limit_form">
+                            <label for="onlinef2f">Online F2F:</label>
+                            <select name="" id="onlinef2f">
+                                <!-- <option value=""></option> -->
+                            </select>
+
+                            <label for="referrals_limit">Referral:</label>
+                            <select name="" id="referrals_limit">
+                                <!-- <option value="0">0</option> -->
+                            </select>
+
+                            <button type="submit" name="submit_limit" class="btn btn-green">Save</button>
+                        </form>
+                    </div>  
                 </div>
+
                 <div class="flex">
                     <span class="calendarMonth-border" onclick="monthChange('previous')">Previous Month</span>
                     <span class="calendarMonth-border" onclick="monthChange('current')">Current Month</span>
@@ -484,7 +496,27 @@ require 'dateTime.php';
 
             <!-- TAB 6 / SEARCH -->
             <div class="content">
-                    THIS IS SEARCH TAB
+                <div class="search_scrolltab">
+                    <div class="searchDiv">
+                        <input type="text" id="searchQuery" placeholder="Enter name or hrn to search..." />
+                        <button onclick="searchData()">Search</button>
+                    </div>
+
+                    <div class="scrollTab">
+                        <a href="#pendingTable" class="scrollBtn">Pending</a>
+                        <a href="#faceToFaceTable" class="scrollBtn">Face to Face</a>
+                        <a href="#teleconsultationTable" class="scrollBtn">Teleconsultation</a>
+                        <a href="#processedTable" class="scrollBtn">Processed</a>
+                        <a href="#cancelledTable" class="scrollBtn">Cancelled</a>
+                    </div>
+                </div>
+
+                <!-- Placeholder for tables -->
+                <div id="pendingTable"></div>
+                <div id="faceToFaceTable"></div>
+                <div id="teleconsultationTable"></div>
+                <div id="processedTable"></div>
+                <div id="cancelledTable"></div>
             </div>
         </div>
 
@@ -499,5 +531,68 @@ require 'dateTime.php';
     <script src="js/approval-f2f-telecon.js"></script>
     <script src="js/calendar_booking.js"></script>
     <script src="js/calendar_schedule.js"></script>
+
+    <script>
+        function populateDropdown(dropdownId) {
+            let dropdown = document.getElementById(dropdownId);
+            for (let i = 0; i <= 100; i++) {
+                let option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                dropdown.appendChild(option);
+            }
+        }
+    
+        populateDropdown('onlinef2f');
+        populateDropdown('referrals_limit');
+    </script>
+
+<script>
+    async function searchData() {
+        const query = document.getElementById('searchQuery').value;
+
+        // Clear previous results
+        document.getElementById('pendingTable').innerHTML = '';
+        document.getElementById('faceToFaceTable').innerHTML = '';
+        document.getElementById('teleconsultationTable').innerHTML = '';
+        document.getElementById('processedTable').innerHTML = '';
+        document.getElementById('cancelledTable').innerHTML = '';
+
+        const response = await fetch(`searchQuery.php?query=${query}`);
+        const appointments = await response.json();
+
+        const pendingAppointments = appointments.filter(app => app.status === 'pending');
+        const faceToFaceAppointments = appointments.filter(app => app.status === 'approved' && app.consultation === 'Face to face');
+        const teleconsultationAppointments = appointments.filter(app => app.status === 'approved' && app.consultation === 'Teleconsultation');
+        const processedAppointments = appointments.filter(app => app.status === 'processed');
+        const cancelledAppointments = appointments.filter(app => app.status === 'cancelled');
+
+        displayTable('pendingTable', 'Pending Appointments', pendingAppointments);
+        displayTable('faceToFaceTable', 'Face to Face Appointments', faceToFaceAppointments);
+        displayTable('teleconsultationTable', 'Teleconsultation Appointments', teleconsultationAppointments);
+        displayTable('processedTable', 'Processed Appointments', processedAppointments);
+        displayTable('cancelledTable', 'Cancelled Appointments', cancelledAppointments);
+    }
+
+    // Function to display the results in a table format
+    function displayTable(tableId, title, appointments) {
+        if (appointments.length > 0) {
+
+            let tableHtml = `<h3 class="tableResultTitle">${title}</h3><table border="1"><thead><tr><th>HRN</th><th>Name</th><th>Schedule</th><th>Consultation</th><th>Status</th><th>Action</th></tr></thead><tbody>`;
+
+            appointments.forEach(app => {
+                tableHtml += `<tr><td>${app.hrn}</td><td>${app.name}</td><td>${app.date_sched}</td><td>${app.consultation}</td><td>${app.status}</td>
+                <td class="th-action action border-right">
+                    <img src="img/check-circle.png" class="action-img update-processed margin-right" alt="Approve" data-id="<?=$records['id'];?>">
+                    <img src="img/edit.png" class="action-img view-button margin-right" alt="View" data-record-id="<?=$records['id'];?>">
+                    <img src="img/cancel.png" class="action-img update-cancelled" alt="Cancel" data-id="<?=$records['id'];?>">
+                </td></tr>`;
+            });
+
+            tableHtml += '</tbody></table>';
+            document.getElementById(tableId).innerHTML = tableHtml;
+        }
+    }
+</script>
 </body>
 </html>

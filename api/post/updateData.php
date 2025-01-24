@@ -10,7 +10,7 @@ if (isset($_POST['approve_record'])) {
     $records_id = mysqli_real_escape_string($conn, $_POST['approve_record']);
 
     // Update the record status to "Approved"
-    $query = "UPDATE neurology_records SET status='Approved' WHERE id='$records_id'";
+    $query = "UPDATE neurology_records SET status='approved' WHERE id='$records_id'";
     $query_run = mysqli_query($conn, $query);
 
     if ($query_run) {
@@ -26,7 +26,7 @@ if (isset($_POST['approve_record'])) {
     $records_id = mysqli_real_escape_string($conn, $_POST['processed_record']);
 
     // Update the record status to "Cancelled"
-    $query = "UPDATE neurology_records SET status='Processed' WHERE id='$records_id'";
+    $query = "UPDATE neurology_records SET status='processed' WHERE id='$records_id'";
     $query_run = mysqli_query($conn, $query);
 
     if ($query_run) {
@@ -42,7 +42,7 @@ if (isset($_POST['approve_record'])) {
     $records_id = mysqli_real_escape_string($conn, $_POST['cancel_record']);
 
     // Update the record status to "Cancelled"
-    $query = "UPDATE neurology_records SET status='Cancelled' WHERE id='$records_id'";
+    $query = "UPDATE neurology_records SET status='cancelled' WHERE id='$records_id'";
     $query_run = mysqli_query($conn, $query);
 
     if ($query_run) {

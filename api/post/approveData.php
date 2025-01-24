@@ -8,7 +8,7 @@ if (isset($_POST['id']) && is_numeric($_POST['id'])) {
 
     try {
         // Prepare the SQL statement to update the record
-        $sql = "UPDATE neurology_records SET status = 'approved' WHERE id = :id";
+        $sql = "UPDATE neurology_records SET status = '1' WHERE id = :id";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':id', $recordId, PDO::PARAM_INT);
         
