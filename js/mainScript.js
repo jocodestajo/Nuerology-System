@@ -15,6 +15,14 @@ function showContent(index) {
   });
   tabs[index].classList.add("active");
 
+  // Uncheck all checkboxes
+  checkboxes.forEach((checkbox) => {
+    checkbox.checked = false;
+  });
+
+  // hide the button div
+  buttonDiv.classList.remove("show");
+
   // Save the current tab index
   localStorage.setItem("activeTab", index);
 }

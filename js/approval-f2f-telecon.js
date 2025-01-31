@@ -26,6 +26,26 @@ document.querySelectorAll(".checkbox-header").forEach((headerCheckbox) => {
   });
 });
 
+// Get the checkbox elements and button div
+const checkboxes = document.querySelectorAll(".checkbox");
+const buttonDiv = document.querySelector(".btn-div-checkbox");
+
+// Add event listener to each checkbox
+checkboxes.forEach((checkbox) => {
+  checkbox.addEventListener("change", function () {
+    // Check if at least one checkbox is checked
+    const atLeastOneChecked = Array.from(checkboxes).some((cb) => cb.checked);
+
+    // Show or hide the button div based on whether any checkbox is checked
+    if (atLeastOneChecked) {
+      buttonDiv.classList.add("show"); // Fade in and slide from bottom
+    } else {
+      buttonDiv.classList.remove("show"); // Hide with fade and slide
+    }
+  });
+});
+
+// DATE FILTERING
 function filterTable(tableId, dayFilterId, monthFilterId, yearFilterId) {
   const table = document.getElementById(tableId);
   const dayFilter = document.getElementById(dayFilterId);
@@ -77,7 +97,6 @@ function filterTable(tableId, dayFilterId, monthFilterId, yearFilterId) {
     }
   }
 }
-
 document.addEventListener("DOMContentLoaded", function () {
   const tableConfigs = [
     {

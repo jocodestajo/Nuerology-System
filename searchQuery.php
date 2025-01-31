@@ -4,7 +4,7 @@ require ('config/dbcon.php');
 // Get the search query from URL parameters
 $query = isset($_GET['query']) ? $_GET['query'] : '';
 
-$sql = "SELECT * FROM neurology_records WHERE `name` LIKE ? OR `hrn` LIKE ?";
+$sql = "SELECT * FROM neurology_records WHERE `name` LIKE ? OR `hrn` LIKE ? OR `consultation` LIKE ? OR `status` LIKE ?";
 
 // Prepare statement to avoid SQL injection
 $stmt = $conn->prepare($sql);
@@ -13,7 +13,7 @@ $stmt = $conn->prepare($sql);
 $searchTerm = "%" . $query . "%";
 
 // Bind parameters: two strings, one for `name` and one for `hrn`
-$stmt->bind_param("ss", $searchTerm, $searchTerm);
+$stmt->bind_param("ssss", $searchTerm, $searchTerm, $searchTerm, $searchTerm);
 
 // Execute the query
 $stmt->execute();

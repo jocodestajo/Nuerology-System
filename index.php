@@ -38,7 +38,6 @@ require 'includes/dateTime.php';
             <?php include('includes/editRecords.php'); ?>
 
             <!-- TAB 1 / INQUIRY -->
-            <!-- pag isahin na lang yung form ng inquiry at edit form sa f2f at telecon -->
             <div class="content active">
                 <div class="form-content">
                     <form action="api/post/createData.php" method="post" class="box" autocomplete="off"> 
@@ -418,6 +417,7 @@ require 'includes/dateTime.php';
                         ?>
                     </tbody>
                 </table>
+
             </div>
 
             <!-- TAB 5 / CALENDAR -->
@@ -498,7 +498,7 @@ require 'includes/dateTime.php';
             <div class="content">
                 <div class="search_scrolltab">
                     <div class="searchDiv">
-                        <input type="text" id="searchQuery" placeholder="Enter name or hrn to search..." />
+                        <input type="text" id="searchQuery" placeholder="Search name, hrn, consultation or status type...." />
                         <button onclick="searchData()">Search</button>
                     </div>
 
@@ -520,6 +520,12 @@ require 'includes/dateTime.php';
             </div>
         </div>
 
+        
+        <div class="btn-div-checkbox">
+            <button class="btn btn-blue">Reschedule</button>
+            <button class="btn btn-red">Cancel</button>
+        </div>
+
         <div class="footer">
             <h4>&copy; 2024 - MMWGH (IMISU)</h4>
         </div>
@@ -531,6 +537,7 @@ require 'includes/dateTime.php';
     <script src="js/approval-f2f-telecon.js"></script>
     <script src="js/calendar_booking.js"></script>
     <script src="js/calendar_schedule.js"></script>
+    <script src="js/searchTab.js"></script>
 
     <script>
         function populateDropdown(dropdownId) {
@@ -547,52 +554,5 @@ require 'includes/dateTime.php';
         populateDropdown('referrals_limit');
     </script>
 
-<script>
-    async function searchData() {
-        const query = document.getElementById('searchQuery').value;
-
-        // Clear previous results
-        document.getElementById('pendingTable').innerHTML = '';
-        document.getElementById('faceToFaceTable').innerHTML = '';
-        document.getElementById('teleconsultationTable').innerHTML = '';
-        document.getElementById('processedTable').innerHTML = '';
-        document.getElementById('cancelledTable').innerHTML = '';
-
-        const response = await fetch(`searchQuery.php?query=${query}`);
-        const appointments = await response.json();
-
-        const pendingAppointments = appointments.filter(app => app.status === 'pending');
-        const faceToFaceAppointments = appointments.filter(app => app.status === 'approved' && app.consultation === 'Face to face');
-        const teleconsultationAppointments = appointments.filter(app => app.status === 'approved' && app.consultation === 'Teleconsultation');
-        const processedAppointments = appointments.filter(app => app.status === 'processed');
-        const cancelledAppointments = appointments.filter(app => app.status === 'cancelled');
-
-        displayTable('pendingTable', 'Pending Appointments', pendingAppointments);
-        displayTable('faceToFaceTable', 'Face to Face Appointments', faceToFaceAppointments);
-        displayTable('teleconsultationTable', 'Teleconsultation Appointments', teleconsultationAppointments);
-        displayTable('processedTable', 'Processed Appointments', processedAppointments);
-        displayTable('cancelledTable', 'Cancelled Appointments', cancelledAppointments);
-    }
-
-    // Function to display the results in a table format
-    function displayTable(tableId, title, appointments) {
-        if (appointments.length > 0) {
-
-            let tableHtml = `<h3 class="tableResultTitle">${title}</h3><table border="1"><thead><tr><th>HRN</th><th>Name</th><th>Schedule</th><th>Consultation</th><th>Status</th><th>Action</th></tr></thead><tbody>`;
-
-            appointments.forEach(app => {
-                tableHtml += `<tr><td>${app.hrn}</td><td>${app.name}</td><td>${app.date_sched}</td><td>${app.consultation}</td><td>${app.status}</td>
-                <td class="th-action action border-right">
-                    <img src="img/check-circle.png" class="action-img update-processed margin-right" alt="Approve" data-id="<?=$records['id'];?>">
-                    <img src="img/edit.png" class="action-img view-button margin-right" alt="View" data-record-id="<?=$records['id'];?>">
-                    <img src="img/cancel.png" class="action-img update-cancelled" alt="Cancel" data-id="<?=$records['id'];?>">
-                </td></tr>`;
-            });
-
-            tableHtml += '</tbody></table>';
-            document.getElementById(tableId).innerHTML = tableHtml;
-        }
-    }
-</script>
 </body>
 </html>
