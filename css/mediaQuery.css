@@ -80,6 +80,9 @@
   }
 
   /* NAVBAR-2 */
+  .navbar-2 {
+    padding: 0;
+  }
   .tab {
     display: inline-flex;
     flex-direction: row;
@@ -230,9 +233,6 @@
 }
 
 @media (max-width: 480px) {
-  .navbar-2 {
-    padding: 0;
-  }
   .tab,
   .tab #tab-f2f {
     display: inline-flex;

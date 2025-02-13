@@ -5,6 +5,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  user-select: none;
+  background-color: var(--lightgrey-color);
 }
 
 html {
@@ -18,12 +20,14 @@ html {
   --yellow-color: #ffd700;
   --beige-color: #f5f5dc;
   --white-color: #ffffff;
+  --grey-color: #dddddd;
+  --lightgray-color: #f8f9fa;
 }
 
 body {
   line-height: 2;
-  background-color: #f0f0f0;
   margin: 0;
+  min-height: 100vh;
 }
 
 /* header logo, navbars, footer */
@@ -34,7 +38,7 @@ body {
   height: 100px;
   padding: 0 100px;
   background-color: var(--primary-color);
-  color: #ffffff;
+  color: var(--white-color);
 
   display: flex;
   align-items: center;
@@ -54,10 +58,10 @@ body {
 }
 .header-1 h2 {
   font-size: 1.8rem;
-  color: #ffff;
+  color: var(--white-color);
 }
 .header-1 .navbar .btn-navbar {
-  color: #ffff;
+  color: var(--white-color);
   text-decoration: none;
   /* margin-left: 35px; */
 }
@@ -73,40 +77,41 @@ body {
   gap: 35px;
 }
 
-.footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+#footer {
+  display: none;
 
   position: fixed;
   bottom: 0;
   left: 0;
-  z-index: 1;
-
   width: 100%;
-  height: 30px;
   text-align: center;
+  padding: 10px;
 }
-.footer h4 {
+#footer h4 {
   font-size: 0.7rem;
   font-style: italic;
   color: #333333;
 }
 
 .container-1 {
-  margin-top: 150px;
+  margin-top: 100px;
   width: 100%;
   height: 100%;
 }
 
 .navbar-2 {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
+
+  border-top: 1px solid var(--grey-color);
+  background-color: var(--primary-color);
+  color: var(--white-color);
+
+  padding: 0 100px;
 }
 
 .tab {
-  background-color: var(--primary-color);
-  color: #ffff;
+  width: 100%;
   padding: 10px 60px 10px 60px;
   text-align: center;
   cursor: pointer;
@@ -118,9 +123,6 @@ body {
 .tab.active {
   color: #000;
   background-color: var(--yellow-color);
-  border-left: 1px solid var(--blue-color);
-  border-top: 1px solid var(--blue-color);
-  border-right: 1px solid var(--blue-color);
   box-shadow: inset 0px 0px 15px 1px var(--beige-color);
 }
 .tab #tab-f2f {
@@ -130,8 +132,8 @@ body {
 .container-2 {
   display: flex;
   flex-wrap: wrap;
-  background-color: var(--white-color);
-  padding: 0 100px 0 100px;
+  /* background-color: var(--white-color); */
+  padding: 0 100px;
   box-shadow: 0px 0px 10px rgba(101, 101, 101, 0.3);
 }
 
@@ -139,7 +141,7 @@ body {
   display: none;
   width: 100%;
   /* height: 100%; */
-  background-color: white;
+  background-color: var(--white-color);
   margin: 32px 0 50px 0;
 }
 
@@ -159,10 +161,10 @@ body {
   grid-template-columns: repeat(6, 1fr);
   width: 1000px;
   padding: 45px;
-  border: #dddddd;
+  border: var(--grey-color);
   box-shadow: 0px 0px 10px rgba(101, 101, 101, 0.3);
   gap: 20px;
-  background-color: #fff;
+  background-color: var(--white-color);
 }
 
 .box div:nth-child(3),
@@ -219,7 +221,7 @@ body {
 }
 .box .currentdate input {
   border: none;
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid var(--grey-color);
 }
 .box .datetime {
   text-align: center;
@@ -234,7 +236,7 @@ body {
   display: flex;
   flex-direction: row;
 
-  border: 1px solid #dddddd;
+  border: 1px solid var(--grey-color);
   padding: 20px;
   gap: 20px;
 }
@@ -261,7 +263,7 @@ body {
 .borderbox .col-2 .calendar .calendar-date input {
   width: 100%;
   border: none;
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid var(--grey-color);
   text-align: center;
 }
 .borderbox .col-2 .calendar .calendar-btn .btn {
@@ -314,14 +316,14 @@ body {
 /* for all fields code */
 input,
 select {
-  border: 1px solid #dddddd;
+  border: 1px solid var(--grey-color);
   padding: 10px;
 }
 button,
 input,
 select,
 textarea {
-  border: 1px solid #dddddd;
+  border: 1px solid var(--grey-color);
 }
 textarea {
   resize: none;
@@ -343,32 +345,36 @@ textarea:focus {
 .btn {
   text-decoration: none;
   text-align: center;
-  border: 1px solid #dddddd;
+  border: 1px solid var(--grey-color);
+  border-radius: 2px;
   padding: 10px 20px;
   cursor: pointer;
 }
 
 .btn-green {
   background-color: var(--primary-color);
-  color: #ffff;
+  border-radius: 2px;
+  color: var(--white-color);
 }
 .btn-green:hover {
   background-color: var(--primary-color);
-
+  border-color: var(--primary-color);
   box-shadow: 0px 0px 10px var(--primary-color);
 }
 .btn-red {
   background-color: var(--red-color);
-  color: #ffff;
+  color: var(--white-color);
   border-color: var(--red-color);
+  border-radius: 2px;
 }
 .btn-red:hover {
   box-shadow: 0px 0px 10px var(--red-color);
 }
 .btn-blue {
   background-color: var(--blue-color);
-  color: #ffff;
+  color: var(--white-color);
   border-color: var(--blue-color);
+  border-radius: 2px;
 }
 .btn-blue:hover {
   box-shadow: 0px 0px 10px var(--blue-color);
@@ -387,16 +393,12 @@ textarea:focus {
 }
 
 .btn-div-checkbox {
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
-  position: absolute;
-  left: 5%;
+  position: fixed;
+  left: 6%;
   bottom: 10%;
-  transform: translate(-10%, -5%);
+  transform: translate(-10%, -6%);
 
-  margin-top: 40px;
-  /* gap: 16px; */
+  /* margin-top: 40px; */
   opacity: 0;
   transform: translateX(-30px);
   transition: opacity 1s ease, transform 1s ease;
@@ -419,14 +421,14 @@ table {
 th,
 td {
   padding: 8px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--grey-color);
   text-align: center;
 }
 th {
   background-color: var(--blue-color);
   color: var(--white-color);
   font-weight: bold;
-  border-top: 1px solid #dddddd;
+  border-top: 1px solid var(--grey-color);
   white-space: nowrap;
 }
 td {
@@ -448,25 +450,31 @@ table .action-img:hover {
 
 tr .th-check,
 tr .th-check {
-  width: 3%;
+  width: 2%;
 }
 
 tr .th-hrn {
-  width: 10%;
+  width: 7%;
 }
 tr .th-action {
-  width: 12%;
+  width: 8%;
 }
 tr .th-contact,
 tr .th-schedule {
-  width: 10%;
+  width: 8%;
 }
 tr .th-name {
   text-align: left;
   width: 28%;
 }
+tr .th-name {
+  padding-left: 24px;
+}
 tr .th-complaint {
   width: 27%;
+}
+tr .th-consultation {
+  width: 10%;
 }
 
 .flex {
@@ -491,7 +499,7 @@ tr .th-complaint {
 /* border-none class in date filters */
 .content div label .border-none {
   border: none;
-  border-left: 1px solid #ddd;
+  border-left: 1px solid var(--grey-color);
   padding: 8px 0 8px 5px;
   outline-style: none;
 }
@@ -511,7 +519,7 @@ select {
   left: 88.5%;
   transform: translateX(-88.5%);
   width: 1000px;
-  background: white;
+  background: var(--white-color);
   padding: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -542,7 +550,7 @@ select {
 #calendarTable td {
   padding: 8px;
   text-align: center;
-  border: 1px solid #ddd;
+  border: 1px solid var(--grey-color);
 }
 
 .calendarTable-header {
@@ -560,7 +568,7 @@ select {
   padding: 5px 15px;
   cursor: pointer;
   background-color: var(--blue-color);
-  color: white;
+  color: var(--white-color);
   border: none;
   border-radius: 3px;
 }
@@ -602,7 +610,7 @@ select {
   top: 100%;
   left: 0;
   right: 0;
-  background: white;
+  background: var(--white-color);
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 10px;
@@ -680,7 +688,7 @@ select {
 
 .clickable-date {
   cursor: pointer;
-  background-color: #fff;
+  background-color: var(--white-color);
   height: 80px;
   padding: 5px;
 }
@@ -701,7 +709,7 @@ select {
 }
 
 .dateCell {
-  background-color: #fff;
+  background-color: var(--white-color);
   height: 100px;
   padding: 5px;
 }
@@ -734,7 +742,7 @@ select {
 /* F2F button specific styles */
 .f2f-btn {
   background-color: #107e73;
-  color: white;
+  color: var(--white-color);
 }
 
 .f2f-btn:hover {
@@ -745,7 +753,7 @@ select {
 /* Telecon button specific styles */
 .telecon-btn {
   background-color: #812828;
-  color: white;
+  color: var(--white-color);
 }
 
 .telecon-btn:hover {
@@ -804,7 +812,7 @@ select {
 }
 
 .scrollBtn:hover {
-  /* background-color: #ddd; */
+  /* background-color: var(--grey-color); */
   border-bottom: 2px solid var(--primary-color);
   color: var(--primary-color);
 }
@@ -833,4 +841,8 @@ select {
 /* Adjust the padding when there are no results */
 .scrollBtn.disabled {
   padding-bottom: 0;
+}
+
+.btn-div-checkbox .update-reschedule {
+  margin-right: 12px;
 }

@@ -28,10 +28,10 @@
   text-decoration: none;
   color: #2c2c2c;
   font-size: 1rem;
-  margin: 24px 24px 0 0;
-  padding: 5px;
-  border: 1px solid var(--beige-color);
-  background-color: var(--beige-color);
+  /* margin: 24px 24px 0 0; */
+  /* padding: 5px; */
+  /* border: 1px solid var(--beige-color); */
+  /* background-color: var(--beige-color); */
 }
 .close-btn:hover {
   cursor: pointer;
@@ -102,7 +102,7 @@
   max-height: 300px;
   border: 1px solid #ccc;
   padding: 5px 20px 5px 20px;
-  background-color: white;
+  background-color: var(--white-color);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 
   overflow: auto;
@@ -162,4 +162,117 @@
   border: 1px solid #dddddd;
   border-radius: 5px;
   padding: 10px;
+}
+
+/* for the reschedule modal */
+#rescheduleModal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.196);
+}
+
+#rescheduleModal .modal-content {
+  background-color: var(--white-color);
+  /* margin: 15% auto; */
+  padding: 20px;
+  border: 1px solid var(--primary-color);
+  width: 80%;
+  /* width: 800px; */
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -20%);
+}
+
+#rescheduleModal .modal-header {
+  margin-bottom: 20px;
+}
+
+#rescheduleModal .modal-header h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+#rescheduleModal .close-btn {
+  position: absolute;
+  top: 0;
+  right: 2.5%;
+  transform: translate(-2.5%, 0);
+
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#rescheduleModal .close-btn:hover {
+  color: black;
+  cursor: pointer;
+  box-shadow: 0 4px 12px var(--beige-color);
+}
+
+.rescheduleContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+#reschedule-date {
+  text-align: center;
+  width: 300px;
+  border-bottom: 1px solid var(--grey-color);
+  border-left: none;
+  border-top: none;
+  border-right: none;
+}
+
+#rescheduleModal .modal-footer {
+  margin-top: 20px;
+  text-align: right;
+}
+
+#rescheduleCalendarContainer {
+  /* position: absolute; */
+  background: var(--white-color);
+  padding: 15px;
+  /* border: 1px solid #ccc; */
+  /* border-radius: 5px; */
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); */
+  z-index: 1001;
+  margin-top: 5px;
+}
+
+#rescheduleCalendarTable {
+  width: 100%;
+}
+
+#rescheduleCalendarContainer .calendar-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+#rescheduleCalendarContainer .calendar-controls button {
+  padding: 5px 15px;
+  cursor: pointer;
+  background-color: var(--blue-color);
+  color: var(--white-color);
+  border: none;
+  border-radius: 3px;
+}
+
+#rescheduleCalendarContainer .calendar-controls button:hover {
+  background-color: var(--primary-color);
+}
+
+#cancelReschedule {
+  margin-left: 12px;
 }

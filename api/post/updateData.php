@@ -53,7 +53,20 @@ if (isset($_POST['approve_record'])) {
         // Failure response
         $response['message'] = "Appointment Not Cancelled";
     }
-} 
+} elseif (isset($_POST['reschedule_record']) && isset($_POST['new_date'])) {
+    $records_id = mysqli_real_escape_string($conn, $_POST['reschedule_record']);
+    $new_date = mysqli_real_escape_string($conn, $_POST['new_date']);
+
+    $query = "UPDATE neurology_records SET date_sched='$new_date' WHERE id='$records_id'";
+    $query_run = mysqli_query($conn, $query);
+
+    if ($query_run) {
+        $response['success'] = true;
+        $response['message'] = "Appointment Rescheduled";
+    } else {
+        $response['message'] = "Failed to Reschedule Appointment";
+    }
+}
 
 // MODAL / VIEW RECORDS
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_record'])) {

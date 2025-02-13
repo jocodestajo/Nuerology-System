@@ -15,10 +15,18 @@ require 'includes/dateTime.php';
     <link rel="stylesheet" href="css/modals.css">
 </head>
 <body>
+    
+    <!-- HEADER -->
+    <?php include('includes/header.php'); ?>
+
     <div class="container-1" id="container">
-        
-        <!-- HEADER -->
-        <?php include('includes/header.php'); ?>
+
+        <!-- Messages -->
+        <?php include('includes/messages/message.php'); ?>
+        <?php include('includes/messages/cancelConfirmation.php'); ?>
+
+        <!-- EDIT RECORDS MODAL-->
+        <?php include('includes/editRecords.php'); ?>
 
         <!-- navigation bar / TAB -->
         <div class="navbar-2">
@@ -28,14 +36,10 @@ require 'includes/dateTime.php';
             <div class="tab" onclick="showContent(3)"><span id="tab-face-to-face">Teleconsultation</span><span id="tab-f2f">Telecon</span></div>
             <div class="tab" onclick="showContent(4)">Calendar</div>
             <div class="tab" onclick="showContent(5)">Search</div>
+            <div class="tab" onclick="showContent(6)">Reports</div>
         </div>
 
         <div class="container-2">
-
-            <!-- MODAL and Alert messages -->
-            <?php include('includes/messages/message.php'); ?>
-            <?php include('includes/messages/cancelConfirmation.php'); ?>
-            <?php include('includes/editRecords.php'); ?>
 
             <!-- TAB 1 / INQUIRY -->
             <div class="content active">
@@ -164,7 +168,7 @@ require 'includes/dateTime.php';
                                     <div class="calendar-btn">
                                         <span class="btn-trigger btn btn-blue">Calendar</span>
                                     </div>
-
+                                    
                                     <?php include('includes/calendarTable_modal.php'); ?>
 
                                 </div>
@@ -238,6 +242,7 @@ require 'includes/dateTime.php';
                             <th class="th-hrn">HRN</th>
                             <th class="th-name">Name</th>
                             <th class="th-contact">Contact</th>
+                            <th class="th-consultation">Consultation</th>
                             <th class="th-schedule">Schedule</th>
                             <th class="th-complaint">Complaint</th>
                             <th class="th-action border-right">Action</th>
@@ -247,7 +252,6 @@ require 'includes/dateTime.php';
                         <?php
                             $query = "SELECT * FROM neurology_records WHERE status = 'pending'";
 
-                            // Para mag work yung $query need niya tawagin yung db kaya may $query_run para ideclare both  $query and $con
                             $query_run = mysqli_query($conn, $query);
 
                             if(mysqli_num_rows($query_run) > 0)
@@ -256,11 +260,13 @@ require 'includes/dateTime.php';
                                 {
                                     ?>
                                         <tr id="patient_<?=$records['id'];?>">
-
-                                            <td class="th-check border-left"><input type="checkbox" class="checkbox custom-checkbox"></td>
+                                            <td class="th-check border-left">
+                                                <input type="checkbox" class="checkbox custom-checkbox">
+                                            </td>
                                             <td class="th-hrn"><?= $records['hrn']; ?></td>
                                             <td class="th-name"><?= $records['name']; ?></td>
                                             <td class="th-contact"><?= $records['contact']; ?></td>
+                                            <td class="th-consultation"><?= $records['consultation']; ?></td>
                                             <td class="th-schedule"><?= $records['date_sched']; ?></td>
                                             <td class="th-complaint"><?= $records['complaint']; ?></td>
                                             <td class="th-action action border-right">
@@ -280,13 +286,13 @@ require 'includes/dateTime.php';
                             // else
                             // {
                             //     // If no records found, display a single row with a "No Records Found" message
-                            //     echo "<tr><td colspan='7' style='text-align: center; font-size: 2rem; padding: 32px 0 32px 0;'>No records found</td></tr>";
+                            //     echo "<tr><td colspan='7' style='text-align: center; font-size: 1.5rem; padding: 16px;'>No records found</td></tr>";
                             // }
                         ?>
                     </tbody>
                 </table>
             </div>
-            
+
             <!-- TAB 3 / FACE TO FACE CHECK-UP -->
             <div class="content">
                 <div class="flex">
@@ -417,7 +423,52 @@ require 'includes/dateTime.php';
                         ?>
                     </tbody>
                 </table>
+            </div>
 
+            <!-- CHECKBOX TRIGGER FOR TAB 2,3,4 -->
+            <div class="btn-div-checkbox">
+                <button class="btn btn-blue update-reschedule">Reschedule</button>
+                <button class="btn btn-red update-cancel">Cancel Appointment</button>
+            </div>
+
+            <!-- Reschedule modal -->
+            <div id="rescheduleModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close-btn">&times;</span>
+                        <h2>Reschedule Appointment</h2>
+                    </div>
+                    <div class="modal-body">
+                        <div class="calendar">
+                            
+                            <div id="rescheduleCalendarContainer">
+                                <h2 id="rescheduleMonthTitle" class="calendarMonth"></h2>
+                                <table id="rescheduleCalendarTable">
+                                    <!-- Calendar will be populated here -->
+                                </table>
+                                <div class="calendar-controls">
+                                    <button type="button" class="btn-prev">Previous</button>
+                                    <button type="button" class="btn-next">Next</button>
+                                </div>
+                            </div>
+                            <div class="rescheduleContent">
+                                <div class="calendar-date">
+                                    <label for="reschedule-date">New Schedule:</label>
+                                    <input type="date" id="reschedule-date" class="date" name="reschedule_date" readonly>
+                                </div>
+                                
+                                <!-- <div class="calendar-btn">
+                                    <span class="reschedule-calendar-trigger btn btn-blue">Calendar</span>
+                                </div> -->
+                            </div>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button class="btn btn-green" id="confirmReschedule">Confirm</button>
+                            <button class="btn btn-red" id="cancelReschedule">Cancel</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- TAB 5 / CALENDAR -->
@@ -520,13 +571,7 @@ require 'includes/dateTime.php';
             </div>
         </div>
 
-        
-        <div class="btn-div-checkbox">
-            <button class="btn btn-blue">Reschedule</button>
-            <button class="btn btn-red">Cancel</button>
-        </div>
-
-        <div class="footer">
+        <div id="footer">
             <h4>&copy; 2024 - MMWGH (IMISU)</h4>
         </div>
     </div>
@@ -540,6 +585,7 @@ require 'includes/dateTime.php';
     <script src="js/searchTab.js"></script>
 
     <script>
+        // LIMIT PER DAY - APPOINTMENT
         function populateDropdown(dropdownId) {
             let dropdown = document.getElementById(dropdownId);
             for (let i = 0; i <= 100; i++) {
@@ -552,6 +598,30 @@ require 'includes/dateTime.php';
     
         populateDropdown('onlinef2f');
         populateDropdown('referrals_limit');
+
+
+
+        // Function to display the footer
+        function checkScroll() {
+            // Get the scroll position, total height, and the viewport height
+            let scrollTop = window.scrollY || document.documentElement.scrollTop;
+            let docHeight = document.documentElement.scrollHeight;
+            let winHeight = window.innerHeight;
+
+            // If the user has scrolled to the bottom, show the footer
+            if (scrollTop + winHeight >= docHeight) {
+                document.getElementById('footer').style.display = 'block';
+            } else {
+                document.getElementById('footer').style.display = 'none';
+            }
+        }
+
+        // Listen for scroll events
+        window.addEventListener('scroll', checkScroll);
+
+        // Initial check in case the user is already at the bottom when the page loads
+        checkScroll();
+
     </script>
 
 </body>

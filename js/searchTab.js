@@ -83,7 +83,7 @@ function displayTable(tableId, title, appointments) {
         <tbody>`;
 
     appointments.forEach((app) => {
-      tableHtml += `<tr><td>${app.hrn}</td><td>${app.name}</td><td>${app.date_sched}</td><td>${app.complaint}</td>
+      tableHtml += `<tr><td>${app.hrn}</td><td class="th-name">${app.name}</td><td>${app.date_sched}</td><td>${app.complaint}</td>
             <td class="th-action action border-right">
                 <img src="img/check-circle.png" class="action-img update-processed margin-right" alt="Approve" data-id="${app.id}">
                 <img src="img/edit.png" class="action-img view-button margin-right" alt="View" data-record-id="${app.id}">
