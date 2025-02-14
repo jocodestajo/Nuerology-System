@@ -1,4 +1,23 @@
-@media (max-width: 1024px) {
+@media (max-width: 1690px) {
+  .tab #tab-f2f {
+    display: block;
+  }
+  .tab #tab-face-to-face {
+    display: none;
+  }
+  .tab,
+  .tab #tab-f2f {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 0.9rem;
+    text-align: start;
+    width: 100%;
+
+    /* padding: 4px 4px 4px 4px; */
+  }
+}
+@media (max-width: 1366px) {
   /* Make the table container scrollable horizontally on small screens */
   .content {
     -webkit-overflow-scrolling: touch;
@@ -11,6 +30,36 @@
     /* set the limit for scrolable */
     min-width: 1024px;
   }
+  /* tr .th-check,
+  tr .th-check {
+    width: 2%;
+  } */
+
+  tr .th-hrn {
+    /* width: 7%; */
+    display: none;
+  }
+  /* tr .th-action {
+    width: 12%;
+  } */
+  /* tr .th-contact,
+  tr .th-schedule {
+    width: 8%;
+  }
+  tr .th-name {
+    text-align: left;
+    width: 28%;
+  }
+  tr .th-name {
+    padding-left: 24px;
+  } */
+  tr .th-complaint {
+    /* width: 27%; */
+    display: none;
+  }
+  /* tr .th-consultation {
+    width: 10%;
+  } */
   .header-1 {
     position: relative;
     width: 100%;
@@ -207,24 +256,6 @@
 }
 
 @media (max-width: 700px) {
-  .tab #tab-f2f {
-    display: block;
-  }
-  .tab #tab-face-to-face {
-    display: none;
-  }
-  .tab,
-  .tab #tab-f2f {
-    display: inline-flex;
-    flex-direction: row;
-    justify-content: center;
-    font-size: 0.9rem;
-    text-align: start;
-    width: 100%;
-
-    padding: 4px 4px 4px 4px;
-  }
-
   .box .input .radio-div {
     display: unset;
     flex-direction: unset;

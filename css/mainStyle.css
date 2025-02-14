@@ -167,6 +167,8 @@ body {
   background-color: var(--white-color);
 }
 
+.box div:nth-child(1),
+.box div:nth-child(2),
 .box div:nth-child(3),
 .box div:nth-child(5),
 .box div:nth-child(7),
@@ -179,13 +181,11 @@ body {
   grid-column: span 3;
 }
 
-.box div:nth-child(2),
 .box div:nth-child(6),
 .box div:nth-child(8),
 .box div:nth-child(10) {
   grid-column: span 4;
 }
-.box div:nth-child(1),
 .box div:nth-child(4),
 .box div:nth-child(13),
 .box div:nth-child(15),
@@ -214,7 +214,7 @@ body {
 }
 
 /*box child element 1 / DATE */
-.box .currentdate {
+/* .box .currentdate {
   display: flex;
   flex-direction: row;
   justify-content: end;
@@ -225,11 +225,11 @@ body {
 }
 .box .datetime {
   text-align: center;
-}
+} */
 
-/*box child element 2 / Type of appointment */
-.box .input .appointment {
-  width: 50%;
+/* box child element 2 / Type of appointment */
+.box #referralContent {
+  display: none;
 }
 
 .box .col-2 {
@@ -279,10 +279,6 @@ body {
 }
 
 .box #complaint {
-  margin-top: 20px;
-}
-
-.box .referal {
   margin-top: 20px;
 }
 
@@ -450,14 +446,14 @@ table .action-img:hover {
 
 tr .th-check,
 tr .th-check {
-  width: 2%;
+  width: 3%;
 }
 
 tr .th-hrn {
   width: 7%;
 }
 tr .th-action {
-  width: 8%;
+  width: 10%;
 }
 tr .th-contact,
 tr .th-schedule {
@@ -764,7 +760,7 @@ select {
 /* SEARCH TAB */
 .search_scrolltab {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 
@@ -775,8 +771,8 @@ select {
 #searchQuery {
   width: 600px;
   padding: 14px;
-  border-top-left-radius: 24px;
-  border-bottom-left-radius: 24px;
+  /* border-top-left-radius: 24px;
+  border-bottom-left-radius: 24px; */
   margin: 0;
 }
 #searchQuery:focus {
@@ -789,8 +785,8 @@ select {
   color: var(--white-color);
   padding: 14px;
   border-color: var(--primary-color);
-  border-top-right-radius: 24px;
-  border-bottom-right-radius: 24px;
+  /* border-top-right-radius: 24px;
+  border-bottom-right-radius: 24px; */
   margin: 0;
 }
 .searchDiv button:hover {

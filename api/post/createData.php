@@ -16,7 +16,7 @@ if (isset($_POST['save_btn']))
     $informant_relation = mysqli_real_escape_string($conn, $_POST['informant_relation']);
     $old_new = mysqli_real_escape_string($conn, $_POST['old_new']);
     $consultation = mysqli_real_escape_string($conn, $_POST['consultation']);
-    $date_request = mysqli_real_escape_string($conn, $_POST['date_request']);
+    // $date_request = mysqli_real_escape_string($conn, $_POST['date_request']);
     $date_sched = mysqli_real_escape_string($conn, $_POST['date_sched']);
     $complaint = mysqli_real_escape_string($conn, $_POST['complaint']);
     $history = mysqli_real_escape_string($conn, $_POST['history']);
@@ -31,7 +31,7 @@ if (isset($_POST['save_btn']))
 
     $query = 
     "INSERT INTO neurology_records (hrn, name, age, birthday, contact, address, email, viber, informant, informant_relation, old_new, consultation, date_request, date_sched, complaint, history, referal, appointment_type, status) 
-    VALUES ('$hrn', '$name', '$age', '$birthday', '$contact', '$address', '$email', '$viber', '$informant', '$informant_relation', '$old_new', '$consultation', '$date_request', '$date_sched', '$complaint', '$history', '$referal', '$appointment_type', 'pending')";
+    VALUES ('$hrn', '$name', '$age', '$birthday', '$contact', '$address', '$email', '$viber', '$informant', '$informant_relation', '$old_new', '$consultation', NOW(), '$date_sched', '$complaint', '$history', '$referal', '$appointment_type', 'pending')";
 
     $query_run = mysqli_query($conn, $query);
     if($query_run)

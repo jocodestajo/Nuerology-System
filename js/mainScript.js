@@ -47,6 +47,9 @@ menuToggle.addEventListener("click", () => {
   navList.classList.toggle("show");
 });
 
+// REFERRAL DISPLAY NONE / BLOCK
+document.querySelectorAll(".appointment");
+
 // SEARCH QUERY ///////////////////////////////////////////////////////////////////
 const searchResult = document.getElementById("result");
 const nameInput = document.getElementById("name");

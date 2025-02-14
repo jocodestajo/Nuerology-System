@@ -31,7 +31,7 @@ require 'includes/dateTime.php';
         <!-- navigation bar / TAB -->
         <div class="navbar-2">
             <div class="tab active" onclick="showContent(0)">Inquiry</div>
-            <div class="tab" onclick="showContent(1)">For Approval</div>
+            <div class="tab" onclick="showContent(1)">Pending</div>
             <div class="tab" onclick="showContent(2)"><span id="tab-face-to-face">Face to face</span><span id="tab-f2f">F2F</span></div>
             <div class="tab" onclick="showContent(3)"><span id="tab-face-to-face">Teleconsultation</span><span id="tab-f2f">Telecon</span></div>
             <div class="tab" onclick="showContent(4)">Calendar</div>
@@ -47,14 +47,12 @@ require 'includes/dateTime.php';
                     <form action="api/post/createData.php" method="post" class="box" autocomplete="off"> 
 
                         <!-- div.box Child element 1 -->
-                        <div class="currentdate">
+                        <!-- <div class="currentdate">
                             <div>
                                 <label for="" class="date">Date:</label> 
                                 <input type="text" id="currentdate" name="date_request" class="datetime" value="<?php echo $currentDate; ?>" readonly>
                             </div>
-                        </div>
-                        
-                        <!-- div.box Child element 2 -->
+                        </div> -->
                         <div class="input appointment-type">
                             <label>Type of appointment: <i class="asterisk">*</i></label>
                             <select name="typeofappoint" class="appointment" required>
@@ -64,7 +62,16 @@ require 'includes/dateTime.php';
                                 <option value="Online">Online</option>
                                 <option value="Walk-In">Walk-in</option>
                                 <option value="Follow Up">Follow up</option>
+                                <option value="Referral">Referral</option>
                             </select>
+                        </div>
+                        
+                        <!-- div.box Child element 2 -->
+                        <div class="input referal" id="inquiryReferral">
+                            <div id="referralContent">
+                                <label for="" class="">Referral Source:</label>
+                                <input type="text" name="referal">
+                            </div>
                         </div>
 
                         <!-- div.box Child element 3 / HRN -->
@@ -72,6 +79,7 @@ require 'includes/dateTime.php';
                             <label class="hrn">HRN:</label>
                             <input type="text" id="hrn" name="hrn" class="hrn" readonly>
                         </div>
+
 
                         <!-- div.box Child element 4 / NAME -->
                         <div class="input">
@@ -201,10 +209,7 @@ require 'includes/dateTime.php';
                         </div>
 
                         <!-- div.box Child element 18 -->
-                        <div class="input referal">
-                            <label for="" class="">Referral Source:</label>
-                            <input type="text" name="referal">
-                        </div>
+                        
 
                         <!-- div.box Child element 18 -->
                         <div class="div-btn-submit">
@@ -213,6 +218,8 @@ require 'includes/dateTime.php';
                             </a>
                             <button type="submit" name="save_btn" class="btn btn-green">Save</button>
                         </div>
+
+
                     </form>
                 </div>
             </div>
@@ -553,13 +560,13 @@ require 'includes/dateTime.php';
                         <button onclick="searchData()">Search</button>
                     </div>
 
-                    <div class="scrollTab">
+                    <!-- <div class="scrollTab">
                         <a href="#pendingTable" class="scrollBtn">Pending</a>
                         <a href="#faceToFaceTable" class="scrollBtn">Face to Face</a>
                         <a href="#teleconsultationTable" class="scrollBtn">Teleconsultation</a>
                         <a href="#processedTable" class="scrollBtn">Processed</a>
                         <a href="#cancelledTable" class="scrollBtn">Cancelled</a>
-                    </div>
+                    </div> -->
                 </div>
 
                 <!-- Placeholder for tables -->
