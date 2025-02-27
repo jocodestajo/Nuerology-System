@@ -9,7 +9,8 @@ require 'includes/dateTime.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neurology Unit</title>
+    <title>Neurology</title>
+    <link rel="icon" href="img/MMWGH_Logo.png" type="images/x-icon">
     <link rel="stylesheet" href="css/mainStyle.css">
     <link rel="stylesheet" href="css/mediaQuery.css">
     <link rel="stylesheet" href="css/modals.css">
@@ -39,6 +40,227 @@ require 'includes/dateTime.php';
             <div class="tab" onclick="showContent(6)">Reports</div>
         </div>
 
+        <div class="container-3">
+            <form action="" class="container3-Content">
+                <div class="turnaroundTime">
+                    <div class="heading1">
+                        <h2>Nurse</h2>
+                        <h2>Doctor</h2>
+                        <h2>Nurse</h2>
+                    </div>
+
+                    <div class="turnaroundContent">
+                        <div class="nurseVs">
+                            <span class="btn btn-green">Start</span>
+                            <span class="btn">End</span>
+                            <span class="timer">Timer</span>
+                        </div>                
+                        <div class="doctorConsult">
+                            <span class="btn btn-green">Start</span>
+                            <span class="btn">End</span>
+                            <span class="timer">Timer</span>
+                        </div>
+                        <div class="nurseFinal">
+                            <span class="btn btn-green">Start</span>
+                            <span class="btn">End</span>
+                            <span class="timer">Timer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="consultants">
+                    <div class="heading11">
+                        <h2>Consultant</h2>
+                    </div>
+                    <div>
+                        <label for="docName">Doctor:</label>
+                        <select name="" id="docName" require>
+                            <option value="">Doctor I</option>
+                        </select>
+                    </div>
+                    <div class="pad-b-20">
+                        <label for="nurseName">Nurse:</label>
+                        <select name="" id="nurseName" require>
+                            <option value="">Nurse I</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="personalInformation">
+
+                    <!-- 1 -->
+                    <div>
+                        <h2>Personal Information</h2>
+                    </div>
+
+                    <!-- 2 -->
+                    <div>
+                        <label for="">Name:
+                            <input type="text">
+                        </label>
+                    </div>
+
+                    <!-- 3 -->
+                    <div>
+                        <label for="">Birthday:
+                            <input type="date">
+                        </label>
+                    </div>
+                        
+                    <!-- 4 -->
+                    <div>
+                        <label for="">Age:
+                            <input type="text" id="perInfo-Age">
+                        </label>
+                    </div>
+
+                    <!-- 5 -->
+                    <div>
+                        <label for="">Address:
+                            <input type="text">
+                        </label>
+                    </div>
+
+                    <!-- 6 -->
+                    <div>
+                        <h2 id="contactDetails">Contact Details</h2>
+                    </div>
+
+                    <!-- 7 -->
+                    <div>
+                        <label for="">Phone:
+                            <input type="text">
+                        </label>
+                    </div>
+
+                    <!-- 8 -->
+                    <div>
+                        <label for="">Email:
+                            <input type="text">
+                        </label>
+                    </div>
+
+                    <!-- 9 -->
+                    <div>
+                        <label for="">Viber:
+                            <input type="text">
+                        </label>
+                    </div>
+
+                    <!-- 10 -->
+                    <div id="informantDetails">
+                        <h2>Informant's Details</h2>
+                    </div>
+
+                    <!-- 11 -->
+                    <div>
+                        <label for="">Name:
+                            <input type="text">
+                        </label>
+                    </div>
+
+                    <!-- 12 -->
+                    <div>
+                        <label for="">Relation:
+                            <input type="text">
+                        </label>
+                    </div>
+                </div>
+
+                <div id="consultation">
+                    <h2>Consultation</h2>
+                    <div>
+                        <div id="consultTable">
+                            <h3>Type of Consult</h3>
+
+                            <div class="space-evenly">
+                                <div class="border-right center-flex-col">
+                                    <div class="">
+                                        <label for="consultNew">
+                                            <input type="radio" value="New" id="consultNew" name="consult">
+                                            New
+                                        </label>
+                                    </div>
+
+                                    <div class="">
+                                        <label for="consultOld">
+                                            <input type="radio" value="Old" id="consultOld" name="consult">
+                                            Old
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="center-flex-col">
+                                    <div class="">
+                                        <label for="consultFTF">
+                                            <input type="radio" value="Face to face" id="consultFTF">
+                                            Face to face
+                                        </label>
+                                    </div>
+
+                                    <div class="">
+                                        <label for="consultTelecon">
+                                            <input type="radio" value="Teleconsult" id="consultTelecon">
+                                            Teleconsult
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="border-left center-flex-col">
+                                    <div class="">
+                                        <label for="consultRX">
+                                            <input type="radio" value="RX" id="consultRX">
+                                            RX
+                                        </label>
+                                    </div>
+
+                                    <div class="">
+                                        <label for="consultMC">
+                                            <input type="radio" value="MC" id="consultMC">
+                                            MC
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3>Diagnosis</h3>
+                                <textarea name="" id=""></textarea>
+                            </div>
+
+                            <div class="flex-row">
+                                <div class="classification">
+                                    <h3>Classification</h3>
+                                    <select name="" id="consultClassification" class="margin-20">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label for="">
+                                        <input type="checkbox">
+                                        Follow Up
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div>
+                                    <h3>Medication</h3>
+                                    <input type="text">
+                                </div>
+                                <div>
+                                    <h3>Quantity</h3>
+                                    <input type="text">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
         <div class="container-2">
 
             <!-- TAB 1 / INQUIRY -->
@@ -47,15 +269,9 @@ require 'includes/dateTime.php';
                     <form action="api/post/createData.php" method="post" class="box" autocomplete="off"> 
 
                         <!-- div.box Child element 1 -->
-                        <!-- <div class="currentdate">
-                            <div>
-                                <label for="" class="date">Date:</label> 
-                                <input type="text" id="currentdate" name="date_request" class="datetime" value="<?php echo $currentDate; ?>" readonly>
-                            </div>
-                        </div> -->
                         <div class="input appointment-type">
                             <label>Type of appointment: <i class="asterisk">*</i></label>
-                            <select name="typeofappoint" class="appointment" required>
+                            <select id="typeOfAppointment" name="typeofappoint" class="appointment" required>
                                 <option class="select" value="" hidden disabled selected>--- Select Option ---</option>
                                 <option value="SMS">SMS</option>
                                 <option value="Receive Call">Call</option>
@@ -480,63 +696,77 @@ require 'includes/dateTime.php';
 
             <!-- TAB 5 / CALENDAR -->
             <div class="content">
-                <div class="cal_header">
-                    <div class="weekday-checkboxes">
-                        <div class="weekday-title" onclick="toggleDropdown()">Weekly Schedule ▼</div>
-                        <div class="checkbox-group" id="weekdayDropdown">
-                            <div class="checkbox-item">
-                                <label for="monday">
-                                    <input type="checkbox" id="monday" name="days[]" value="Monday">
-                                Monday</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <label for="tuesday">
-                                    <input type="checkbox" id="tuesday" name="days[]" value="Tuesday">
-                                Tuesday</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <label for="wednesday">
-                                    <input type="checkbox" id="wednesday" name="days[]" value="Wednesday">
-                                Wednesday</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <label for="thursday">
-                                    <input type="checkbox" id="thursday" name="days[]" value="Thursday">
-                                Thursday</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <label for="friday">
-                                    <input type="checkbox" id="friday" name="days[]" value="Friday">
-                                Friday</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <label for="saturday">
-                                    <input type="checkbox" id="saturday" name="days[]" value="Saturday">
-                                Saturday</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <label for="sunday">
-                                    <input type="checkbox" id="sunday" name="days[]" value="Sunday">
-                                Sunday</label>
+                <span id="scheduleSettings" class="btn btn-blue setSched">Set Schedule</span>
+                <div id="setSchedule">
+                    <div class="cal_header">
+                        <div class="space-between">
+                            <h2>Set Schedule</h2>
+                            <span class="close-btn">&times;</span>
+                        </div>
+                        <div class="weekday-checkboxes">
+                            <div class="weekday-title" onclick="toggleDropdown()">Weekly Schedule ▼</div>
+                            <div class="checkbox-group" id="weekdayDropdown">
+                                <div class="checkbox-item">
+                                    <label for="monday">
+                                        <input type="checkbox" id="monday" name="days[]" value="Monday">
+                                    Monday</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <label for="tuesday">
+                                        <input type="checkbox" id="tuesday" name="days[]" value="Tuesday">
+                                    Tuesday</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <label for="wednesday">
+                                        <input type="checkbox" id="wednesday" name="days[]" value="Wednesday">
+                                    Wednesday</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <label for="thursday">
+                                        <input type="checkbox" id="thursday" name="days[]" value="Thursday">
+                                    Thursday</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <label for="friday">
+                                        <input type="checkbox" id="friday" name="days[]" value="Friday">
+                                    Friday</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <label for="saturday">
+                                        <input type="checkbox" id="saturday" name="days[]" value="Saturday">
+                                    Saturday</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <label for="sunday">
+                                        <input type="checkbox" id="sunday" name="days[]" value="Sunday">
+                                    Sunday</label>
+                                </div>
                             </div>
                         </div>
+    
+                        <div class="limit">
+                            <h2>Limit per day</h2>
+                            <form action="" class="limit_form">
+                                <div class="space-between">
+                                    <label for="onlinef2f">Thru Online: Face to Face:</label>
+                                    <select name="" id="onlinef2f">
+                                        <!-- <option value=""></option> -->
+                                    </select>
+                                </div>
+    
+                                <div class="space-between">
+                                    <label for="referrals_limit">Referrals per day:</label>
+                                    <select name="" id="referrals_limit">
+                                        <!-- <option value="0">0</option> -->
+                                    </select>
+                                </div>
+    
+                                <div class="center-flex">
+                                    <button type="submit" name="submit_limit" class="btn btn-green">Save</button>
+                                </div>
+                            </form>
+                        </div>  
                     </div>
-
-                    <div class="limit">
-                        <form action="" class="limit_form">
-                            <label for="onlinef2f">Online F2F:</label>
-                            <select name="" id="onlinef2f">
-                                <!-- <option value=""></option> -->
-                            </select>
-
-                            <label for="referrals_limit">Referral:</label>
-                            <select name="" id="referrals_limit">
-                                <!-- <option value="0">0</option> -->
-                            </select>
-
-                            <button type="submit" name="submit_limit" class="btn btn-green">Save</button>
-                        </form>
-                    </div>  
                 </div>
 
                 <div class="flex">
@@ -575,8 +805,14 @@ require 'includes/dateTime.php';
                 <div id="teleconsultationTable"></div>
                 <div id="processedTable"></div>
                 <div id="cancelledTable"></div>
+            </div>            
+            
+            <!-- TAB 7 / REPORTS -->
+            <div class="content">
             </div>
         </div>
+
+
 
         <div id="footer">
             <h4>&copy; 2024 - MMWGH (IMISU)</h4>

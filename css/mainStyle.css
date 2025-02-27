@@ -231,6 +231,9 @@ body {
 .box #referralContent {
   display: none;
 }
+#referralContent input {
+  width: 100%;
+}
 
 .box .col-2 {
   display: flex;
@@ -309,7 +312,74 @@ body {
   box-shadow: 0px 0px 10px var(--primary-color);
 }
 
-/* for all fields code */
+/* GENERAL USE */
+input,
+label,
+textarea,
+select {
+  outline-style: none;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.flex-row {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  /* gap: 14px; */
+  /* margin-bottom: 32px; */
+}
+.space-between {
+  display: flex;
+  justify-content: space-between;
+}
+.space-evenly {
+  display: flex;
+  justify-content: space-around;
+}
+
+.center-flex {
+  display: flex;
+  justify-content: center;
+}
+
+.center-flex-col {
+  padding: 20px 100px;
+}
+
+.border-right {
+  border-right: 1px solid var(--grey-color);
+}
+
+.border-left {
+  border-left: 1px solid var(--grey-color);
+}
+
+.btn-radius {
+  border-top-left-radius: 1.3rem;
+  border-top-right-radius: 1.3rem;
+  border-bottom-right-radius: 1.3rem;
+  border-bottom-left-radius: 1.3rem;
+}
+
+.pad-b-20 {
+  padding-bottom: 20px;
+}
+
+.padding-20 {
+  padding: 20px;
+}
+
+.margin-20 {
+  margin: 20px;
+}
+
 input,
 select {
   border: 1px solid var(--grey-color);
@@ -347,6 +417,11 @@ textarea:focus {
   cursor: pointer;
 }
 
+.btn:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0px 0px 10px var(--primary-color);
+}
+
 .btn-green {
   background-color: var(--primary-color);
   border-radius: 2px;
@@ -356,6 +431,16 @@ textarea:focus {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
   box-shadow: 0px 0px 10px var(--primary-color);
+}
+.btn-yellow {
+  background-color: var(--yellow-color);
+  border-radius: 2px;
+  color: var(--black-color);
+}
+.btn-yellow:hover {
+  background-color: var(--yellow-color);
+  border-color: var(--yellow-color);
+  box-shadow: 0px 0px 10px var(--yellow-color);
 }
 .btn-red {
   background-color: var(--red-color);
@@ -473,13 +558,6 @@ tr .th-consultation {
   width: 10%;
 }
 
-.flex {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 32px;
-}
 .selectDate-border {
   border: 1px solid var(--blue-color);
 
@@ -497,14 +575,6 @@ tr .th-consultation {
   border: none;
   border-left: 1px solid var(--grey-color);
   padding: 8px 0 8px 5px;
-  outline-style: none;
-}
-
-/* GENERAL USE */
-input,
-label,
-textarea,
-select {
   outline-style: none;
 }
 
@@ -638,22 +708,65 @@ select {
   width: 100%;
 }
 
-.cal_header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+.setSched {
+  padding: 14px 24px;
+}
+
+.cal_header h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.cal_header .space-between .close-btn {
+  position: absolute;
+  top: 0;
+  right: 3%;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: darkgray;
+}
+.cal_header .space-between .close-btn:hover {
+  color: #000;
+}
+
+.weekday-checkboxes {
+  border: 1px solid var(--primary-color);
+  border-top-left-radius: 28px;
+  border-bottom-left-radius: 28px;
+  border-bottom-right-radius: 28px;
+  border-top-right-radius: 28px;
+}
+
+.weekday-checkboxes .weekday-title {
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
 }
 
 .cal_header .limit {
-  border: 1px solid var(--blue-color);
+  /* border: 1px solid var(--blue-color); */
   padding: 5px;
+  margin-top: 20px;
   /* border-radius: 5px; */
 }
 
+.cal_header .limit h2 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  /* text-align: center; */
+}
+
+#onlinef2f {
+  margin-bottom: 5px;
+}
+
 .cal_header .limit .limit_form button {
+  width: 45%;
   border-radius: 24px;
   border-color: var(--primary-color);
-  margin-left: 12px;
+  display: block;
+  margin-top: 20px;
 }
 
 .cal_header .limit select {
@@ -717,6 +830,10 @@ select {
   margin-bottom: 5px;
 }
 
+#rescheduleCalendarTable .clickable-date {
+  width: 100%;
+}
+
 /* Add styles for the button container */
 .button-container {
   display: flex;
@@ -765,14 +882,15 @@ select {
 }
 
 .searchDiv {
-  display: inline-flex;
+  display: flex;
+  width: 50%;
 }
 
 #searchQuery {
-  width: 600px;
+  width: 100%;
   padding: 14px;
-  /* border-top-left-radius: 24px;
-  border-bottom-left-radius: 24px; */
+  border-top-left-radius: 24px;
+  border-bottom-left-radius: 24px;
   margin: 0;
 }
 #searchQuery:focus {
@@ -785,8 +903,8 @@ select {
   color: var(--white-color);
   padding: 14px;
   border-color: var(--primary-color);
-  /* border-top-right-radius: 24px;
-  border-bottom-right-radius: 24px; */
+  border-top-right-radius: 24px;
+  border-bottom-right-radius: 24px;
   margin: 0;
 }
 .searchDiv button:hover {
@@ -831,14 +949,252 @@ select {
 #teleconsultationTable,
 #processedTable,
 #cancelledTable {
-  padding-top: 70px;
+  padding-top: 0;
 }
 
-/* Adjust the padding when there are no results */
-.scrollBtn.disabled {
-  padding-bottom: 0;
+/* Only add padding when table has content */
+#pendingTable:not(:empty),
+#faceToFaceTable:not(:empty),
+#teleconsultationTable:not(:empty),
+#processedTable:not(:empty),
+#cancelledTable:not(:empty) {
+  padding-top: 24px;
 }
 
 .btn-div-checkbox .update-reschedule {
   margin-right: 12px;
+}
+
+#editCalendarContainer {
+  position: absolute;
+  background: white;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+  margin-top: 5px;
+}
+
+#editCalendarContainer .calendar-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+#editCalendarContainer .calendar-controls button {
+  padding: 5px 15px;
+  cursor: pointer;
+  background-color: var(--blue-color);
+  color: white;
+  border: none;
+  border-radius: 3px;
+}
+
+#editCalendarContainer .calendar-controls button:hover {
+  background-color: var(--primary-color);
+}
+
+/* Update the reschedule calendar container styles */
+#rescheduleCalendarContainer {
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 15px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#rescheduleCalendarTable {
+  min-width: 300px; /* Minimum width to prevent squishing */
+  width: 100%;
+  table-layout: fixed;
+}
+
+#rescheduleCalendarTable td {
+  height: 80px;
+  padding: 5px;
+  vertical-align: middle;
+}
+
+.rescheduleContent {
+  margin-top: 15px;
+}
+
+.container-3 {
+  padding: 20px 100px;
+  /* box-shadow: 0px 0px 10px rgba(101, 101, 101, 0.3); */
+}
+
+.container-3 input,
+.container-3 select {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+.container-3 input:focus,
+.container-3 select:focus {
+  box-shadow: none;
+  border-bottom: 1px solid var(--primary-color);
+}
+
+.container3-Content {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.container3-Content div:nth-child(1),
+.container3-Content div:nth-child(4) {
+  grid-column: span 4;
+}
+.container3-Content div:nth-child(2),
+.container3-Content div:nth-child(3) {
+  grid-column: span 2;
+}
+
+.turnaroundTime {
+  border: 1px solid var(--grey-color);
+}
+
+.heading1 {
+  display: flex;
+  justify-content: space-around;
+  background-color: var(--blue-color);
+  color: var(--white-color);
+  align-items: center;
+}
+.heading1 h2 {
+  text-align: center;
+}
+
+.turnaroundContent {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+  gap: 20px;
+  padding-top: 2rem;
+}
+
+.turnaroundContent div span {
+  border-top-left-radius: 1.5rem;
+  border-top-right-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
+  border-bottom-left-radius: 1.5rem;
+}
+
+.turnaroundContent div .timer {
+  display: block;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.consultants {
+  margin: 20px;
+  padding: 10 20px 20px 20px;
+  border: 1px solid var(--grey-color);
+}
+
+.consultants div {
+  display: flex;
+  justify-content: center;
+}
+
+.consultants div select {
+  width: 400px;
+  text-align: center;
+}
+
+.consultants div h2,
+#personalInformation h2,
+#contactDetails h2,
+#informantDetails h2,
+#consultation h2 {
+  font-size: 1.8rem;
+}
+
+#contactDetails,
+#informantDetails h2 {
+  margin-top: 20px;
+}
+
+#personalInformation {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+
+  gap: 10px;
+}
+
+#personalInformation div:nth-child(1),
+#personalInformation div:nth-child(2),
+#personalInformation div:nth-child(5),
+#personalInformation div:nth-child(6),
+#personalInformation div:nth-child(7),
+#personalInformation div:nth-child(8),
+#personalInformation div:nth-child(9),
+#personalInformation div:nth-child(10),
+#personalInformation div:nth-child(11),
+#personalInformation div:nth-child(12) {
+  grid-column: span 6;
+}
+
+#personalInformation div:nth-child(3) {
+  grid-column: span 4;
+}
+#personalInformation div:nth-child(4) {
+  grid-column: span 2;
+}
+
+#personalInformation input {
+  text-align: center;
+  width: 100%;
+  padding: 5px;
+}
+
+/* #personalInformation #perInfo-Age {
+  width: 100px;
+} */
+
+#personalInformation,
+#consultation {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid var(--grey-color);
+}
+
+#consultation {
+  padding-left: 20px;
+}
+
+#consultTable {
+  text-align: center;
+  border: 1px solid var(--grey-color);
+}
+
+#consultTable h3 {
+  font-weight: bold;
+  font-style: italic;
+  text-align: center;
+  background-color: var(--grey-color);
+  border-bottom: 1px solid var(--grey-color);
+}
+
+#consultation #consultTable div textarea {
+  width: 100%;
+  min-height: 200px;
+  padding: 20px;
+  border: none;
+}
+#consultation #consultTable div textarea:focus {
+  border: none;
+  box-shadow: none;
+}
+
+.classification {
+  width: 80%;
+}
+
+#consultClassification {
+  width: 100%;
 }

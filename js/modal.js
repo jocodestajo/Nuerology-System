@@ -36,8 +36,8 @@ viewButtons.forEach((button) => {
           data.informant;
         document.querySelector('input[name="informant_relation"]').value =
           data.informant_relation;
-        document.querySelector('input[name="date_request"]').value =
-          data.date_request;
+        // document.querySelector('input[name="date_request"]').value =
+        //   data.date_request;
         document.querySelector('input[name="date_sched"]').value =
           data.date_sched;
         document.querySelector('textarea[name="history"]').value = data.history;
@@ -49,20 +49,6 @@ viewButtons.forEach((button) => {
         document.querySelector('select[name="old_new"]').value = data.old_new;
         document.querySelector('select[name="complaint"]').value =
           data.complaint;
-
-        // const viewClientSelect = document.getElementById("view-clientSelect");
-        // const teleconsultationRadio =
-        //   document.getElementById("teleconsultation");
-
-        // if (viewClientSelect.value === "New") {
-        //   // Disable teleconsultation and check face-to-face
-        //   faceToFaceRadio.checked = true;
-        //   teleconsultRadio.disabled = true;
-        //   teleconsultRadio.checked = false;
-        // } else if (viewClientSelect.value === "Old") {
-        //   // Enable teleconsultation
-        //   teleconsultRadio.disabled = false;
-        // }
 
         // Handle enabling/disabling of teleconsultation based on `old_new` value
         if (data.old_new === "New") {
@@ -126,32 +112,41 @@ viewClientSelect.addEventListener("change", function () {
   }
 });
 
-// // Function to handle enabling/disabling radio buttons based on the dropdown value
-// function handleClientSelectChange() {
-//   const clientSelect = document.getElementById("view-clientSelect");
-//   const teleconsultRadio = document.getElementById("teleconsultation");
-//   const faceToFaceRadio = document.getElementById("faceToFace");
+// MODAL - SCHEDULE SETTINGS
+const scheduleSettings = document.getElementById("scheduleSettings");
+const setSchedule = document.getElementById("setSchedule");
 
-//   if (clientSelect.value === "New") {
-//     // Disable teleconsultation and check face-to-face
-//     faceToFaceRadio.checked = true;
-//     teleconsultRadio.disabled = true;
-//     teleconsultRadio.checked = false;
-//   } else if (clientSelect.value === "Old") {
-//     // Enable teleconsultation
-//     teleconsultRadio.disabled = false;
-//   }
-// }
+scheduleSettings.onclick = function (e) {
+  e.preventDefault();
+  if ((setSchedule.style.display = "none")) {
+    setSchedule.style.display = "block";
+    return;
+  }
+};
 
-// // Add event listener for dropdown changes
-// document
-//   .getElementById("view-clientSelect")
-//   .addEventListener("change", handleClientSelectChange);
+document.querySelector("#setSchedule .close-btn").onclick = function () {
+  setSchedule.style.display = "none";
+};
 
-// // Handle the current value when the page loads
-// window.addEventListener("load", handleClientSelectChange);
+// DISPLAY REFERRAL WHEN Type of Appointment value is Referral
+const typeOfAppointment = document.getElementById("typeOfAppointment");
+const referralContent = document.getElementById("referralContent");
 
-// // If there's a "View" button, add a click event listener
-// document
-//   .querySelectorAll(".view-button")
-//   ?.addEventListener("click", handleClientSelectChange);
+typeOfAppointment.addEventListener("change", function () {
+  if (this.value === "Referral") {
+    referralContent.style.display = "block";
+  } else if (this.value !== "Referral") {
+    referralContent.style.display = "none";
+  }
+});
+
+const view_appointment = document.getElementById("view_appointment");
+const viewReferalContent = document.getElementById("viewReferalContent");
+
+view_appointment.addEventListener("change", function () {
+  if (this.value === "Referral") {
+    viewReferalContent.style.display = "block";
+  } else if (this.value !== "Referral") {
+    viewReferalContent.style.display = "none";
+  }
+});

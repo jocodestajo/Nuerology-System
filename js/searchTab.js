@@ -37,27 +37,15 @@ async function searchData() {
       (app) => app.status === "cancelled"
     );
 
-    displayTable("pendingTable", "Pending Appointments", pendingAppointments);
-    displayTable(
-      "faceToFaceTable",
-      "Face to Face Appointments",
-      faceToFaceAppointments
-    );
+    displayTable("pendingTable", "Pending", pendingAppointments);
+    displayTable("faceToFaceTable", "Face to Face", faceToFaceAppointments);
     displayTable(
       "teleconsultationTable",
-      "Teleconsultation Appointments",
+      "Teleconsultation",
       teleconsultationAppointments
     );
-    displayTable(
-      "processedTable",
-      "Processed Appointments",
-      processedAppointments
-    );
-    displayTable(
-      "cancelledTable",
-      "Cancelled Appointments",
-      cancelledAppointments
-    );
+    displayTable("processedTable", "Processed", processedAppointments);
+    displayTable("cancelledTable", "Cancelled", cancelledAppointments);
 
     attachViewButtonListeners();
   } catch (error) {
@@ -69,6 +57,9 @@ async function searchData() {
 function displayTable(tableId, title, appointments) {
   const table = document.getElementById(tableId);
   if (appointments.length > 0) {
+    const isProcessedOrCancelled =
+      tableId === "processedTable" || tableId === "cancelledTable";
+
     let tableHtml = `<h3 class="tableResultTitle">${title}</h3>
         <table border="1">
             <thead>
@@ -76,31 +67,52 @@ function displayTable(tableId, title, appointments) {
                     <th class="th-hrn">HRN</th>
                     <th class="th-name">Name</th>
                     <th class="th-schedule">Schedule</th>
+                    ${
+                      isProcessedOrCancelled
+                        ? '<th class="th-consultation">Consultation</th>'
+                        : ""
+                    }
                     <th class="th-complaint">Complaint</th>
-                    <th class="th-action border-right">Action</th>
+                    ${
+                      !isProcessedOrCancelled
+                        ? '<th class="th-action border-right">Action</th>'
+                        : ""
+                    }
                 </tr>
             </thead>
         <tbody>`;
 
     appointments.forEach((app) => {
-      tableHtml += `<tr><td>${app.hrn}</td><td class="th-name">${app.name}</td><td>${app.date_sched}</td><td>${app.complaint}</td>
-            <td class="th-action action border-right">
+      tableHtml += `<tr>
+        <td class="th-hrn">${app.hrn}</td>
+        <td class="th-name">${app.name}</td>
+        <td>${app.date_sched}</td>
+        ${isProcessedOrCancelled ? `<td>${app.consultation || ""}</td>` : ""}
+        <td class="th-complaint">${app.complaint}</td>
+        ${
+          !isProcessedOrCancelled
+            ? `<td class="th-action action border-right">
                 <img src="img/check-circle.png" class="action-img update-processed margin-right" alt="Approve" data-id="${app.id}">
                 <img src="img/edit.png" class="action-img view-button margin-right" alt="View" data-record-id="${app.id}">
                 <img src="img/cancel.png" class="action-img update-cancelled" alt="Cancel" data-id="${app.id}">
-            </td></tr>`;
+            </td>`
+            : ""
+        }
+        </tr>`;
     });
 
     tableHtml += "</tbody></table>";
     table.innerHTML = tableHtml;
 
-    attachApproveButtonListeners();
-    attachCancelButtonListeners();
+    // Only attach listeners if it's not processed or cancelled table
+    if (!isProcessedOrCancelled) {
+      attachApproveButtonListeners();
+      attachCancelButtonListeners();
+      attachViewButtonListeners();
+    }
 
-    // Enable the corresponding button and ensure padding
     enableScrollButton(tableId);
   } else {
-    // table.innerHTML = `<p>No results found.</p>`;
     disableScrollButton(tableId);
   }
 }
@@ -134,21 +146,18 @@ function enableScrollButton(tableId) {
 
 // Function to attach event listeners for view buttons
 function attachViewButtonListeners() {
-  var viewButtons = document.querySelectorAll(".view-button");
+  const viewButtons = document.querySelectorAll(".view-button");
+  const modal = document.getElementById("myModal");
 
   viewButtons.forEach((button) => {
     button.addEventListener("click", function (e) {
       e.preventDefault();
-      var recordId = this.getAttribute("data-record-id");
+      const recordId = this.getAttribute("data-record-id");
 
-      // console.log(recordId);
-
-      // Make an AJAX request to fetch the data for this record
+      // Fetch record data
       fetch("api/get/fetch_record.php?id=" + recordId)
         .then((response) => response.json())
         .then((data) => {
-          // console.log(data);
-
           // Fill the modal form with the data
           document.querySelector('input[name="hrn"]').value = data.hrn;
           document.querySelector('input[name="name"]').value = data.name;
@@ -163,31 +172,18 @@ function attachViewButtonListeners() {
             data.informant;
           document.querySelector('input[name="informant_relation"]').value =
             data.informant_relation;
-          document.querySelector('input[name="date_request"]').value =
-            data.date_request;
           document.querySelector('input[name="date_sched"]').value =
             data.date_sched;
           document.querySelector('textarea[name="history"]').value =
             data.history;
           document.querySelector('input[name="referal"]').value = data.referal;
-
-          // Set the correct option in the select inputs
           document.querySelector('select[name="typeofappoint"]').value =
             data.appointment_type;
           document.querySelector('select[name="old_new"]').value = data.old_new;
           document.querySelector('select[name="complaint"]').value =
             data.complaint;
 
-          // Handle enabling/disabling of teleconsultation based on old_new value
-          if (data.old_new === "New") {
-            document.getElementById("faceToFace").checked = true;
-            document.getElementById("teleconsultation").disabled = true;
-            document.getElementById("teleconsultation").checked = false;
-          } else if (data.old_new === "Old") {
-            document.getElementById("teleconsultation").disabled = false;
-          }
-
-          // Handle consultation type selection
+          // Handle consultation type
           if (data.consultation === "Face to face") {
             document.getElementById("faceToFace").checked = true;
           } else if (data.consultation === "Teleconsultation") {
@@ -196,16 +192,21 @@ function attachViewButtonListeners() {
 
           document.querySelector('input[name="record_id"]').value = recordId;
 
+          // Set readonly fields
           document.getElementById("view-hrn").readOnly = true;
           document.getElementById("view-name").readOnly = true;
           document.getElementById("view-age").readOnly = true;
           document.getElementById("view-birthday").readOnly = true;
           document.getElementById("view-address").readOnly = true;
-          document.getElementById("view-clientSelect").readOnly = true;
+          document.getElementById("view-clientSelect").disabled = true;
 
+          // Show the modal
           modal.style.display = "block";
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("An error occurred while fetching the record.");
+        });
     });
   });
 }

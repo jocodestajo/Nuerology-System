@@ -10,23 +10,25 @@
                     <form action="api/post/updateData.php" method="post" class="box">
 
                         <!-- div.box Child element 1 / hidden -->
-                        <div class="currentdate">
-                            <label for="date_request">Date of Request:
-                                <input type="text" name="date_request" class="datetime" readonly>
-                            </label> 
-                        </div>
-                        
+                         <div class="input appointment-type">
+                             <label>Type of appointment:</label>
+                             <select id="view_appointment" name="typeofappoint" class="appointment">
+                                 <option class="select" hidden disabled selected>---Select Option---</option>
+                                 <option value="SMS">SMS</option>
+                                 <option value="Recveive Call">Call</option>
+                                 <option value="Online">Online</option>
+                                 <option value="Walk-In">Walk-in</option>
+                                 <option value="Follow Up">Follow up</option>
+                                 <option value="Referral">Referral</option>
+                             </select>
+                         </div>
+
                         <!-- div.box Child element 2 -->
-                        <div class="input appointment-type">
-                            <label>Type of appointment:</label>
-                            <select name="typeofappoint" class="appointment">
-                                <option class="select" hidden disabled selected>---Select Option---</option>
-                                <option value="SMS">SMS</option>
-                                <option value="Recveive Call">Call</option>
-                                <option value="Online">Online</option>
-                                <option value="Walk-In">Walk-in</option>
-                                <option value="Follow Up">Follow up</option>
-                            </select>
+                        <div class="input referal" id="viewReferal">
+                            <div id="viewReferalContent">
+                                <label for="referal" >Referral Source:</label>
+                                <input type="text"  name="referal">
+                            </div>
                         </div>
 
                         <!-- div.box Child element 3 -->
@@ -155,10 +157,7 @@
                         </div>
 
                          <!-- div.box Child element 17 -->
-                        <div class="input referal">
-                            <label for="referal" >Referral Source:</label>
-                            <input type="text"  name="referal">
-                        </div>
+
 
                         <!-- div.box Child element 18 -->
                         <input type="hidden" name="record_id" >

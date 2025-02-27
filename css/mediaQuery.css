@@ -35,13 +35,14 @@
     width: 2%;
   } */
 
-  tr .th-hrn {
+  tr .th-hrn,
+  td .th-hrn {
     /* width: 7%; */
-    display: none;
+    /* display: none; */
   }
-  /* tr .th-action {
+  tr .th-action {
     width: 12%;
-  } */
+  }
   /* tr .th-contact,
   tr .th-schedule {
     width: 8%;
@@ -53,9 +54,10 @@
   tr .th-name {
     padding-left: 24px;
   } */
-  tr .th-complaint {
+  tr .th-complaint,
+  td .th-complaint {
     /* width: 27%; */
-    display: none;
+    /* display: none; */
   }
   /* tr .th-consultation {
     width: 10%;
