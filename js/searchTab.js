@@ -17,7 +17,7 @@ async function searchData() {
   resetScrollButtons();
 
   try {
-    const response = await fetch(`searchQuery.php?query=${query}`);
+    const response = await fetch(`api/get/searchQuery.php?query=${query}`);
     const appointments = await response.json();
 
     const pendingAppointments = appointments.filter(

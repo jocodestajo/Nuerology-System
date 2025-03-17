@@ -1,0 +1,110 @@
+* {
+  font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  background-color: var(--lightgrey-color);
+}
+
+body {
+  background-color: var(--lightgrey-color);
+}
+.cont {
+  box-shadow: 0px 0px 10px var(--grey-color);
+  margin: 40px 200px;
+  padding: 40px;
+  border-radius: 2.5px;
+}
+
+.cont h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.cont .header a {
+  padding: 5px 20px;
+  margin: 10px;
+}
+
+.cont .header {
+  margin-bottom: 20px;
+}
+
+.appoint_form h2 {
+  font-size: 1.5rem;
+}
+
+.appoint_form {
+  display: flex;
+  gap: 20px;
+}
+
+.appoint_form input,
+.appoint_form select,
+.appoint_form textarea {
+  text-align: center;
+  width: 100%;
+}
+
+.personalInformation {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 5px;
+}
+
+.personalInformation div:nth-child(1),
+.personalInformation div:nth-child(2),
+.personalInformation div:nth-child(5),
+.personalInformation div:nth-child(6),
+.personalInformation div:nth-child(9),
+.personalInformation div:nth-child(10),
+.personalInformation div:nth-child(11),
+.personalInformation div:nth-child(12) {
+  grid-column: span 6;
+}
+.personalInformation div:nth-child(3) {
+  grid-column: span 4;
+}
+.personalInformation div:nth-child(7),
+.personalInformation div:nth-child(8) {
+  grid-column: span 3;
+}
+.personalInformation div:nth-child(4) {
+  grid-column: span 2;
+}
+
+.selectDefault {
+  color: var(--gray-color);
+}
+
+.appointmentDetails {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  gap: 5px;
+}
+
+.calendar-flex {
+  display: flex;
+  align-items: center;
+  /* padding-inline: 20%; */
+}
+
+.calendar-flex .btn-trigger {
+  padding: 10px 12px;
+  width: 50%;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.calendar-flex input {
+  padding: 9px 0;
+  width: 50%;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}

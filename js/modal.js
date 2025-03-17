@@ -14,21 +14,28 @@ viewButtons.forEach((button) => {
     var recordId = this.getAttribute("data-record-id"); // Get the record ID
 
     // check if working
-    console.log(recordId);
+    // console.log(recordId);
 
     // Make an AJAX request to fetch the data for this record
     fetch("api/get/fetch_record.php?id=" + recordId)
       .then((response) => response.json())
       .then((data) => {
         // check data
-        console.log(data);
+        // console.log(data);
 
         // Fill the modal form with the data
         document.querySelector('input[name="hrn"]').value = data.hrn;
         document.querySelector('input[name="name"]').value = data.name;
         document.querySelector('input[name="age"]').value = data.age;
         document.querySelector('input[name="address"]').value = data.address;
-        document.querySelector('input[name="birthday"]').value = data.birthday;
+
+        // Convert and set the birthday field
+        if (data.birthday) {
+          document.querySelector('input[name="birthday"]').value = formatDate(
+            data.birthday
+          );
+        }
+        // document.querySelector('input[name="birthday"]').value = data.birthday;
         document.querySelector('input[name="email"]').value = data.email;
         document.querySelector('input[name="contact"]').value = data.contact;
         document.querySelector('input[name="viber"]').value = data.viber;
@@ -72,8 +79,8 @@ viewButtons.forEach((button) => {
         // Set fields to disabled
         document.getElementById("view-hrn").readOnly = true;
         document.getElementById("view-name").readOnly = true;
-        document.getElementById("view-age").readOnly = true;
-        document.getElementById("view-birthday").readOnly = true;
+        // document.getElementById("view-age").readOnly = true;
+        // document.getElementById("view-birthday").readOnly = true;
         // document.getElementById("view-contact").readOnly = true;
         document.getElementById("view-address").readOnly = true;
         document.getElementById("view-clientSelect").readOnly = true;

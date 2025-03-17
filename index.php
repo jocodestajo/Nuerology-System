@@ -12,6 +12,7 @@ require 'includes/dateTime.php';
     <title>Neurology</title>
     <link rel="icon" href="img/MMWGH_Logo.png" type="images/x-icon">
     <link rel="stylesheet" href="css/mainStyle.css">
+    <link rel="stylesheet" href="css/general.css">
     <link rel="stylesheet" href="css/mediaQuery.css">
     <link rel="stylesheet" href="css/modals.css">
 </head>
@@ -28,6 +29,7 @@ require 'includes/dateTime.php';
 
         <!-- EDIT RECORDS MODAL-->
         <?php include('includes/editRecords.php'); ?>
+        <!-- <?php include('includes/consultation.php'); ?> -->
 
         <!-- navigation bar / TAB -->
         <div class="navbar-2">
@@ -40,226 +42,7 @@ require 'includes/dateTime.php';
             <div class="tab" onclick="showContent(6)">Reports</div>
         </div>
 
-        <div class="container-3">
-            <form action="" class="container3-Content">
-                <div class="turnaroundTime">
-                    <div class="heading1">
-                        <h2>Nurse</h2>
-                        <h2>Doctor</h2>
-                        <h2>Nurse</h2>
-                    </div>
 
-                    <div class="turnaroundContent">
-                        <div class="nurseVs">
-                            <span class="btn btn-green">Start</span>
-                            <span class="btn">End</span>
-                            <span class="timer">Timer</span>
-                        </div>                
-                        <div class="doctorConsult">
-                            <span class="btn btn-green">Start</span>
-                            <span class="btn">End</span>
-                            <span class="timer">Timer</span>
-                        </div>
-                        <div class="nurseFinal">
-                            <span class="btn btn-green">Start</span>
-                            <span class="btn">End</span>
-                            <span class="timer">Timer</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="consultants">
-                    <div class="heading11">
-                        <h2>Consultant</h2>
-                    </div>
-                    <div>
-                        <label for="docName">Doctor:</label>
-                        <select name="" id="docName" require>
-                            <option value="">Doctor I</option>
-                        </select>
-                    </div>
-                    <div class="pad-b-20">
-                        <label for="nurseName">Nurse:</label>
-                        <select name="" id="nurseName" require>
-                            <option value="">Nurse I</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div id="personalInformation">
-
-                    <!-- 1 -->
-                    <div>
-                        <h2>Personal Information</h2>
-                    </div>
-
-                    <!-- 2 -->
-                    <div>
-                        <label for="">Name:
-                            <input type="text">
-                        </label>
-                    </div>
-
-                    <!-- 3 -->
-                    <div>
-                        <label for="">Birthday:
-                            <input type="date">
-                        </label>
-                    </div>
-                        
-                    <!-- 4 -->
-                    <div>
-                        <label for="">Age:
-                            <input type="text" id="perInfo-Age">
-                        </label>
-                    </div>
-
-                    <!-- 5 -->
-                    <div>
-                        <label for="">Address:
-                            <input type="text">
-                        </label>
-                    </div>
-
-                    <!-- 6 -->
-                    <div>
-                        <h2 id="contactDetails">Contact Details</h2>
-                    </div>
-
-                    <!-- 7 -->
-                    <div>
-                        <label for="">Phone:
-                            <input type="text">
-                        </label>
-                    </div>
-
-                    <!-- 8 -->
-                    <div>
-                        <label for="">Email:
-                            <input type="text">
-                        </label>
-                    </div>
-
-                    <!-- 9 -->
-                    <div>
-                        <label for="">Viber:
-                            <input type="text">
-                        </label>
-                    </div>
-
-                    <!-- 10 -->
-                    <div id="informantDetails">
-                        <h2>Informant's Details</h2>
-                    </div>
-
-                    <!-- 11 -->
-                    <div>
-                        <label for="">Name:
-                            <input type="text">
-                        </label>
-                    </div>
-
-                    <!-- 12 -->
-                    <div>
-                        <label for="">Relation:
-                            <input type="text">
-                        </label>
-                    </div>
-                </div>
-
-                <div id="consultation">
-                    <h2>Consultation</h2>
-                    <div>
-                        <div id="consultTable">
-                            <h3>Type of Consult</h3>
-
-                            <div class="space-evenly">
-                                <div class="border-right center-flex-col">
-                                    <div class="">
-                                        <label for="consultNew">
-                                            <input type="radio" value="New" id="consultNew" name="consult">
-                                            New
-                                        </label>
-                                    </div>
-
-                                    <div class="">
-                                        <label for="consultOld">
-                                            <input type="radio" value="Old" id="consultOld" name="consult">
-                                            Old
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="center-flex-col">
-                                    <div class="">
-                                        <label for="consultFTF">
-                                            <input type="radio" value="Face to face" id="consultFTF">
-                                            Face to face
-                                        </label>
-                                    </div>
-
-                                    <div class="">
-                                        <label for="consultTelecon">
-                                            <input type="radio" value="Teleconsult" id="consultTelecon">
-                                            Teleconsult
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="border-left center-flex-col">
-                                    <div class="">
-                                        <label for="consultRX">
-                                            <input type="radio" value="RX" id="consultRX">
-                                            RX
-                                        </label>
-                                    </div>
-
-                                    <div class="">
-                                        <label for="consultMC">
-                                            <input type="radio" value="MC" id="consultMC">
-                                            MC
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <h3>Diagnosis</h3>
-                                <textarea name="" id=""></textarea>
-                            </div>
-
-                            <div class="flex-row">
-                                <div class="classification">
-                                    <h3>Classification</h3>
-                                    <select name="" id="consultClassification" class="margin-20">
-                                        <option value=""></option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label for="">
-                                        <input type="checkbox">
-                                        Follow Up
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div>
-                                    <h3>Medication</h3>
-                                    <input type="text">
-                                </div>
-                                <div>
-                                    <h3>Quantity</h3>
-                                    <input type="text">
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
 
         <div class="container-2">
 
@@ -307,10 +90,11 @@ require 'includes/dateTime.php';
                             </div>
                         </div>
                         
-                        <!-- div.box Child element 5 / AGE -->
+                        <!-- div.box Child element 5 / BDATE -->
                         <div class="input">
-                            <label for="" class="age">Age: <i class="asterisk">*</i></label>
-                            <input type="text" id="age" name="age" class="age" require>
+                            <label for="" class="b_day">Birthdate: <i class="asterisk">*</i></label>
+                            <!-- <input type="date" id="birthday" name="birthday" class="b_day" require> -->
+                            <input type="date" id="birthday" class="birthdayInput" data-age-output="age1" require>
                         </div>
                         
                         <!-- div.box Child element 6 / ADDRESS -->
@@ -319,10 +103,10 @@ require 'includes/dateTime.php';
                             <input type="text" id="address" name="address" class="address">
                         </div>
                         
-                        <!-- div.box Child element 7 / BDATE -->
+                        <!-- div.box Child element 7 / AGE -->
                         <div class="input">
-                            <label for="" class="b_day">Birthdate:</label>
-                            <input type="text" id="birthday" name="birthday" class="b_day" placeholder="mm/dd/yyyy">
+                            <label for="" class="age">Age:</label>
+                            <input type="text" id="age1" name="age" class="age">
                         </div>
 
                         <!-- div.box Child element 8 / EMAIL -->
@@ -362,7 +146,7 @@ require 'includes/dateTime.php';
                                     <div class="client-type">
                                         <label>Type of Client: <i class="asterisk">*</i></label>
                                         <select name="old_new" class="old_new" id="clientSelect" required>
-                                            <option value="" class="select" hidden disabled selected>--- Select Option ---</option>
+                                            <option value="" class="selectDefault" hidden disabled selected>--- Select Option ---</option>
                                             <option value="New">New</option>
                                             <option value="Old">Old</option>
                                         </select>
@@ -425,17 +209,12 @@ require 'includes/dateTime.php';
                         </div>
 
                         <!-- div.box Child element 18 -->
-                        
-
-                        <!-- div.box Child element 18 -->
                         <div class="div-btn-submit">
                             <a href="index.php">
                                 <button type="button" name="clear_data_btn" class="btn btn-clearData">Clear Data</button>
                             </a>
                             <button type="submit" name="save_btn" class="btn btn-green">Save</button>
                         </div>
-
-
                     </form>
                 </div>
             </div>
@@ -473,7 +252,11 @@ require 'includes/dateTime.php';
                     </thead>
                     <tbody>
                         <?php
-                            $query = "SELECT * FROM neurology_records WHERE status = 'pending'";
+                            $query = "SELECT r.id, r.hrn, r.name, r.contact, 
+                                     c.consultation, c.date_sched, c.complaint, c.status
+                              FROM neurology_records r
+                              INNER JOIN neurology_consultations c ON r.id = c.record_id
+                              WHERE c.status = 'follow up' OR c.status = 'pending'";
 
                             $query_run = mysqli_query($conn, $query);
 
@@ -549,7 +332,10 @@ require 'includes/dateTime.php';
                     <tbody>
                         <?php
                             // calling data in db table for Face to Face Check-up
-                            $query = "SELECT * FROM neurology_records WHERE status = 'approved' and consultation = 'face to face' ";
+                            $query = "SELECT r.id, r.hrn, r.name, r.contact, c.date_sched, c.complaint
+                            FROM neurology_records r
+                            INNER JOIN neurology_consultations c ON r.id = c.record_id
+                            WHERE c.status = 'approved' and c.consultation = 'Face to face' ";
 
                             // Execute query
                             $query_run = mysqli_query($conn, $query);
@@ -566,7 +352,10 @@ require 'includes/dateTime.php';
                                         <td class="th-schedule"><?= $records['date_sched']; ?></td>
                                         <td class="th-complaint"><?= $records['complaint']; ?></td>
                                         <td class="th-action action border-right">
-                                            <img src="img/check-circle.png" class="action-img update-processed margin-right" alt="Approve" data-id="<?=$records['id'];?>">
+                                            <a href="./consultation.php"> 
+                                                <img src="img/check-circle.png" class="viewConsultation action-img margin-right" alt="Approve" data-record-id="<?=$records['id'];?>">
+                                            </a>
+                                            <!-- update-processed data-id="<?=$records['id'];?>"-->
                                             <img src="img/edit.png" class="action-img view-button margin-right" alt="View" data-record-id="<?=$records['id'];?>">
                                             <img src="img/cancel.png" class="action-img update-cancelled" alt="Cancel" data-id="<?=$records['id'];?>">
                                         </td>
@@ -615,7 +404,10 @@ require 'includes/dateTime.php';
                     <tbody>
                         <?php
                             // calling data in db table for Teleconsultation
-                            $query = "SELECT * FROM neurology_records WHERE status = 'approved' and consultation = 'teleconsultation'";
+                            $query = "SELECT r.id, r.hrn, r.name, r.contact, c.date_sched, c.complaint
+                            FROM neurology_records r
+                            INNER JOIN neurology_consultations c ON r.id = c.record_id
+                            WHERE c.status = 'approved' and c.consultation = 'Teleconsultation' ";
 
                             // Execute query
                             $query_run = mysqli_query($conn, $query);
@@ -632,7 +424,9 @@ require 'includes/dateTime.php';
                                         <td class="th-schedule"><?= $records['date_sched']; ?></td>
                                         <td class="th-complaint"><?= $records['complaint']; ?></td>
                                         <td class="th-action action border-right">
-                                            <img src="img/check-circle.png" class="action-img update-processed margin-right" alt="Approve" data-id="<?=$records['id'];?>">
+                                            <a href="./consultation.php"> 
+                                                <img src="img/check-circle.png" class="viewConsultation action-img margin-right" alt="Approve" data-record-id="<?=$records['id'];?>">
+                                            </a>
                                             <img src="img/edit.png" class="action-img view-button margin-right" alt="View" data-record-id="<?=$records['id'];?>">
                                             <img src="img/cancel.png" class="action-img update-cancelled" alt="Cancel" data-id="<?=$records['id'];?>">
                                         </td>
@@ -769,7 +563,7 @@ require 'includes/dateTime.php';
                     </div>
                 </div>
 
-                <div class="flex">
+                <div class="flex calendar-button">
                     <span class="calendarMonth-border" onclick="monthChange('previous')">Previous Month</span>
                     <span class="calendarMonth-border" onclick="monthChange('current')">Current Month</span>
                     <span class="calendarMonth-border" onclick="monthChange('next')">Next Month</span>
@@ -785,7 +579,7 @@ require 'includes/dateTime.php';
             <!-- TAB 6 / SEARCH -->
             <div class="content">
                 <div class="search_scrolltab">
-                    <div class="searchDiv">
+                    <div class="searchDiv margin-b-20">
                         <input type="text" id="searchQuery" placeholder="Search name, hrn, consultation or status type...." />
                         <button onclick="searchData()">Search</button>
                     </div>
@@ -826,6 +620,8 @@ require 'includes/dateTime.php';
     <script src="js/calendar_booking.js"></script>
     <script src="js/calendar_schedule.js"></script>
     <script src="js/searchTab.js"></script>
+    <script src="js/consultation.js"></script>
+    <script src="js/functions.js"></script>
 
     <script>
         // LIMIT PER DAY - APPOINTMENT

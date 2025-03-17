@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const dateInput = document.getElementById("date-sched");
     if (dateInput) {
       dateInput.value = formattedDate;
-      console.log(dateInput.value);
+      // console.log(dateInput.value);
     }
 
     const calendarContainer = document.getElementById("calendarContainer");

@@ -134,7 +134,7 @@ body {
   flex-wrap: wrap;
   /* background-color: var(--white-color); */
   padding: 0 100px;
-  box-shadow: 0px 0px 10px rgba(101, 101, 101, 0.3);
+  /* box-shadow: 0px 0px 10px rgba(101, 101, 101, 0.3); */
 }
 
 .content {
@@ -142,7 +142,7 @@ body {
   width: 100%;
   /* height: 100%; */
   background-color: var(--white-color);
-  margin: 32px 0 50px 0;
+  margin: 10px 0 50px 0;
 }
 
 .content.active {
@@ -153,6 +153,7 @@ body {
 .form-content {
   display: flex;
   justify-content: center;
+  margin-top: 20px;
 }
 .box {
   position: relative;
@@ -312,94 +313,13 @@ body {
   box-shadow: 0px 0px 10px var(--primary-color);
 }
 
-/* GENERAL USE */
-input,
-label,
-textarea,
-select {
-  outline-style: none;
-}
-
 .flex {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 14px;
+  margin-top: 22px;
   margin-bottom: 32px;
-}
-
-.flex-row {
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  /* gap: 14px; */
-  /* margin-bottom: 32px; */
-}
-.space-between {
-  display: flex;
-  justify-content: space-between;
-}
-.space-evenly {
-  display: flex;
-  justify-content: space-around;
-}
-
-.center-flex {
-  display: flex;
-  justify-content: center;
-}
-
-.center-flex-col {
-  padding: 20px 100px;
-}
-
-.border-right {
-  border-right: 1px solid var(--grey-color);
-}
-
-.border-left {
-  border-left: 1px solid var(--grey-color);
-}
-
-.btn-radius {
-  border-top-left-radius: 1.3rem;
-  border-top-right-radius: 1.3rem;
-  border-bottom-right-radius: 1.3rem;
-  border-bottom-left-radius: 1.3rem;
-}
-
-.pad-b-20 {
-  padding-bottom: 20px;
-}
-
-.padding-20 {
-  padding: 20px;
-}
-
-.margin-20 {
-  margin: 20px;
-}
-
-input,
-select {
-  border: 1px solid var(--grey-color);
-  padding: 10px;
-}
-button,
-input,
-select,
-textarea {
-  border: 1px solid var(--grey-color);
-}
-textarea {
-  resize: none;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  /* border-color: var(--primary-color); */
-  box-shadow: 0px 0px 10px var(--primary-color);
 }
 
 /* EDIT RECORDS FORM */
@@ -407,59 +327,6 @@ textarea:focus {
   display: none;
 }
 
-/* BUTTONS */
-.btn {
-  text-decoration: none;
-  text-align: center;
-  border: 1px solid var(--grey-color);
-  border-radius: 2px;
-  padding: 10px 20px;
-  cursor: pointer;
-}
-
-.btn:hover {
-  border-color: var(--primary-color);
-  box-shadow: 0px 0px 10px var(--primary-color);
-}
-
-.btn-green {
-  background-color: var(--primary-color);
-  border-radius: 2px;
-  color: var(--white-color);
-}
-.btn-green:hover {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
-  box-shadow: 0px 0px 10px var(--primary-color);
-}
-.btn-yellow {
-  background-color: var(--yellow-color);
-  border-radius: 2px;
-  color: var(--black-color);
-}
-.btn-yellow:hover {
-  background-color: var(--yellow-color);
-  border-color: var(--yellow-color);
-  box-shadow: 0px 0px 10px var(--yellow-color);
-}
-.btn-red {
-  background-color: var(--red-color);
-  color: var(--white-color);
-  border-color: var(--red-color);
-  border-radius: 2px;
-}
-.btn-red:hover {
-  box-shadow: 0px 0px 10px var(--red-color);
-}
-.btn-blue {
-  background-color: var(--blue-color);
-  color: var(--white-color);
-  border-color: var(--blue-color);
-  border-radius: 2px;
-}
-.btn-blue:hover {
-  box-shadow: 0px 0px 10px var(--blue-color);
-}
 .btn-clearData {
   border: 1px solid #006400;
   background-color: inherit;
@@ -656,6 +523,10 @@ tr .th-consultation {
   box-shadow: 0px 0px 10px var(--blue-color);
 }
 
+#scheduleSettings {
+  position: absolute;
+  /* padding: 12px; */
+}
 .weekday-checkboxes {
   position: relative;
   border: 1px solid var(--blue-color);
@@ -790,7 +661,6 @@ tr .th-consultation {
 }
 
 .disabled-date {
-  /* color: #ccc; */
   cursor: not-allowed;
   background-color: #f5f5f5;
 }
@@ -819,7 +689,7 @@ tr .th-consultation {
 
 .dateCell {
   background-color: var(--white-color);
-  height: 100px;
+  height: 80px;
   padding: 5px;
 }
 
@@ -828,10 +698,6 @@ tr .th-consultation {
   font-size: 1rem;
   font-weight: bold;
   margin-bottom: 5px;
-}
-
-#rescheduleCalendarTable .clickable-date {
-  width: 100%;
 }
 
 /* Add styles for the button container */
@@ -879,11 +745,12 @@ tr .th-consultation {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 22px;
 }
 
 .searchDiv {
   display: flex;
-  width: 50%;
+  width: 60%;
 }
 
 #searchQuery {
@@ -1023,8 +890,12 @@ tr .th-consultation {
 }
 
 .container-3 {
+  margin-top: 100px;
   padding: 20px 100px;
   /* box-shadow: 0px 0px 10px rgba(101, 101, 101, 0.3); */
+}
+.container-3 a {
+  color: black;
 }
 
 .container-3 input,
@@ -1092,7 +963,7 @@ tr .th-consultation {
 
 .consultants {
   margin: 20px;
-  padding: 10 20px 20px 20px;
+  /* padding: 10 20px 20px 20px; */
   border: 1px solid var(--grey-color);
 }
 
@@ -1152,10 +1023,6 @@ tr .th-consultation {
   padding: 5px;
 }
 
-/* #personalInformation #perInfo-Age {
-  width: 100px;
-} */
-
 #personalInformation,
 #consultation {
   margin-top: 20px;
@@ -1192,9 +1059,73 @@ tr .th-consultation {
 }
 
 .classification {
-  width: 80%;
+  width: 100%;
 }
 
 #consultClassification {
   width: 100%;
+}
+
+.consultMed {
+  width: 100%;
+}
+
+.consult-referral div {
+  /* text-align: left; */
+  padding-left: 10px;
+}
+
+/* #consultReferFrom,
+#consultReferTo {
+  text-align: center;
+} */
+
+.consult-followUp div {
+  padding: 12px;
+}
+
+#div-consultSubmit {
+  display: flex;
+  justify-content: end;
+}
+#consultSubmit {
+  margin-top: 20px;
+  padding: 16px 24px;
+  width: 200px;
+}
+
+/* Calendar table responsive styles */
+#calendarTable_schedule {
+  width: 100%;
+  min-width: auto; /* Override any minimum width */
+  table-layout: fixed;
+}
+
+#calendarTable_schedule td {
+  height: auto;
+  padding: 8px;
+  vertical-align: top;
+  position: relative;
+}
+
+/* Style for date cells */
+#calendarTable_schedule .dateCell {
+  height: 80px;
+  padding: 5px;
+}
+
+/* Make buttons stack vertically on small screens */
+#calendarTable_schedule .button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Adjust calendar buttons for small screens */
+#calendarTable_schedule .calendar-btn {
+  font-size: 1rem;
+  padding: 4px 4px;
+  min-width: auto;
+  width: 100%;
+  white-space: nowrap;
 }

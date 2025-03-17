@@ -6,7 +6,7 @@ if(isset($_GET['id'])) {
     $record_id = mysqli_real_escape_string($conn, $_GET['id']);
     
     // Query to fetch the record data
-    $query = "SELECT * FROM neurology_records WHERE id='$record_id'";
+    $query = "SELECT * FROM neurology_records r LEFT JOIN neurology_consultations c ON r.id = c.record_id WHERE r.id='$record_id'";
     $result = mysqli_query($conn, $query);
 
     if(mysqli_num_rows($result) > 0) {

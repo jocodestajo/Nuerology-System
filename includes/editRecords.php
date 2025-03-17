@@ -45,8 +45,8 @@
                         
                         <!-- div.box Child element 5 -->
                         <div class="input">
-                            <label for="age">Age:</label>
-                            <input type="text" name="age" class="age" id="view-age">
+                            <label for="birthday" class="b_day">Birthdate:</label>
+                            <input type="date"  name="birthday" class="birthday birthdayInput" data-age-output="ageOuput3">
                         </div>
                         
                         <!-- div.box Child element 6 -->
@@ -57,8 +57,8 @@
                         
                         <!-- div.box Child element 7 -->
                         <div class="input">
-                            <label for="birthday" class="b_day">Birthdate:</label>
-                            <input type="text"  name="birthday" class="birthday" placeholder="mm/dd/yyyy" id="view-birthday">
+                            <label for="age">Age:</label>
+                            <input type="text" name="age" class="age" id="ageOuput3">
                         </div>
 
                         <!-- div.box Child element 8 -->

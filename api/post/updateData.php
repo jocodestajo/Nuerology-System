@@ -10,7 +10,16 @@ if (isset($_POST['approve_record'])) {
     $records_id = mysqli_real_escape_string($conn, $_POST['approve_record']);
 
     // Update the record status to "Approved"
-    $query = "UPDATE neurology_records SET status='approved' WHERE id='$records_id'";
+    $query = "UPDATE neurology_consultations c 
+    SET c.status = 'approved' 
+    WHERE c.record_id = '$records_id'";
+
+    // $query = "UPDATE neurology_consultations c SET c.status = ? WHERE record_id = ?";
+    // $stmt = mysqli_prepare($conn, $query);
+    // mysqli_stmt_bind_param($stmt, "si", $status, $records_id);
+    // $status = 'approved';
+    // mysqli_stmt_execute($stmt);
+
     $query_run = mysqli_query($conn, $query);
 
     if ($query_run) {

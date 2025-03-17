@@ -7,21 +7,23 @@ function showContent(index) {
   });
 
   // Show the content of the clicked tab
-  contents[index].classList.add("active");
+  if (contents[index]) contents[index].classList.add("active");
 
   // Remove active class from all tabs and add it to the clicked tab
   tabs.forEach(function (tab) {
     tab.classList.remove("active");
   });
-  tabs[index].classList.add("active");
+  if (tabs[index]) tabs[index].classList.add("active");
 
   // Uncheck all checkboxes
-  checkboxes.forEach((checkbox) => {
-    checkbox.checked = false;
-  });
+  // if (checkboxes && checkboxes.length > 0) {
+  //   checkboxes.forEach((checkbox) => {
+  //     checkbox.checked = false;
+  //   });
+  // }
 
   // hide the button div
-  buttonDiv.classList.remove("show");
+  // if (buttonDiv) buttonDiv.classList.remove("show");
 
   // Save the current tab index
   localStorage.setItem("activeTab", index);
@@ -62,42 +64,44 @@ function closeModal() {
   searchResultModal.style.display = "none";
 }
 
-nameInput.addEventListener("keyup", function () {
-  console.log("Keyup", nameInput.value);
-  clearTimeout(debounceTimeout);
+if (nameInput) {
+  nameInput.addEventListener("keyup", function () {
+    console.log("Keyup", nameInput.value);
+    clearTimeout(debounceTimeout);
 
-  debounceTimeout = setTimeout(function () {
-    let inquery = nameInput.value.trim(); // Trim whitespace
-    if (inquery !== "") {
-      searchResult.style.display = "block";
-      searchResultModal.style.display = "block";
+    debounceTimeout = setTimeout(function () {
+      let inquery = nameInput.value.trim(); // Trim whitespace
+      if (inquery !== "") {
+        searchResult.style.display = "block";
+        searchResultModal.style.display = "block";
 
-      // AJAX request for search suggestions
-      let xhr = new XMLHttpRequest();
-      xhr.open(
-        "GET",
-        "api/get/search.php?inquery=" + encodeURIComponent(inquery),
-        true
-      );
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          console.log("AJAX response status: ", xhr.status);
-          console.log("AJAX response: ", xhr.responseText);
-          if (xhr.responseText.trim() !== "") {
-            searchResult.innerHTML = xhr.responseText;
-          } else {
-            searchResult.innerHTML = "<p>No results found</p>";
+        // AJAX request for search suggestions
+        let xhr = new XMLHttpRequest();
+        xhr.open(
+          "GET",
+          "api/get/search.php?inquery=" + encodeURIComponent(inquery),
+          true
+        );
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log("AJAX response status: ", xhr.status);
+            console.log("AJAX response: ", xhr.responseText);
+            if (xhr.responseText.trim() !== "") {
+              searchResult.innerHTML = xhr.responseText;
+            } else {
+              searchResult.innerHTML = "<p>No results found</p>";
+            }
+          } else if (xhr.readyState === 4) {
+            console.error("Error with request:", xhr.status);
           }
-        } else if (xhr.readyState === 4) {
-          console.error("Error with request:", xhr.status);
-        }
-      };
-      xhr.send();
-    } else {
-      closeModal();
-    }
-  }, 300);
-});
+        };
+        xhr.send();
+      } else {
+        closeModal();
+      }
+    }, 300);
+  });
+}
 
 // Close modal on outside click
 document.addEventListener("click", function (event) {
@@ -122,15 +126,29 @@ document.addEventListener("click", function (event) {
 
           document.getElementById("hrn").value = data.hrn;
           document.getElementById("name").value = data.name;
-          document.getElementById("age").value = data.currentage;
-          document.getElementById("birthday").value = data.birthday;
+
+          // Convert and set birthday
+          if (data.birthday) {
+            let formattedDate = formatDate(data.birthday);
+
+            console.log(formattedDate);
+            document.getElementById("birthday").value = formattedDate;
+
+            // Calculate and set age
+            let age = calculateAge(formattedDate);
+            console.log(age);
+            document.getElementById("age1").value = age;
+          }
+
+          // document.getElementById("birthday").value = data.birthday;
+          // document.getElementById("age").value = data.currentage;
           document.getElementById("contact").value = data.contactnumber;
           document.getElementById("address").value = data.address;
 
           // Set fields to readonly
           document.getElementById("hrn").readOnly = true;
           document.getElementById("name").readOnly = true;
-          document.getElementById("age").readOnly = true;
+          document.getElementById("age1").readOnly = true;
           document.getElementById("birthday").readOnly = true;
           document.getElementById("address").readOnly = true;
 
@@ -170,52 +188,56 @@ document.querySelectorAll(".close-floatingAlert").forEach(function (button) {
 const clientSelect = document.getElementById("clientSelect");
 const teleconsultRadio = document.getElementById("teleconsult");
 
-clientSelect.addEventListener("change", function () {
-  if (this.value === "New") {
-    // check radio button "face to face"
-    document.getElementById("f2f").checked = true;
+if (clientSelect) {
+  clientSelect.addEventListener("change", function () {
+    if (this.value === "New") {
+      // check radio button "face to face"
+      document.getElementById("f2f").checked = true;
 
-    teleconsultRadio.disabled = true;
-    // Optionally uncheck the radio button if it's selected
-    if (teleconsultRadio.checked) {
-      teleconsultRadio.checked = false;
+      teleconsultRadio.disabled = true;
+      // Optionally uncheck the radio button if it's selected
+      if (teleconsultRadio.checked) {
+        teleconsultRadio.checked = false;
+      }
+    } else {
+      teleconsultRadio.disabled = false;
     }
-  } else {
-    teleconsultRadio.disabled = false;
-  }
-});
+  });
+}
 
 // CLEAR DATA and REMOVE DISABLED ATTRIBUTES ///////////////////////////////////////
-document
-  .querySelector("[name='clear_data_btn']")
-  .addEventListener("click", function () {
-    // Get all input, select, and textarea elements inside the form
-    const inputs = document.querySelectorAll(
-      ".box input, .box select, .box textarea"
-    );
+if (document.querySelector("[name='clear_data_btn']")) {
+  document
+    .querySelector("[name='clear_data_btn']")
+    .addEventListener("click", function () {
+      // Get all input, select, and textarea elements inside the form
+      const inputs = document.querySelectorAll(
+        ".box input, .box select, .box textarea"
+      );
 
-    // Loop through each element
-    inputs.forEach((input) => {
-      // Skip the currentdate field and leave it as it is
-      if (input.classList.contains("datetime")) {
-        return;
-      }
+      // Loop through each element
+      inputs.forEach((input) => {
+        // Skip the currentdate field and leave it as it is
+        if (input.classList.contains("datetime")) {
+          return;
+        }
 
-      // Clear the value for all other fields
-      input.value = "";
+        // Clear the value for all other fields
+        input.value = "";
 
-      // If the field is not the HRN field, remove the disabled and readonly attributes
-      if (input.id !== "hrn") {
-        input.removeAttribute("disabled");
-        input.removeAttribute("readonly");
-      }
+        // If the field is not the HRN field, remove the disabled and readonly attributes
+        if (input.id !== "hrn") {
+          input.removeAttribute("disabled");
+          input.removeAttribute("readonly");
+        }
 
-      // Reset selection for select elements
-      if (input.tagName === "SELECT") {
-        input.selectedIndex = 0; // Resets to the default option
-      }
+        // Reset selection for select elements
+        if (input.tagName === "SELECT") {
+          input.selectedIndex = 0; // Resets to the default option
+        }
+      });
     });
-  });
+}
 
 // CALENDAR ////////////////////////////////////////////////////////////////////
 function toggleDropdown() {
@@ -234,8 +256,10 @@ document.addEventListener("click", function (event) {
 });
 
 // Prevent dropdown from closing when clicking inside
-document
-  .querySelector(".checkbox-group")
-  .addEventListener("click", function (event) {
-    event.stopPropagation();
-  });
+if (document.querySelector(".checkbox-group")) {
+  document
+    .querySelector(".checkbox-group")
+    .addEventListener("click", function (event) {
+      event.stopPropagation();
+    });
+}

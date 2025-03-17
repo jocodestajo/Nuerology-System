@@ -14,7 +14,7 @@ if (isset($_SESSION['message'])) :
             </div>
 
             <div id="message-footer">
-                <button type="button" class="btn-close-footer close-floatingAlert">Close</button>
+                <button type="button" class="btn btn-close-footer close-floatingAlert">Close</button>
             </div>
         </div>
     </div>
