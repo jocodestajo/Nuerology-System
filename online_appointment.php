@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neurology Referral</title>
+    <title>Neurology Online Schedule</title>
     <link rel="icon" href="img/MMWGH_Logo.png" type="images/x-icon">
     <link rel="stylesheet" href="css/mainStyle.css">
     <link rel="stylesheet" href="css/general.css">
@@ -13,7 +13,7 @@
 <body>
     <div class="cont">
         <div class="header space-between">
-            <h1>Neurology Referral Form</h1>
+            <h1>Appointment Schedule</h1>
             <a href="" class="btn btn-grey border">Back</a>
         </div>
         <div class="cont-body">
@@ -34,14 +34,14 @@
                     <!-- 3 -->
                     <div>
                         <label for="">Birthday:
-                            <input type="date" name="birthday" class="birthdayInput" data-age-output="age2">
+                            <input type="date" name="birthday" class="birthdayInput" data-age-output="age3">
                         </label>
                     </div>
                         
                     <!-- 4 -->
                     <div>
                         <label for="">Age:
-                            <input type="text" id="age2" name="age">
+                            <input type="text" id="age3" name="age">
                         </label>
                     </div>
 
@@ -106,7 +106,7 @@
                     <div>
                         <label for="">
                             Type of Client:
-                            <select name="old_new" class="old_new" id="clientSelect" required>
+                            <select name="old_new" class="old_new" id="clientSelect3" required>
                                 <option value="" hidden disabled selected>--- Select Option ---</option>
                                 <option value="New">New</option>
                                 <option value="Old">Old</option>
@@ -129,8 +129,8 @@
                         <div class="calendar-date">
                             <label for="dateSched2">Date Schedule:</label>
                             <span class="calendar-flex">
-                                <span class="datePicker btn-blue" data-sched-output="dateSched2">Calendar</span>
-                                <input type="date" id="dateSched2" class="date" name="date_sched" readonly>
+                                <span class="datePicker btn-blue" data-sched-output="dateSched3">Calendar</span>
+                                <input type="date" id="dateSched3" class="date" name="date_sched" readonly>
                             </span>
                         </div>
 
@@ -159,15 +159,12 @@
                         <textarea rows="5" name="history" required></textarea>
                     </div>
 
-                    <div id="referralContent">
-                        <label for="" class="">Referral Source:</label>
-                        <input type="text" name="referal">
-                    </div>
-
                     <div class="submit">
                         <input type="submit" value="Submit" class="btn btn-blue">
                     </div>
                 </div>
+                
+
             </form>
         </div>
     </div>

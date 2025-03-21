@@ -7,6 +7,7 @@
     <link rel="icon" href="img/MMWGH_Logo.png" type="images/x-icon">
     <link rel="stylesheet" href="css/mainStyle.css">
     <link rel="stylesheet" href="css/general.css">
+    <link rel="stylesheet" href="css/appointment_form.css">
     <link rel="stylesheet" href="css/mediaQuery.css">
 </head>
 <style>
@@ -15,6 +16,7 @@
 
     <!-- HEADER -->
     <?php include('includes/header.php'); ?>
+
 
     <div class="container-3">
         <div class="margin-b-20">
@@ -257,11 +259,18 @@
                                         Follow Up
                                     </label>
                                 </div>
-                                <div class="text-left">
+                                <div class="calendar text-left">
                                     <label for="">
                                         Date:
-                                        <input type="date" id="consultDate" name="date_sched" class="width-100 center-text">
+                                        <!-- <input type="date" id="consultDate" name="date_sched" class="width-100 center-text"> -->
+                                        <span class="calendar-flex">
+                                            <span class="datePicker btn-blue" data-sched-output="dateSched4">Calendar</span>
+                                            <input type="date" id="dateSched4" class="date center-text" name="date_sched" readonly>
+                                        </span>
                                     </label>
+
+                                    <?php include('includes/calendarTable_modal.php'); ?>
+
                                 </div>
                             </div>
                         </div>
@@ -281,5 +290,6 @@
     <!-- <script src="js/mainScript.js"></script> -->
     <script src="js/consultation.js"></script>
     <script src="js/functions.js"></script>
+    <script src="js/calendar_booking.js"></script>
 </body>
 </html>

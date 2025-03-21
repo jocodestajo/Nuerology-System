@@ -120,53 +120,77 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Handle date clicks
+  // Update calendar trigger handling to work with multiple buttons
+  const calendarBtns = document.querySelectorAll(".datePicker");
+  const calendarContainers = document.querySelectorAll("#calendarContainer");
+
+  calendarBtns.forEach((btn) => {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      // Find the closest calendar container to this button
+      const container =
+        this.closest(".calendar").querySelector("#calendarContainer");
+      const outputId = this.getAttribute("data-sched-output");
+
+      if (container) {
+        // Hide all other calendar containers first
+        calendarContainers.forEach((cont) => {
+          if (cont !== container) {
+            cont.style.display = "none";
+          }
+        });
+
+        // Toggle this container
+        container.style.display =
+          container.style.display === "none" ? "block" : "none";
+
+        if (container.style.display === "block") {
+          updateCalendar();
+        }
+      }
+    });
+  });
+
+  // click handler to use data attribute
   function handleDateClick(year, month, dayCount) {
     const selectedDate = new Date(year, month, parseInt(dayCount), 12, 0, 0);
     const formattedDate = selectedDate.toISOString().split("T")[0];
 
-    const dateInput = document.getElementById("date-sched");
-    if (dateInput) {
-      dateInput.value = formattedDate;
-      // console.log(dateInput.value);
-    }
+    // Find the active calendar container
+    const activeContainer = document.querySelector(
+      '#calendarContainer[style="display: block;"]'
+    );
+    if (activeContainer) {
+      // Get the associated output element ID from the trigger button
+      const triggerBtn = activeContainer
+        .closest(".calendar")
+        .querySelector(".datePicker");
+      const outputId = triggerBtn.getAttribute("data-sched-output");
+      const dateInput = document.getElementById(outputId);
 
-    const calendarContainer = document.getElementById("calendarContainer");
-    if (calendarContainer) {
-      calendarContainer.style.display = "none";
+      if (dateInput) {
+        dateInput.value = formattedDate;
+      }
+
+      activeContainer.style.display = "none";
     }
   }
 
-  const calendarBtn = document.querySelector(".btn-trigger");
-  const calendarContainer = document.getElementById("calendarContainer");
-
-  if (!calendarBtn || !calendarContainer) {
-    console.error("Calendar elements not found!");
-    return;
-  }
-
-  // Add click event to the calendar button
-  calendarBtn.addEventListener("click", function (e) {
-    e.preventDefault(); // Prevent any default action
-
-    // Toggle calendar visibility
-    if (calendarContainer.style.display === "none") {
-      calendarContainer.style.display = "block";
-      updateCalendar(); // Update calendar when showing
-    } else {
-      calendarContainer.style.display = "none";
-    }
-  });
-
-  // Close calendar when clicking outside
+  // Update outside click handler
   document.addEventListener("click", function (e) {
-    if (
-      !calendarContainer.contains(e.target) &&
-      !calendarBtn.contains(e.target) &&
-      calendarContainer.style.display === "block"
-    ) {
-      calendarContainer.style.display = "none";
-    }
+    calendarContainers.forEach((container) => {
+      const triggerBtn = container
+        .closest(".calendar")
+        .querySelector(".datePicker");
+      if (
+        !container.contains(e.target) &&
+        !triggerBtn.contains(e.target) &&
+        container.style.display === "block"
+      ) {
+        container.style.display = "none";
+      }
+    });
   });
 
   // Initialize the calendar
