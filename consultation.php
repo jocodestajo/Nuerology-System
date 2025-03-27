@@ -27,26 +27,26 @@
 
             <div class="turnaroundTime">
                 <div class="heading1">
-                    <h2>Nurse</h2>
+                    <h2>Vital Sign</h2>
                     <h2>Doctor</h2>
                     <h2>Nurse</h2>
                 </div>
 
                 <div class="turnaroundContent">
                     <div class="nurseVs">
-                        <span class="btn btn-green">Start</span>
-                        <span class="btn">End</span>
-                        <span class="timer">Timer</span>
-                    </div>                
+                        <span class="btn btn-green" id="startTimer1">Start</span>
+                        <span class="btn" id="endTimer1">End</span>
+                        <span class="timer1">00:00:00</span>
+                    </div>
                     <div class="doctorConsult">
-                        <span class="btn btn-green">Start</span>
-                        <span class="btn">End</span>
-                        <span class="timer">Timer</span>
+                        <span class="btn btn-green" id="startTimer2">Start</span>
+                        <span class="btn" id="endTimer2">End</span>
+                        <span class="timer2">00:00:00</span>
                     </div>
                     <div class="nurseFinal">
-                        <span class="btn btn-green">Start</span>
-                        <span class="btn">End</span>
-                        <span class="timer">Timer</span>
+                        <span class="btn btn-green" id="startTimer3">Start</span>
+                        <span class="btn" id="endTimer3">End</span>
+                        <span class="timer3">00:00:00</span>
                     </div>
                 </div>
             </div>
@@ -291,5 +291,45 @@
     <script src="js/consultation.js"></script>
     <script src="js/functions.js"></script>
     <script src="js/calendar_booking.js"></script>
+    <script>
+        // Timer function with HH:MM:SS format using Date for elapsed time
+        function startTimer(timerElement, startButton, endButton) {
+            let startTime = 0;
+            let interval;
+            
+            // Function to format the elapsed time into HH:MM:SS
+            function formatTime(elapsedTime) {
+                const hours = Math.floor(elapsedTime / 3600);
+                const minutes = Math.floor((elapsedTime % 3600) / 60);
+                const seconds = Math.floor(elapsedTime % 60);
+
+                return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }
+
+            // Update the timer display
+            function updateTimer() {
+                const elapsedTime = (new Date() - startTime) / 1000; // Elapsed time in seconds
+                timerElement.textContent = `${formatTime(elapsedTime)}`;
+            }
+
+            // Start the timer
+            startButton.addEventListener('click', () => {
+                startTime = new Date(); // Record the time when the start button is clicked
+                interval = setInterval(updateTimer, 1000); // Update every second
+                startButton.disabled = true; // Disable start button after it's clicked
+            });
+
+            // Stop the timer
+            endButton.addEventListener('click', () => {
+                clearInterval(interval); // Stop the timer
+                startButton.disabled = false; // Enable start button after stopping
+            });
+        }
+
+        // Apply the startTimer function to each timer
+        startTimer(document.querySelector('.timer1'), document.querySelector('#startTimer1'), document.querySelector('#endTimer1'));
+        startTimer(document.querySelector('.timer2'), document.querySelector('#startTimer2'), document.querySelector('#endTimer2'));
+        startTimer(document.querySelector('.timer3'), document.querySelector('#startTimer3'), document.querySelector('#endTimer3'));
+    </script>
 </body>
 </html>

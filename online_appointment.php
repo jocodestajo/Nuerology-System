@@ -17,7 +17,7 @@
             <a href="" class="btn btn-grey border">Back</a>
         </div>
         <div class="cont-body">
-            <form action="" class="appoint_form">
+            <form action="api/post/createData.php" method="post" class="appoint_form" autocomplete="off">
                 <div class="personalInformation">
                     <!-- 1 -->
                     <div>
@@ -117,7 +117,7 @@
                     <div>
                         <label for="">
                             Type of Consultation:
-                            <select name="" id="">
+                            <select name="consultation" id="">
                                 <option value="" hidden disabled selected>--- Select Option ---</option>
                                 <option value="Face to Face">Face to Face</option>
                                 <option value="Teleconsultation">Teleconsultation</option>
@@ -158,13 +158,14 @@
                         <label for="" class="">Magbigay ng maikling paglalarawan tungkol sa sakit:</label>
                         <textarea rows="5" name="history" required></textarea>
                     </div>
+                    
+                    <input type="hidden" name="typeofappoint" value="Online">
 
                     <div class="submit">
-                        <input type="submit" value="Submit" class="btn btn-blue">
+                        <input type="submit" name="save_btn" value="Submit" class="btn btn-blue">
                     </div>
-                </div>
-                
 
+                </div>
             </form>
         </div>
     </div>

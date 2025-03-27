@@ -451,8 +451,8 @@ tr .th-consultation {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: max-content;
-  min-width: 300px;
+  width: fit-content;
+  min-width: 700px;
   max-width: 1000px;
   background: var(--white-color);
   padding: 20px;
@@ -746,12 +746,16 @@ tr .th-consultation {
   display: flex;
   width: 60%;
 }
+.searchDiv input button {
+}
 
 #searchQuery {
   width: 100%;
   padding: 14px;
   border-top-left-radius: 24px;
   border-bottom-left-radius: 24px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   margin: 0;
 }
 #searchQuery:focus {
@@ -766,6 +770,8 @@ tr .th-consultation {
   border-color: var(--primary-color);
   border-top-right-radius: 24px;
   border-bottom-right-radius: 24px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
   margin: 0;
 }
 .searchDiv button:hover {
@@ -945,7 +951,9 @@ tr .th-consultation {
   border-bottom-left-radius: 1.5rem;
 }
 
-.turnaroundContent div .timer {
+.turnaroundContent div .timer1,
+.turnaroundContent div .timer2,
+.turnaroundContent div .timer3 {
   display: block;
   margin-top: 2rem;
   text-align: center;

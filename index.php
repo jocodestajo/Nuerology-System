@@ -42,10 +42,9 @@ require 'includes/dateTime.php';
             <div class="tab" onclick="showContent(6)">Reports</div>
         </div>
 
-
-
+        
         <div class="container-2">
-
+            
             <!-- TAB 1 / INQUIRY -->
             <div class="content active">
                 <div class="form-content">
