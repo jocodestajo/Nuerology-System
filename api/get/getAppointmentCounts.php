@@ -1,62 +1,62 @@
 <?php
-// Include database connection
-require_once '../../config/dbcon.php';
+require '../../config/dbcon.php';
 
-// Set headers for JSON response
-header('Content-Type: application/json');
+$year = $_GET['year'] ?? date('Y');
+$month = $_GET['month'] ?? date('m');
 
-// Get year and month from query parameters
-$year = isset($_GET['year']) ? intval($_GET['year']) : date('Y');
-$month = isset($_GET['month']) ? intval($_GET['month']) : date('m');
+// Format month with leading zero
+$month = str_pad($month, 2, '0', STR_PAD_LEFT);
 
-try {
-    // Prepare the query to count appointments by date and type
-    $query = "SELECT 
-                DATE(date_sched) as date,
-                consultation,
-                COUNT(*) as count
-              FROM neurology_consultations 
-              WHERE YEAR(date_sched) = ? 
-              AND MONTH(date_sched) = ?
-              AND status = 'approved'
-              GROUP BY DATE(date_sched), consultation";
+// Get F2F appointment counts
+$f2f_query = "SELECT 
+    date_sched,
+    COUNT(*) as count
+    FROM neurology_records 
+    WHERE YEAR(date_sched) = ? 
+    AND MONTH(date_sched) = ?
+    AND status = 'approved'
+    AND consultation = 'face to face'
+    GROUP BY date_sched";
 
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("ii", $year, $month);
-    $stmt->execute();
-    $result = $stmt->get_result();
+// Get Telecon appointment counts
+$telecon_query = "SELECT 
+    date_sched,
+    COUNT(*) as count
+    FROM neurology_records 
+    WHERE YEAR(date_sched) = ? 
+    AND MONTH(date_sched) = ?
+    AND status = 'approved'
+    AND consultation = 'teleconsultation'
+    GROUP BY date_sched";
 
-    // Initialize the response array
-    $appointmentCounts = array();
+$counts = [];
 
-    // Process the results
-    while ($row = $result->fetch_assoc()) {
-        $date = $row['date'];
-        $type = strtolower($row['consultation']) === 'face to face' ? 'f2f' : 'telecon';
-        $count = intval($row['count']);
+// Get F2F counts
+$stmt = mysqli_prepare($conn, $f2f_query);
+mysqli_stmt_bind_param($stmt, "ss", $year, $month);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
 
-        // Initialize the date in the array if it doesn't exist
-        if (!isset($appointmentCounts[$date])) {
-            $appointmentCounts[$date] = array(
-                'f2f' => 0,
-                'telecon' => 0
-            );
-        }
-
-        // Add the count for the appropriate type
-        $appointmentCounts[$date][$type] = $count;
+while ($row = mysqli_fetch_assoc($result)) {
+    if (!isset($counts[$row['date_sched']])) {
+        $counts[$row['date_sched']] = ['f2f' => 0, 'telecon' => 0];
     }
-
-    // Return the JSON response
-    echo json_encode($appointmentCounts);
-
-} catch (Exception $e) {
-    // Return error message as JSON
-    http_response_code(500);
-    echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
+    $counts[$row['date_sched']]['f2f'] = (int)$row['count'];
 }
 
-// Close the database connection
-$stmt->close();
-$conn->close();
+// Get Telecon counts
+$stmt = mysqli_prepare($conn, $telecon_query);
+mysqli_stmt_bind_param($stmt, "ss", $year, $month);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+
+while ($row = mysqli_fetch_assoc($result)) {
+    if (!isset($counts[$row['date_sched']])) {
+        $counts[$row['date_sched']] = ['f2f' => 0, 'telecon' => 0];
+    }
+    $counts[$row['date_sched']]['telecon'] = (int)$row['count'];
+}
+
+header('Content-Type: application/json');
+echo json_encode($counts);
 ?> 

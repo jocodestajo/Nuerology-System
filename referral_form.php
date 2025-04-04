@@ -17,7 +17,7 @@
             <a href="" class="btn btn-grey border">Back</a>
         </div>
         <div class="cont-body">
-            <form action="" class="appoint_form">
+            <form action="api/post/createData.php" method="post" class="appoint_form" autocomplete="off">
                 <div class="personalInformation">
                     <!-- 1 -->
                     <div>
@@ -117,7 +117,7 @@
                     <div>
                         <label for="">
                             Type of Consultation:
-                            <select name="" id="">
+                            <select name="consultation" id="">
                                 <option value="" hidden disabled selected>--- Select Option ---</option>
                                 <option value="Face to Face">Face to Face</option>
                                 <option value="Teleconsultation">Teleconsultation</option>
@@ -126,12 +126,11 @@
                     </div>
 
                     <div class="calendar">
-                        
                         <div class="calendar-date">
-                            <label for="date-sched">Date Schedule:</label>
+                            <label for="dateSched2">Date Schedule:</label>
                             <span class="calendar-flex">
-                                <button class="btn-trigger btn-blue">Calendar</button>
-                                <input type="date" id="date-sched" class="date" name="date_sched" readonly>
+                                <span class="datePicker btn-blue" data-sched-output="dateSched2">Calendar</span>
+                                <input type="date" id="dateSched2" class="date" name="date_sched" readonly>
                             </span>
                         </div>
 
@@ -157,16 +156,27 @@
 
                     <div class="input">
                         <label for="" class="">Magbigay ng maikling paglalarawan tungkol sa sakit:</label>
-                        <textarea rows="6" name="history" class="form-control" required></textarea>
+                        <textarea rows="5" name="history" required></textarea>
                     </div>
 
-                    <input type="submit" value="Submit" class="btn btn-blue">
-                </div>
-                
+                    <div id="referralContent">
+                        <label for="" class="">Referral Source:</label>
+                        <input type="text" name="referal">
+                    </div>
 
+                    <input type="hidden" name="typeofappoint" value="Referral">
+
+                    <div class="submit">
+                        <input type="submit" name="save_btn" value="Submit" class="btn btn-blue">
+                    </div>
+                </div>
             </form>
         </div>
     </div>
+
+
+    <script src="js/functions.js"></script>
+    <script src="js/calendar_booking.js"></script>
 
 </body>
 </html>

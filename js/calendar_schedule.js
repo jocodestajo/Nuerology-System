@@ -4,28 +4,13 @@ let appointmentCounts = {};
 // Update the fetch function to get both F2F and Telecon counts
 async function fetchAppointmentCounts(year, month) {
   try {
-    // Format month to ensure it's two digits
-    const formattedMonth = String(month).padStart(2, "0");
-
     const response = await fetch(
-      `api/get/getAppointmentCounts.php?year=${year}&month=${formattedMonth}`
+      `api/get/getAppointmentCounts.php?year=${year}&month=${month}`
     );
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const contentType = response.headers.get("content-type");
-    if (!contentType || !contentType.includes("application/json")) {
-      throw new TypeError("Response was not JSON");
-    }
-
     const data = await response.json();
-    console.log("Fetched appointment counts:", data); // Debug log
     appointmentCounts = data;
   } catch (error) {
     console.error("Error fetching appointment counts:", error);
-    appointmentCounts = {}; // Reset to empty object on error
   }
 }
 
@@ -92,47 +77,46 @@ async function updateCalendar(monthOffset = 0) {
         dateNumber.className = "date-number";
         cell.appendChild(dateNumber);
 
-        // Format the date string
-        const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(
-          dayCount
-        ).padStart(2, "0")}`;
-
         // Add button container
         const buttonContainer = document.createElement("div");
         buttonContainer.className = "button-container";
 
-        // Always create both buttons but control visibility with CSS
-        const f2fButton = document.createElement("button");
-        const teleconButton = document.createElement("button");
+        const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(
+          dayCount
+        ).padStart(2, "0")}`;
 
         // Get counts from appointmentCounts
         const f2fCount = appointmentCounts[dateStr]?.f2f || 0;
         const teleconCount = appointmentCounts[dateStr]?.telecon || 0;
 
-        // Setup F2F button
-        f2fButton.textContent = `F2F (${f2fCount})`;
-        f2fButton.className = `calendar-btn f2f-btn ${
-          f2fCount > 0 ? "active" : "hidden"
-        }`;
-        f2fButton.onclick = (e) => {
-          e.stopPropagation();
-          handleDateClick("f2f", year, month, dayCount);
-        };
+        // Conditionally add F2F button if count > 0
+        if (f2fCount > 0) {
+          const f2fButton = document.createElement("button");
+          f2fButton.textContent = `F2F (${f2fCount})`;
+          f2fButton.className = "calendar-btn f2f-btn";
+          f2fButton.onclick = (e) => {
+            e.stopPropagation();
+            handleDateClick("f2f", year, month, cell);
+          };
+          buttonContainer.appendChild(f2fButton);
+        }
 
-        // Setup Telecon button
-        teleconButton.textContent = `Telecon (${teleconCount})`;
-        teleconButton.className = `calendar-btn telecon-btn ${
-          teleconCount > 0 ? "active" : "hidden"
-        }`;
-        teleconButton.onclick = (e) => {
-          e.stopPropagation();
-          handleDateClick("telecon", year, month, dayCount);
-        };
+        // Conditionally add Telecon button if count > 0
+        if (teleconCount > 0) {
+          const teleconButton = document.createElement("button");
+          teleconButton.textContent = `Telecon (${teleconCount})`;
+          teleconButton.className = "calendar-btn telecon-btn";
+          teleconButton.onclick = (e) => {
+            e.stopPropagation();
+            handleDateClick("telecon", year, month, cell);
+          };
+          buttonContainer.appendChild(teleconButton);
+        }
 
-        // Append buttons to container
-        buttonContainer.appendChild(f2fButton);
-        buttonContainer.appendChild(teleconButton);
-        cell.appendChild(buttonContainer);
+        // Append button container if there are any buttons
+        if (f2fCount > 0 || teleconCount > 0) {
+          cell.appendChild(buttonContainer);
+        }
 
         dayCount++;
       }
@@ -177,75 +161,28 @@ document
     event.stopPropagation();
   });
 
-function handleDateClick(type, year, month, day) {
-  const selectedDate = new Date(year, month, day);
+function handleDateClick(type, year, month, cell) {
+  const dateNumber = cell.querySelector(".date-number").textContent;
+  const selectedDate = new Date(year, month, parseInt(dateNumber), 12, 0, 0);
+
+  // Format date to YYYY-MM-DD
   const formattedDate = selectedDate.toISOString().split("T")[0];
+  console.log(`Selected ${type} appointment for ${formattedDate}`);
 
-  // Determine which tab to show and which filters to update
-  const tabIndex = type === "f2f" ? 2 : 3;
-  const filterPrefix = type === "f2f" ? "2" : "3";
+  // Determine table and filters to update based on the type
+  const tableId = type === "f2f" ? "table2" : "table3";
+  const dayFilterId = type === "f2f" ? "dayFilter2" : "dayFilter3";
+  const monthFilterId = type === "f2f" ? "monthFilter2" : "monthFilter3";
+  const yearFilterId = type === "f2f" ? "yearFilter2" : "yearFilter3";
 
-  // Update the filters
-  document.getElementById(`dayFilter${filterPrefix}`).value = String(
-    day
-  ).padStart(2, "0");
-  document.getElementById(`monthFilter${filterPrefix}`).value = String(
-    month + 1
-  ).padStart(2, "0");
-  document.getElementById(`yearFilter${filterPrefix}`).value = year;
+  // Set the date filters dynamically
+  const [yearStr, monthStr, dayStr] = formattedDate.split("-");
+  document.getElementById(dayFilterId).value = dayStr;
+  document.getElementById(monthFilterId).value = monthStr;
+  document.getElementById(yearFilterId).value = yearStr;
 
-  // Show the appropriate tab
+  filterTable(tableId, dayFilterId, monthFilterId, yearFilterId);
+
+  const tabIndex = type === "f2f" ? 2 : 3; // Adjust index based on tab setup
   showContent(tabIndex);
-
-  // Filter the table
-  filterTable(
-    `table${filterPrefix}`,
-    `dayFilter${filterPrefix}`,
-    `monthFilter${filterPrefix}`,
-    `yearFilter${filterPrefix}`
-  );
 }
-
-// Add this CSS to your stylesheet
-const style = document.createElement("style");
-style.textContent = `
-  .calendar-btn.hidden {
-    display: none;
-  }
-  .calendar-btn.active {
-    display: inline-block;
-    margin: 2px;
-    padding: 2px 5px;
-    font-size: 0.8em;
-    cursor: pointer;
-  }
-  .f2f-btn {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 3px;
-  }
-  .telecon-btn {
-    background-color: #2196F3;
-    color: white;
-    border: none;
-    border-radius: 3px;
-  }
-  .button-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-  }
-  .dateCell {
-    min-height: 60px;
-    padding: 5px;
-    vertical-align: top;
-  }
-`;
-document.head.appendChild(style);
-
-// Initialize the calendar when the page loads
-document.addEventListener("DOMContentLoaded", () => {
-  updateCalendar(0);
-});

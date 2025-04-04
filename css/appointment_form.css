@@ -38,7 +38,8 @@ body {
 }
 
 .appoint_form {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
 
@@ -83,18 +84,18 @@ body {
 .appointmentDetails {
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 100%;
   gap: 5px;
 }
 
 .calendar-flex {
   display: flex;
   align-items: center;
-  /* padding-inline: 20%; */
 }
 
-.calendar-flex .btn-trigger {
-  padding: 10px 12px;
+.calendar-flex .datePicker {
+  text-align: center;
+  padding: 4px 12px;
   width: 50%;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
@@ -107,4 +108,29 @@ body {
   width: 50%;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+}
+
+.submit {
+  margin-top: 20px;
+}
+
+/* MEDIA QUERY */
+@media (max-width: 1366px) {
+  .cont {
+    /* box-shadow: 0px 0px 10px var(--grey-color); */
+    margin: 0;
+    padding: 20px;
+    /* border-radius: 2.5px; */
+  }
+}
+@media (max-width: 768px) {
+  .appoint_form {
+    display: block;
+    gap: 20px;
+  }
+
+  .appointmentDetails {
+    width: 100%;
+    margin-top: 20px;
+  }
 }

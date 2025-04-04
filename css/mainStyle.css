@@ -291,7 +291,7 @@ body {
   grid-column: span 6;
   display: flex;
   justify-content: flex-end;
-  margin-top: 30px;
+  /* margin-top: 30px; */
 }
 .div-btn-submit .btn {
   width: 150px;
@@ -328,11 +328,11 @@ body {
 }
 
 .btn-clearData {
-  border: 1px solid #006400;
-  background-color: inherit;
+  /* border: 1px solid var(--primary-color); */
+  /* background-color: inherit; */
 }
 .btn-clearData:hover {
-  box-shadow: 0px 0px 10px var(--primary-color);
+  box-shadow: 0px 0px 10px var(--grey-color);
 }
 
 .custom-radio,
@@ -384,9 +384,9 @@ td {
   overflow: hidden;
   white-space: nowrap; /* Prevent text from wrapping */
 }
-/* tr:nth-child(even) {
+tr:nth-child(even) {
   background-color: #f9f9f9;
-} */
+}
 table .action-img {
   width: 20px;
   cursor: pointer;
@@ -447,23 +447,25 @@ tr .th-consultation {
 
 /* CALENDAR */
 #calendarContainer {
-  position: absolute;
-  /* top: 50%; */
-  left: 88.5%;
-  transform: translateX(-88.5%);
-  width: 1000px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: fit-content;
+  min-width: 700px;
+  max-width: 1000px;
   background: var(--white-color);
-  padding: 15px;
+  padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   z-index: 1000;
-  margin-top: 5px;
 }
 
 .calendarMonth {
   text-align: center;
   margin-bottom: 10px;
+  width: 100%;
   font-weight: bold;
   font-size: 1.2rem;
   padding: 5px;
@@ -475,7 +477,6 @@ tr .th-consultation {
 #calendarTable {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 10px;
   background-color: white;
 }
 
@@ -493,12 +494,13 @@ tr .th-consultation {
 
 .calendar-controls {
   display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
+  justify-content: space-evenly;
+  gap: 10px;
 }
 
 .calendar-controls button {
-  padding: 5px 15px;
+  padding: 15px;
+  height: fit-content;
   cursor: pointer;
   background-color: var(--blue-color);
   color: var(--white-color);
@@ -507,7 +509,7 @@ tr .th-consultation {
 }
 
 .calendar-controls button:hover {
-  background-color: var(--primary-color);
+  box-shadow: 0px 0px 10px var(--blue-color);
 }
 
 /* Make sure the calendar container's parent has position: relative */
@@ -525,7 +527,6 @@ tr .th-consultation {
 
 #scheduleSettings {
   position: absolute;
-  /* padding: 12px; */
 }
 .weekday-checkboxes {
   position: relative;
@@ -551,7 +552,6 @@ tr .th-consultation {
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 10px;
-  /* z-index: 1000; */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -616,16 +616,13 @@ tr .th-consultation {
 }
 
 .cal_header .limit {
-  /* border: 1px solid var(--blue-color); */
   padding: 5px;
   margin-top: 20px;
-  /* border-radius: 5px; */
 }
 
 .cal_header .limit h2 {
   font-size: 1.3rem;
   font-weight: bold;
-  /* text-align: center; */
 }
 
 #onlinef2f {
@@ -656,25 +653,22 @@ tr .th-consultation {
   cursor: pointer;
 }
 
-#calendarTable_schedule td:not(.disabled):hover {
-  /* background-color: #e0e0e0; */
-}
-
 .disabled-date {
-  color: #ccc;
   cursor: not-allowed;
   background-color: #f5f5f5;
-  pointer-events: none;
   height: 80px;
 }
 
 .clickable-date {
-  height: 80px;
   cursor: pointer;
+  background-color: var(--white-color);
+  height: 80px;
+  padding: 5px;
 }
 
 .clickable-date:hover {
-  background-color: #e0e0e0;
+  color: var(--yellow-color);
+  background-color: var(--primary-color);
 }
 
 /* Style for disabled dates */
@@ -752,12 +746,16 @@ tr .th-consultation {
   display: flex;
   width: 60%;
 }
+.searchDiv input button {
+}
 
 #searchQuery {
   width: 100%;
   padding: 14px;
   border-top-left-radius: 24px;
   border-bottom-left-radius: 24px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   margin: 0;
 }
 #searchQuery:focus {
@@ -772,6 +770,8 @@ tr .th-consultation {
   border-color: var(--primary-color);
   border-top-right-radius: 24px;
   border-bottom-right-radius: 24px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
   margin: 0;
 }
 .searchDiv button:hover {
@@ -787,13 +787,11 @@ tr .th-consultation {
   text-decoration: none;
   color: #000;
   padding: 5px 10px;
-  /* background-color: #f0f0f0; */
   border-bottom: 2px solid #ccc;
   cursor: pointer;
 }
 
 .scrollBtn:hover {
-  /* background-color: var(--grey-color); */
   border-bottom: 2px solid var(--primary-color);
   color: var(--primary-color);
 }
@@ -808,7 +806,6 @@ tr .th-consultation {
 .scrollBtn.disabled {
   pointer-events: none;
   opacity: 0.5;
-  /* cursor: not-allowed; */
 }
 
 #pendingTable,
@@ -892,7 +889,6 @@ tr .th-consultation {
 .container-3 {
   margin-top: 100px;
   padding: 20px 100px;
-  /* box-shadow: 0px 0px 10px rgba(101, 101, 101, 0.3); */
 }
 .container-3 a {
   color: black;
@@ -955,7 +951,9 @@ tr .th-consultation {
   border-bottom-left-radius: 1.5rem;
 }
 
-.turnaroundContent div .timer {
+.turnaroundContent div .timer1,
+.turnaroundContent div .timer2,
+.turnaroundContent div .timer3 {
   display: block;
   margin-top: 2rem;
   text-align: center;
@@ -963,7 +961,6 @@ tr .th-consultation {
 
 .consultants {
   margin: 20px;
-  /* padding: 10 20px 20px 20px; */
   border: 1px solid var(--grey-color);
 }
 
@@ -1071,17 +1068,11 @@ tr .th-consultation {
 }
 
 .consult-referral div {
-  /* text-align: left; */
   padding-left: 10px;
 }
 
-/* #consultReferFrom,
-#consultReferTo {
-  text-align: center;
-} */
-
-.consult-followUp div {
-  padding: 12px;
+.consult-followUp #consultFollowUp {
+  margin-top: 24px;
 }
 
 #div-consultSubmit {
@@ -1128,4 +1119,11 @@ tr .th-consultation {
   min-width: auto;
   width: 100%;
   white-space: nowrap;
+}
+
+/* CONSULTATION */
+#dateSched4 {
+  border: 1px solid var(--grey-color);
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
