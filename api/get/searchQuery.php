@@ -4,7 +4,7 @@ require ('../../config/dbcon.php');
 // Get the search query from URL parameters
 $query = isset($_GET['query']) ? $_GET['query'] : '';
 
-$sql = "SELECT * FROM neurology_records r LEFT JOIN neurology_consultations c ON r.id = c.record_id WHERE `name` LIKE ? OR `hrn` LIKE ? OR `consultation` LIKE ? OR `status` LIKE ?";
+$sql = "SELECT * FROM neurology_records WHERE `name` LIKE ? OR `hrn` LIKE ? OR `consultation` LIKE ? OR `status` LIKE ?";
 
 // Prepare statement to avoid SQL injection
 $stmt = $conn->prepare($sql);

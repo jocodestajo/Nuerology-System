@@ -45,20 +45,14 @@ function calculateAge(birthday) {
   return age;
 }
 
-if (document.querySelectorAll(".birthdayInput")) {
-  document.querySelectorAll(".birthdayInput").forEach((input) => {
-    input.addEventListener("input", function () {
-      let birthday = this.value; // Get selected date
-      let ageOutputId = this.getAttribute("data-age-output"); // Get linked span ID
-      let age = calculateAge(birthday);
+// if (document.querySelectorAll(".birthdayInput")) {
+document.querySelectorAll(".birthdayInput").forEach((input) => {
+  input.addEventListener("input", function () {
+    let birthday = this.value; // Get selected date
+    let ageOutputId = this.getAttribute("data-age-output"); // Get linked span ID
+    let age = calculateAge(birthday);
 
-      document.getElementById(ageOutputId).value = age;
-      document.getElementById(ageOutputId).readOnly = true;
-
-      if (age <= 0) {
-        document.getElementById(ageOutputId).value = "";
-        document.getElementById(ageOutputId).readOnly = false;
-      }
-    });
+    document.getElementById(ageOutputId).value = age;
   });
-}
+});
+// }

@@ -42,9 +42,10 @@ require 'includes/dateTime.php';
             <div class="tab" onclick="showContent(6)">Reports</div>
         </div>
 
-        
+
+
         <div class="container-2">
-            
+
             <!-- TAB 1 / INQUIRY -->
             <div class="content active">
                 <div class="form-content">
@@ -168,15 +169,16 @@ require 'includes/dateTime.php';
                                 
                                 <div class="calendar">
                                     <div class="calendar-date">
-                                        <label for="dateSched1">Date Schedule:</label>
-                                        <input type="date" id="dateSched1" class="date" name="date_sched" readonly>
+                                        <label for="date-sched">Date Schedule: <i class="asterisk">*</i></label>
+                                        <input type="date" id="date-sched" class="date" name="date_sched" readonly>
                                     </div>
 
                                     <div class="calendar-btn">
-                                        <span class="datePicker btn btn-blue" data-sched-output="dateSched1">Calendar</span>
+                                        <span class="btn-trigger btn btn-blue">Calendar</span>
                                     </div>
                                     
                                     <?php include('includes/calendarTable_modal.php'); ?>
+
                                 </div>
                             </div>
                         </div>
@@ -203,7 +205,7 @@ require 'includes/dateTime.php';
                         <!-- div.box Child element 16 -->
                         <div class="input">
                             <label for="" class="">Magbigay ng maikling paglalarawan tungkol sa sakit: <i class="asterisk">*</i></label>
-                            <textarea rows="5" name="history" required></textarea>
+                            <textarea rows="5" name="history" class="form-control" required></textarea>
                         </div>
 
                         <!-- div.box Child element 18 -->
@@ -540,7 +542,7 @@ require 'includes/dateTime.php';
                             <h2>Limit per day</h2>
                             <form action="" class="limit_form">
                                 <div class="space-between">
-                                    <label for="onlinef2f">Thru Online: Face to Face:</label>
+                                    <label for="onlinef2f">Online Form: Face to Face:</label>
                                     <select name="" id="onlinef2f">
                                         <!-- <option value=""></option> -->
                                     </select>
