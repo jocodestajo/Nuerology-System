@@ -457,14 +457,15 @@ require 'includes/dateTime.php';
                         <div class="calendar">
                             
                             <div id="rescheduleCalendarContainer">
-                                <h2 id="rescheduleMonthTitle" class="calendarMonth"></h2>
+                                <div class="calendar-controls">
+                                    <button type="button" class="btn-prev">Previous</button>
+                                    <h2 id="rescheduleMonthTitle" class="calendarMonth"></h2>
+                                    <button type="button" class="btn-next">Next</button>
+                                </div>
                                 <table id="rescheduleCalendarTable">
                                     <!-- Calendar will be populated here -->
                                 </table>
-                                <div class="calendar-controls">
-                                    <button type="button" class="btn-prev">Previous</button>
-                                    <button type="button" class="btn-next">Next</button>
-                                </div>
+                                
                             </div>
                             <div class="rescheduleContent">
                                 <div class="calendar-date">
@@ -496,7 +497,7 @@ require 'includes/dateTime.php';
                             <span class="close-btn">&times;</span>
                         </div>
                         <div class="weekday-checkboxes">
-                            <div class="weekday-title" onclick="toggleDropdown()">Weekly Schedule ▼</div>
+                            <div class="weekday-title" onclick="scheduleToggleDropdown()">Weekly Schedule ▼</div>
                             <div class="checkbox-group" id="weekdayDropdown">
                                 <div class="checkbox-item">
                                     <label for="monday">
@@ -562,9 +563,9 @@ require 'includes/dateTime.php';
                 </div>
 
                 <div class="flex calendar-button">
-                    <span class="calendarMonth-border" onclick="monthChange('previous')">Previous Month</span>
-                    <span class="calendarMonth-border" onclick="monthChange('current')">Current Month</span>
-                    <span class="calendarMonth-border" onclick="monthChange('next')">Next Month</span>
+                    <span class="calendarMonth-border" onclick="scheduleMonthChange('previous')">Previous Month</span>
+                    <span class="calendarMonth-border" onclick="scheduleMonthChange('current')">Current Month</span>
+                    <span class="calendarMonth-border" onclick="scheduleMonthChange('next')">Next Month</span>
                 </div>
                 
                 <h2 id="MonthTitle" class="calendarMonth flex"></h2>

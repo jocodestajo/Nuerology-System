@@ -9,25 +9,28 @@ $month = str_pad($month, 2, '0', STR_PAD_LEFT);
 
 // Get F2F appointment counts
 $f2f_query = "SELECT 
-    date_sched,
-    COUNT(*) as count
-    FROM neurology_records 
-    WHERE YEAR(date_sched) = ? 
-    AND MONTH(date_sched) = ?
-    AND status = 'approved'
-    AND consultation = 'face to face'
-    GROUP BY date_sched";
+    c.date_sched,
+    COUNT(*) AS count
+FROM neurology_consultations c
+LEFT JOIN neurology_records r ON c.record_id = r.id
+WHERE YEAR(c.date_sched) = ? 
+    AND MONTH(c.date_sched) = ?
+    AND c.status = 'approved'
+    AND c.consultation = 'face to face'
+GROUP BY c.date_sched";
+
 
 // Get Telecon appointment counts
 $telecon_query = "SELECT 
-    date_sched,
-    COUNT(*) as count
-    FROM neurology_records 
-    WHERE YEAR(date_sched) = ? 
-    AND MONTH(date_sched) = ?
-    AND status = 'approved'
-    AND consultation = 'teleconsultation'
-    GROUP BY date_sched";
+    c.date_sched,
+    COUNT(*) AS count
+FROM neurology_consultations c
+LEFT JOIN neurology_records r ON c.record_id = r.id
+WHERE YEAR(c.date_sched) = ? 
+    AND MONTH(c.date_sched) = ?
+    AND c.status = 'approved'
+    AND c.consultation = 'teleconsultation'
+    GROUP BY c.date_sched";
 
 $counts = [];
 

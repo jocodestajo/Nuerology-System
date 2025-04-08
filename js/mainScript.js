@@ -16,14 +16,16 @@ function showContent(index) {
   if (tabs[index]) tabs[index].classList.add("active");
 
   // Uncheck all checkboxes
-  // if (checkboxes && checkboxes.length > 0) {
-  //   checkboxes.forEach((checkbox) => {
-  //     checkbox.checked = false;
-  //   });
-  // }
+  const checkboxes = document.querySelectorAll(".checkbox");
+  if (checkboxes && checkboxes.length > 0) {
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = false;
+    });
+  }
 
   // hide the button div
-  // if (buttonDiv) buttonDiv.classList.remove("show");
+  const buttonDiv = document.querySelector(".btn-div-checkbox");
+  if (buttonDiv) buttonDiv.classList.remove("show");
 
   // Save the current tab index
   localStorage.setItem("activeTab", index);

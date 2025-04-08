@@ -1,31 +1,31 @@
-let todayDate = new Date();
-let appointmentCounts = {};
+let scheduleTodayDate = new Date();
+let scheduleAppointmentCounts = {};
 
 // Update the fetch function to get both F2F and Telecon counts
-async function fetchAppointmentCounts(year, month) {
+async function scheduleFetchAppointmentCounts(year, month) {
   try {
     const response = await fetch(
       `api/get/getAppointmentCounts.php?year=${year}&month=${month}`
     );
     const data = await response.json();
-    appointmentCounts = data;
+    scheduleAppointmentCounts = data;
   } catch (error) {
     console.error("Error fetching appointment counts:", error);
   }
 }
 
 // Function to update the calendar display
-async function updateCalendar(monthOffset = 0) {
+async function scheduleUpdateCalendar(monthOffset = 0) {
   const date = new Date(
-    todayDate.getFullYear(),
-    todayDate.getMonth() + monthOffset,
+    scheduleTodayDate.getFullYear(),
+    scheduleTodayDate.getMonth() + monthOffset,
     1
   );
   const month = date.getMonth();
   const year = date.getFullYear();
 
   // Fetch appointment counts before updating calendar
-  await fetchAppointmentCounts(year, month + 1);
+  await scheduleFetchAppointmentCounts(year, month + 1);
 
   // Update the month title
   const monthNames = [
@@ -86,8 +86,8 @@ async function updateCalendar(monthOffset = 0) {
         ).padStart(2, "0")}`;
 
         // Get counts from appointmentCounts
-        const f2fCount = appointmentCounts[dateStr]?.f2f || 0;
-        const teleconCount = appointmentCounts[dateStr]?.telecon || 0;
+        const f2fCount = scheduleAppointmentCounts[dateStr]?.f2f || 0;
+        const teleconCount = scheduleAppointmentCounts[dateStr]?.telecon || 0;
 
         // Conditionally add F2F button if count > 0
         if (f2fCount > 0) {
@@ -96,7 +96,7 @@ async function updateCalendar(monthOffset = 0) {
           f2fButton.className = "calendar-btn f2f-btn";
           f2fButton.onclick = (e) => {
             e.stopPropagation();
-            handleDateClick("f2f", year, month, cell);
+            scheduleHandleDateClick("f2f", year, month, cell);
           };
           buttonContainer.appendChild(f2fButton);
         }
@@ -108,7 +108,7 @@ async function updateCalendar(monthOffset = 0) {
           teleconButton.className = "calendar-btn telecon-btn";
           teleconButton.onclick = (e) => {
             e.stopPropagation();
-            handleDateClick("telecon", year, month, cell);
+            scheduleHandleDateClick("telecon", year, month, cell);
           };
           buttonContainer.appendChild(teleconButton);
         }
@@ -125,21 +125,22 @@ async function updateCalendar(monthOffset = 0) {
 }
 
 // Function to handle button clicks
-function monthChange(action) {
+function scheduleMonthChange(action) {
   if (action === "previous") {
-    todayDate.setMonth(todayDate.getMonth() - 1);
+    scheduleTodayDate.setMonth(scheduleTodayDate.getMonth() - 1);
   } else if (action === "next") {
-    todayDate.setMonth(todayDate.getMonth() + 1);
+    scheduleTodayDate.setMonth(scheduleTodayDate.getMonth() + 1);
   } else {
-    todayDate = new Date();
+    scheduleTodayDate = new Date();
   }
-  updateCalendar(0);
+  scheduleUpdateCalendar(0);
 }
 
-updateCalendar(0);
+// Initialize the schedule calendar
+scheduleUpdateCalendar(0);
 
 // WEEKLY SCHEDULE DROPDOWN /////////////////////////////////////
-function toggleDropdown() {
+function scheduleToggleDropdown() {
   const dropdown = document.getElementById("weekdayDropdown");
   dropdown.classList.toggle("show");
 }
@@ -161,7 +162,7 @@ document
     event.stopPropagation();
   });
 
-function handleDateClick(type, year, month, cell) {
+function scheduleHandleDateClick(type, year, month, cell) {
   const dateNumber = cell.querySelector(".date-number").textContent;
   const selectedDate = new Date(year, month, parseInt(dateNumber), 12, 0, 0);
 

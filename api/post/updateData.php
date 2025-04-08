@@ -14,12 +14,6 @@ if (isset($_POST['approve_record'])) {
     SET c.status = 'approved' 
     WHERE c.record_id = '$records_id'";
 
-    // $query = "UPDATE neurology_consultations c SET c.status = ? WHERE record_id = ?";
-    // $stmt = mysqli_prepare($conn, $query);
-    // mysqli_stmt_bind_param($stmt, "si", $status, $records_id);
-    // $status = 'approved';
-    // mysqli_stmt_execute($stmt);
-
     $query_run = mysqli_query($conn, $query);
 
     if ($query_run) {
@@ -30,7 +24,9 @@ if (isset($_POST['approve_record'])) {
         // Failure response
         $response['message'] = "Appointment Not Approved";
     }
-} elseif (isset($_POST['processed_record'])) {
+}
+
+if (isset($_POST['processed_record'])) {
     // Sanitize the input
     $records_id = mysqli_real_escape_string($conn, $_POST['processed_record']);
 
@@ -46,12 +42,15 @@ if (isset($_POST['approve_record'])) {
         // Failure response
         $response['message'] = "Appointment Not Processed";
     }
-} elseif (isset($_POST['cancel_record'])) {
+} 
+
+if (isset($_POST['cancel_record'])) {
     // Sanitize the input
     $records_id = mysqli_real_escape_string($conn, $_POST['cancel_record']);
 
     // Update the record status to "Cancelled"
-    $query = "UPDATE neurology_records SET status='cancelled' WHERE id='$records_id'";
+    $query = "UPDATE neurology_records r LEFT JOIN neurology_consultations c ON r.id = c.record_id
+    SET c.status = 'cancelled' WHERE r.id = '$records_id'";
     $query_run = mysqli_query($conn, $query);
 
     if ($query_run) {
@@ -62,11 +61,14 @@ if (isset($_POST['approve_record'])) {
         // Failure response
         $response['message'] = "Appointment Not Cancelled";
     }
-} elseif (isset($_POST['reschedule_record']) && isset($_POST['new_date'])) {
+}
+
+if (isset($_POST['reschedule_record']) && isset($_POST['new_date'])) {
     $records_id = mysqli_real_escape_string($conn, $_POST['reschedule_record']);
     $new_date = mysqli_real_escape_string($conn, $_POST['new_date']);
 
-    $query = "UPDATE neurology_records SET date_sched='$new_date' WHERE id='$records_id'";
+    $query = "UPDATE neurology_records r LEFT JOIN neurology_consultations c ON r.id = c.record_id
+    SET c.date_sched='$new_date' WHERE r.id='$records_id'";
     $query_run = mysqli_query($conn, $query);
 
     if ($query_run) {
@@ -101,25 +103,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_record'])) {
 
 
     // Update the record in the database
-    $query = "UPDATE neurology_records SET 
-                hrn = '$hrn',
-                name = '$name',
-                age = '$age',
-                address = '$address',
-                birthday = '$birthday',
-                email = '$email',
-                contact = '$contact',
-                viber = '$viber',
-                informant = '$informant',
-                informant_relation = '$informant_relation',
-                old_new = '$old_new',
-                consultation = '$consultation',
-                date_sched = '$date_sched',
-                complaint = '$complaint',
-                history = '$history',
-                referal = '$referal',
-                appointment_type = '$appointment_type'
-                WHERE id = '$record_id'";
+    $query = "UPDATE neurology_records r
+    LEFT JOIN neurology_consultations c ON r.id = c.record_id
+    SET 
+        r.hrn = '$hrn',
+        r.name = '$name',
+        r.age = '$age',
+        r.address = '$address',
+        r.birthday = '$birthday',
+        r.email = '$email',
+        r.contact = '$contact',
+        r.viber = '$viber',
+        r.informant = '$informant',
+        r.informant_relation = '$informant_relation',
+        c.old_new = '$old_new',
+        c.consultation = '$consultation',
+        c.date_sched = '$date_sched',
+        c.complaint = '$complaint',
+        c.history = '$history',
+        c.refer_from = '$referal',
+        c.appointment_type = '$appointment_type'
+    WHERE r.id = '$record_id'";
+    
 
 
 

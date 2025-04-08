@@ -746,8 +746,6 @@ tr .th-consultation {
   display: flex;
   width: 60%;
 }
-.searchDiv input button {
-}
 
 #searchQuery {
   width: 100%;
@@ -876,11 +874,11 @@ tr .th-consultation {
   table-layout: fixed;
 }
 
-#rescheduleCalendarTable td {
+/* #rescheduleCalendarTable td {
   height: 80px;
   padding: 5px;
   vertical-align: middle;
-}
+} */
 
 .rescheduleContent {
   margin-top: 15px;

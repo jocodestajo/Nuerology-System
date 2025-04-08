@@ -34,7 +34,7 @@ if (checkboxes && buttonDiv) {
   checkboxes.forEach((checkbox) => {
     checkbox.addEventListener("change", function () {
       // Check if at least one checkbox is checked
-      const atLeastOneChecked = checkboxes.forEach((cb) => cb.checked);
+      const atLeastOneChecked = Array.from(checkboxes).some((cb) => cb.checked);
 
       // Show or hide the button div based on whether any checkbox is checked
       if (atLeastOneChecked) {

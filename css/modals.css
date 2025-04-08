@@ -187,11 +187,14 @@
   background-color: var(--white-color);
   padding: 20px;
   border: 1px solid var(--primary-color);
-  width: 80%;
+  /* width: 80%; */
+  width: fit-content;
+  min-width: 700px;
+  max-width: 1000px;
   position: absolute;
-  top: 20%;
+  top: 50%;
   left: 50%;
-  transform: translate(-50%, -20%);
+  transform: translate(-50%, -50%);
 }
 
 #rescheduleModal .modal-header {
@@ -259,19 +262,6 @@
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
-}
-
-#rescheduleCalendarContainer .calendar-controls button {
-  padding: 5px 15px;
-  cursor: pointer;
-  background-color: var(--blue-color);
-  color: var(--white-color);
-  border: none;
-  border-radius: 3px;
-}
-
-#rescheduleCalendarContainer .calendar-controls button:hover {
-  background-color: var(--primary-color);
 }
 
 #cancelReschedule {
