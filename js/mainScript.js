@@ -47,10 +47,11 @@ const menuToggle = document.getElementById("menu-toggle");
 const navList = document.querySelector(".nav-list");
 
 // Add event listener to toggle the visibility of the nav-list
-menuToggle.addEventListener("click", () => {
-  navList.classList.toggle("show");
-});
-
+if (menuToggle) {
+  menuToggle.addEventListener("click", () => {
+    navList.classList.toggle("show");
+  });
+}
 // REFERRAL DISPLAY NONE / BLOCK
 document.querySelectorAll(".appointment");
 

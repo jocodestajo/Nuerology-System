@@ -1,7 +1,7 @@
 <?php
 session_start();
 require 'config/dbcon.php';
-require 'includes/dateTime.php';
+// require 'includes/dateTime.php';
 ?>
 
 <!DOCTYPE html>
@@ -29,7 +29,9 @@ require 'includes/dateTime.php';
 
         <!-- EDIT RECORDS MODAL-->
         <?php include('includes/editRecords.php'); ?>
-        <!-- <?php include('includes/consultation.php'); ?> -->
+        <?php include('includes/vitalSignsConsultModal.php'); ?>
+
+
 
         <!-- navigation bar / TAB -->
         <div class="navbar-2">
@@ -68,7 +70,25 @@ require 'includes/dateTime.php';
                         <div class="input referal" id="inquiryReferral">
                             <div id="referralContent">
                                 <label for="" class="">Referral Source:</label>
-                                <input type="text" name="referal">
+                                <!-- <input type="text" name="referal"> -->
+                                <select name="refer_from" class="width-100 center-text">
+                                    <option value="N/A" hidden disabled selected>--- Select Option ---</option>
+                                    
+                                    <?php
+                                        $sql = "SELECT deptid, deptname FROM departments WHERE deptlocation = 'Medical Service' AND deptstat = 0";
+                                        $result = $conn->query($sql);
+
+                                        if ($result->num_rows > 0) {
+                                            while($row = $result->fetch_assoc()) {
+                                                echo "<option value='" . $row['deptid'] . "'>" . htmlspecialchars($row['deptname']) . "</option>";
+                                            }
+                                        } else {
+                                            echo "<option disabled>No data found</option>";
+                                        }
+
+                                        // $conn->close();
+                                    ?>
+                                </select>
                             </div>
                         </div>
 
@@ -93,7 +113,7 @@ require 'includes/dateTime.php';
                         <div class="input">
                             <label for="" class="b_day">Birthdate: <i class="asterisk">*</i></label>
                             <!-- <input type="date" id="birthday" name="birthday" class="b_day" require> -->
-                            <input type="date" id="birthday" class="birthdayInput" data-age-output="age1" require>
+                            <input type="date" name="birthday" id="birthday" class="birthdayInput" data-age-output="age1" require>
                         </div>
                         
                         <!-- div.box Child element 6 / ADDRESS -->
@@ -191,12 +211,21 @@ require 'includes/dateTime.php';
                             <label for="q1">Ano ang ipapakunsulta? <i class="asterisk">*</i></label>
                             <select name="complaint" class="options" required>
                                 <option value="" hidden disabled selected>--- Select Option ---</option>
-                                <option value="Epilepsy / Seisure (Kombulsyon)">Epilepsy / Seisure (Kombulsyon)</option>
-                                <option value="Dementia (pagkalimot)">Dementia (pagkalimot)</option>
-                                <option value="Stroke">Stroke</option>
-                                <option value="Pananakit ng ulo">Pananakit ng ulo</option>
-                                <option value="Panghihina / Pamamanhid ng isang bahagi ng katawan">Panghihina / Pamamanhid ng isang bahagi ng katawan</option>
-                                <option value="Iba pang karamdaman">Iba pang karamdaman</option>
+                                
+                                <?php
+                                    $sql1 = "SELECT id, name FROM neurology_classifications WHERE archived = 0";
+                                    $result1 = $conn->query($sql1);
+                                    
+                                    if ($result1->num_rows > 0) {
+                                        while($row = $result1->fetch_assoc()) {
+                                            echo "<option value='" . $row['name'] . "'>" . htmlspecialchars($row['name']) . "</option>";
+                                        }
+                                    } else {
+                                        echo "<option disabled>No classifications found</option>";
+                                    }
+                                ?>
+                                
+                                <option value="Other">Other</option>
                             </select>
                         </div>
                         
@@ -350,9 +379,9 @@ require 'includes/dateTime.php';
                                         <td class="th-schedule"><?= $records['date_sched']; ?></td>
                                         <td class="th-complaint"><?= $records['complaint']; ?></td>
                                         <td class="th-action action border-right">
-                                            <a href="./consultation.php"> 
-                                                <img src="img/check-circle.png" class="viewConsultation action-img margin-right" alt="Approve" data-record-id="<?=$records['id'];?>">
-                                            </a>
+                                            <!-- <a href="">  -->
+                                                <img src="img/check-circle.png" class=" action-img margin-right" alt="Approve" data-record-id="<?=$records['id'];?>">
+                                            <!-- </a> -->
                                             <!-- update-processed data-id="<?=$records['id'];?>"-->
                                             <img src="img/edit.png" class="action-img view-button margin-right" alt="View" data-record-id="<?=$records['id'];?>">
                                             <img src="img/cancel.png" class="action-img update-cancelled" alt="Cancel" data-id="<?=$records['id'];?>">
@@ -422,10 +451,10 @@ require 'includes/dateTime.php';
                                         <td class="th-schedule"><?= $records['date_sched']; ?></td>
                                         <td class="th-complaint"><?= $records['complaint']; ?></td>
                                         <td class="th-action action border-right">
-                                            <a href="./consultation.php"> 
-                                                <img src="img/check-circle.png" class="viewConsultation action-img margin-right" alt="Approve" data-record-id="<?=$records['id'];?>">
-                                            </a>
-                                            <img src="img/edit.png" class="action-img view-button margin-right" alt="View" data-record-id="<?=$records['id'];?>">
+                                            <!-- <a href="./consultation.php" target="_blank" rel="noopener noreferrer">  -->
+                                                <img src="img/check-circle.png" class=" action-img margin-right" alt="Approve" data-record-id="<?=$records['id'];?>">
+                                            <!-- </a> -->
+                                            <img src="img/edit.png" class="action-img update-processed margin-right" alt="View" data-record-id="<?=$records['id'];?>">
                                             <img src="img/cancel.png" class="action-img update-cancelled" alt="Cancel" data-id="<?=$records['id'];?>">
                                         </td>
                                     </tr>
@@ -614,8 +643,8 @@ require 'includes/dateTime.php';
 
     <!-- Javascript -->
     <script src="js/mainScript.js"></script>
-    <script src="js/modal.js"></script>
     <script src="js/approval-f2f-telecon.js"></script>
+    <script src="js/modal.js"></script>
     <script src="js/calendar_booking.js"></script>
     <script src="js/calendar_schedule.js"></script>
     <script src="js/searchTab.js"></script>

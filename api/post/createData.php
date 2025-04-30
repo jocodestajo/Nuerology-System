@@ -7,7 +7,6 @@ if (isset($_POST['save_btn']))
     $hrn = mysqli_real_escape_string($conn, $_POST['hrn']);
     $name = mysqli_real_escape_string($conn, $_POST['name']);
     $age = mysqli_real_escape_string($conn, $_POST['age']);
-    $birthday = mysqli_real_escape_string($conn, $_POST['birthday']);
     $contact = mysqli_real_escape_string($conn, $_POST['contact']);
     $address = mysqli_real_escape_string($conn, $_POST['address']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
@@ -22,11 +21,16 @@ if (isset($_POST['save_btn']))
     $referal = mysqli_real_escape_string($conn, $_POST['referal']);
     $appointment_type = mysqli_real_escape_string($conn, $_POST['typeofappoint']);
 
+    $birthday = mysqli_real_escape_string($conn, $_POST['birthday']);
+    $date = new DateTime($birthday);
+    $formattedDate = $date->format('Y-m-d');
+    
     if ($old_new == "" && $appointment_type == "") {
         $_SESSION['message'] = "Please select 'Old' or 'New' for the client status.";
         header("Location: ../../index.php");
         exit(0);
     }
+
 
     // Start transaction
     mysqli_begin_transaction($conn);
@@ -40,7 +44,7 @@ if (isset($_POST['save_btn']))
             
         $stmt1 = mysqli_prepare($conn, $query1);
         mysqli_stmt_bind_param($stmt1, "ssssssssss", 
-            $hrn, $name, $age, $birthday, $contact, $address, $email, $viber, $informant, $informant_relation);
+            $hrn, $name, $age, $formattedDate, $contact, $address, $email, $viber, $informant, $informant_relation);
         
         if (!mysqli_stmt_execute($stmt1)) {
             throw new Exception("Error updating neurology_records: " . mysqli_error($conn));
@@ -66,12 +70,44 @@ if (isset($_POST['save_btn']))
         // Commit transaction if both queries succeed
         mysqli_commit($conn);
         $_SESSION['message'] = "Appointment Created Successfully";
-        header("Location: ../../index.php");
+        
+        // Get the referring page
+        $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+        
+        // Extract the page name from the referer URL
+        $page = basename(parse_url($referer, PHP_URL_PATH));
+        
+        // Redirect based on the source page
+        switch($page) {
+            case 'referral_form.php':
+                header("Location: ../../referral_form.php");
+                break;
+            case 'online_appointment.php':
+                header("Location: ../../online_appointment.php");
+                break;
+            default:
+                header("Location: ../../index.php");
+        }
         exit(0);
     } catch (Exception $e) {
         mysqli_rollback($conn);
         $_SESSION['message'] = "Error: " . $e->getMessage();
-        header("Location: ../../index.php");
+        
+        // Get the referring page for error case too
+        $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+        $page = basename(parse_url($referer, PHP_URL_PATH));
+        
+        // Redirect based on the source page
+        switch($page) {
+            case 'referral_form.php':
+                header("Location: ../../referral_form.php");
+                break;
+            case 'online_appointment.php':
+                header("Location: ../../online_appointment.php");
+                break;
+            default:
+                header("Location: ../../index.php");
+        }
         exit(0);
     }
 

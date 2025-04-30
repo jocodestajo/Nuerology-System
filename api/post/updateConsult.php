@@ -20,30 +20,21 @@ $response = ['success' => false, 'message' => ''];
         $old_new = isset($_POST['old_new']) ? mysqli_real_escape_string($conn, $_POST['old_new']) : '';
         $consultation = isset($_POST['consultation']) ? mysqli_real_escape_string($conn, $_POST['consultation']) : '';
         $date_sched = mysqli_real_escape_string($conn, $_POST['date_sched']);
-        // $complaint = mysqli_real_escape_string($conn, $_POST['complaint']);
-        // $history = mysqli_real_escape_string($conn, $_POST['history']);
+
         $refer_from = mysqli_real_escape_string($conn, $_POST['refer_from']);
         $refer_to = mysqli_real_escape_string($conn, $_POST['refer_to']);
         
-        // Check for undefined variables
-        $diagnosis = mysqli_real_escape_string($conn, $_POST['diagnosis']);
+        $diagnosis = '';
+        if (isset($_POST['diagnosis']) && is_array($_POST['diagnosis'])) {
+            $diagnosisArray = array_map(function($diag) use ($conn) {
+                return mysqli_real_escape_string($conn, $diag);
+            }, $_POST['diagnosis']);
+            $diagnosis = implode(', ', $diagnosisArray);
+        }
         $classification = mysqli_real_escape_string($conn, $_POST['classification']);
-        $medication = mysqli_real_escape_string($conn, $_POST['medication']);
-        // $medQty = isset($_POST['medQty']) ? mysqli_real_escape_string($conn, $_POST['medQty']) : '';
-        // if (isset($_POST['medication']) && isset($_POST['quantity'])) {
-        //     $medications = $_POST['medication'];
-        //     $quantities = $_POST['quantity'];
-        
-        //     $mergedData = [];
-        //     for ($i = 0; $i < count($medications); $i++) {
-        //         $mergedData[] = [
-        //             'name' => mysqli_real_escape_string($conn, $medications[$i]),
-        //             'quantity' => mysqli_real_escape_string($conn, $quantities[$i])
-        //         ];
-        //     }
-        
-        //     $medication_column = json_encode($mergedData); // Convert to JSON string
-        // }
+        $medication = isset($_POST['medication']) ? implode(', ', array_map(function($item) use ($conn) {
+            return mysqli_real_escape_string($conn, $item);
+        }, $_POST['medication'])) : '';
         
 
         $doctorName = mysqli_real_escape_string($conn, $_POST['doctorName']);

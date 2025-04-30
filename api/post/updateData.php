@@ -11,36 +11,38 @@ if (isset($_POST['approve_record'])) {
 
     // Update the record status to "Approved"
     $query = "UPDATE neurology_consultations c 
-    SET c.status = 'approved' 
-    WHERE c.record_id = '$records_id'";
+              SET c.status = 'approved' 
+              WHERE c.record_id = '$records_id'";
 
     $query_run = mysqli_query($conn, $query);
 
     if ($query_run) {
-        // Success response
+        // Set session message instead of returning in response
+        $_SESSION['message'] = "Appointment Approved";
         $response['success'] = true;
-        $response['message'] = "Appointment Approved";
     } else {
-        // Failure response
-        $response['message'] = "Appointment Not Approved";
+        $_SESSION['message'] = "Appointment Not Approved";
+        $response['message'] = "Database error occurred";
     }
 }
+
 
 if (isset($_POST['processed_record'])) {
     // Sanitize the input
     $records_id = mysqli_real_escape_string($conn, $_POST['processed_record']);
 
     // Update the record status to "Cancelled"
-    $query = "UPDATE neurology_records SET status='processed' WHERE id='$records_id'";
+    $query = "UPDATE neurology_records r LEFT JOIN neurology_consultations c ON r.id = c.record_id
+    SET c.status = 'processed' WHERE r.id = '$records_id'";
     $query_run = mysqli_query($conn, $query);
 
     if ($query_run) {
-        // Success response
+        // Set session message instead of returning in response
+        $_SESSION['message'] = "Appointment Processed";
         $response['success'] = true;
-        $response['message'] = "Appointment Processed";
     } else {
-        // Failure response
-        $response['message'] = "Appointment Not Processed";
+        $_SESSION['message'] = "Appointment Not Processed";
+        $response['message'] = "Database error occurred";
     }
 } 
 
@@ -54,12 +56,12 @@ if (isset($_POST['cancel_record'])) {
     $query_run = mysqli_query($conn, $query);
 
     if ($query_run) {
-        // Success response
+        // Set session message instead of returning in response
+        $_SESSION['message'] = "Appointment Cancelled";
         $response['success'] = true;
-        $response['message'] = "Appointment Cancelled";
     } else {
-        // Failure response
-        $response['message'] = "Appointment Not Cancelled";
+        $_SESSION['message'] = "Cancellation Failed";
+        $response['message'] = "Database error occurred";
     }
 }
 
@@ -72,10 +74,12 @@ if (isset($_POST['reschedule_record']) && isset($_POST['new_date'])) {
     $query_run = mysqli_query($conn, $query);
 
     if ($query_run) {
+        // Set session message instead of returning in response
+        $_SESSION['message'] = "Appointment Cancelled";
         $response['success'] = true;
-        $response['message'] = "Appointment Rescheduled";
     } else {
-        $response['message'] = "Failed to Reschedule Appointment";
+        $_SESSION['message'] = "Cancellation Failed";
+        $response['message'] = "Database error occurred";
     }
 }
 
@@ -125,15 +129,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_record'])) {
         c.appointment_type = '$appointment_type'
     WHERE r.id = '$record_id'";
     
+    $query_run = mysqli_query($conn, $query);
 
-
-
-    if (mysqli_query($conn, $query)) {
-        echo "Record updated successfully!";
+    if ($query_run) {
+        // Set session message instead of returning in response
+        $_SESSION['message'] = "Successfully Updated";
+        $response['success'] = true;
         header("Location: ../../index.php"); // Redirect after success
         exit;
     } else {
-        echo "Error updating record: " . mysqli_error($conn);
+        $_SESSION['message'] = "Update unsuccessful";
+        $response['message'] = "Database error occurred";
     }
 }
 

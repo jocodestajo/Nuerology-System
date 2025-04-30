@@ -1,3 +1,7 @@
+<?php
+    require 'config/dbcon.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +15,138 @@
     <link rel="stylesheet" href="css/mediaQuery.css">
 </head>
 <style>
+    /* Diagnosis tags styling */
+    /* .input-container {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 10px;
+        margin-bottom: 15px;
+        background-color: #f9f9f9;
+    } */
+    
+    .tags-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 5px;
+        /* min-height: 12px; */
+    }
+    
+    .tag {
+        display: flex;
+        align-items: center;
+        background-color: var(--lightgray-color);
+        border: 1px solid var(--blue-color);
+        border-radius: 20px;
+        padding: 3px 5px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        font-size: 14px;
+        /* color: var(--blue-color); */
+        /* box-shadow: 0 1px 3px var(--blue-color); */
+    }
+    
+    .tag span {
+        margin-right: 5px;
+    }
+    
+    .remove-tag {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        background-color: var(--grey-color);
+        color: white;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: bold;
+        margin-left: 5px;
+        transition: background-color 0.2s;
+    }
+    
+    .remove-tag:hover {
+        background-color: var(--red-color);
+    }
+    
+    .diagnosis {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+    
+    /* Medication styling */
+    .medication-entry {
+        margin: 5px 0;
+        position: relative;
+    }
+    
+    .remove-medication {
+        padding: 2px 15px;
+        font-size: 24px;
+    }
+    
+    #add-medication {
+        font-size: 24px;
+        padding: 2px 12px;
+    }
+    
+    /* Medicine search results styling */
+    .medicine-search-results {
+        position: absolute;
+        width: fit-content;
+        max-height: 200px;
+        overflow-y: auto;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        z-index: 1000;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .medicine-item {
+        padding: 8px 12px;
+        cursor: pointer;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .medicine-item:hover {
+        background-color: #f5f5f5;
+    }
+    
+    .medicine-item .generic-name {
+        font-weight: bold;
+    }
+    
+    .medicine-item .brand-name {
+        color: #666;
+        font-style: italic;
+    }
+    
+    .medicine-item .strength {
+        color: #333;
+    }
+    
+    /* Consultant styles */
+    .flex-row {
+        display: flex;
+        flex-direction: row;
+    }
+    
+    .align-items-center {
+        align-items: center;
+    }
+    
+    .margin-r-5 {
+        margin-right: 5px;
+    }
+    
+    .margin-b-5 {
+        margin-bottom: 5px;
+    }
 </style>
 <body>
 
@@ -27,47 +163,71 @@
 
             <div class="turnaroundTime">
                 <div class="heading1">
-                    <h2>Vital Sign</h2>
                     <h2>Doctor</h2>
                     <h2>Nurse</h2>
                 </div>
 
                 <div class="turnaroundContent">
-                    <div class="nurseVs">
-                        <span class="btn btn-green" id="startTimer1">Start</span>
-                        <span class="btn" id="endTimer1">End</span>
-                        <span class="timer1">00:00:00</span>
-                    </div>
                     <div class="doctorConsult">
-                        <span class="btn btn-green" id="startTimer2">Start</span>
-                        <span class="btn" id="endTimer2">End</span>
-                        <span class="timer2">00:00:00</span>
+                        <!-- <span class="timer2">00:00:00</span> -->
+
+                        <div>
+                            <label for="">Start Time</label>
+                            <input type="time" name="vs_start" step="1" required>
+                        </div>
+                        
+                        <div>
+                            <label for="">End Time</label>
+                            <input type="time" name="vs_end" step="1" required>
+                        </div>
                     </div>
                     <div class="nurseFinal">
-                        <span class="btn btn-green" id="startTimer3">Start</span>
+                        <!-- <span class="btn btn-green" id="startTimer3">Start</span>
                         <span class="btn" id="endTimer3">End</span>
-                        <span class="timer3">00:00:00</span>
+                        <span class="timer3">00:00:00</span> -->
+
+                        <div>
+                            <label for="">Start Time</label>
+                            <input type="time" name="vs_start" step="1" required>
+                        </div>
+                        
+                        <div>
+                            <label for="">End Time</label>
+                            <input type="time" name="vs_end" step="1" required>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="consultants">
-                <div class="heading11">
-                    <h2>Consultant</h2>
-                </div>
-                <div class="pad-hor-20">
-                    <label for="docName">Doctor:</label>
-                    <select name="doctorName" id="docName" require>
-                        <option value="">Doctor I</option>
-                        <option value="">Doctor II</option>
-                    </select>
-                </div>
-                <div class="pad-hor-20 pad-b-20">
-                    <label for="nurseName">Nurse:</label>
-                    <select name="nurseName" id="nurseName" require>
-                        <option value="">Nurse I</option>
-                        <option value="">Nurse II</option>
-                    </select>
+                <h2 class="center-text">Consultant</h2>
+                <div class="consultsss pad-hor-20 margin-b-20 width-100">
+                    <!-- <div>     -->
+                        <div class="margin-b-5 width-100">
+                            <select id="consultant1_type" class="margin-r-5 width-100 center-text">
+                                <option value="Doctor" selected>Doctor</option>
+                                <option value="Nurse">Nurse</option>
+                                <option value="Nurse Attendant">Nurse Attendant</option>
+                            </select>
+                        </div>
+                        <div>
+                            <input name="consultant1" id="consultant1" class="width-100" placeholder="Name" require>
+                            <!-- <label for="consultant1" id="consultant1_label">Consultant I:</label> -->
+                        </div>
+                    <!-- </div> -->
+                    <!-- <div> -->
+                        <div class="margin-b-5 width-100">
+                            <select id="consultant2_type" class="margin-r-5 width-100 center-text">
+                                <option value="Doctor">Doctor</option>
+                                <option value="Nurse" selected>Nurse</option>
+                                <option value="Nurse Attendant">Nurse Attendant</option>
+                            </select>
+                            <!-- <label for="consultant2" id="consultant2_label">Consultant II:</label> -->
+                        </div>
+                        <div class="width-100">
+                            <input name="consultant2" id="consultant2" class="width-100" placeholder="Name" require>
+                        </div>
+                    <!-- </div>                         -->
                 </div>
             </div>
             
@@ -208,58 +368,114 @@
                             </div>
                         </div>
 
-                        <div>
+                        <div class="width-100">
                             <h3>Diagnosis</h3>
-                            <textarea name="diagnosis" id=""></textarea>
+                            <div class="input-container padding-inline-10 margin-t-10 margin-b-10" id="inputContainer">
+                                <div class="tags-wrapper" id="tagsWrapper"></div>
+                                <input type="text" name="diagnosis[]" id="diagnosis" class="diagnosis"/>
+                            </div>
                         </div>
+                        
+
 
                         <div class="space-evenly">
                             <div class="classification">
                                 <h3>Classification</h3>
-                                <select name="" id="consultClassification" class="padding-20 center-text">
-                                    <option value=""></option>
+                                <select name="classification" id="consultClassification" class="padding-20 center-text">
+                                    <option value="" hidden disabled selected>--- Select Option ---</option>
+                                    
+                                    <?php
+                                        $sql1 = "SELECT id, name FROM neurology_classifications WHERE archived = 0";
+                                        $result1 = $conn->query($sql1);
+                                        
+                                        if ($result1->num_rows > 0) {
+                                            while($row = $result1->fetch_assoc()) {
+                                                echo "<option value='" . $row['id'] . "'>" . htmlspecialchars($row['name']) . "</option>";
+                                            }
+                                        } else {
+                                            echo "<option disabled>No classifications found</option>";
+                                        }
+                                    ?>
+                                    <option value="Other">Other</option>
+
                                 </select>
                             </div>
 
+
                             <div class="consultMed flex-row">
                                 <div class="width-100">
-                                    <h3>Medication</h3>
-                                    <input type="text" name="medication" class="width-100 padding-20 center-text">
-                                </div>
-                                <div class="width-20">
-                                    <h3>QTY</h3>
-                                    <input type="text" name="medQty" class="width-100 padding-20 center-text">
+                                    <h3 class="margin-b-10">Medication</h3>
+                                    <div id="medication-container">
+                                        <div class="medication-entry flex-row padding-inline-10 ">
+                                            <div class="width-80">
+                                                <input type="text" name="medication[]" class="width-100 center-text" placeholder="Enter Medication">
+                                            </div>
+                                            <div class="width-20">
+                                                <input type="number" name="medQty[]" class="width-100 center-text" placeholder="Qty">
+                                            </div>
+                                            <button type="button" id="add-medication" class="btn btn-blue">
+                                                <i class="fas fa-plus"></i> &#43;
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="flex-row">
-                            <div class="width-100 consult-referral">
+                            <div class="width-100 consult-referral margin-b-20">
                                 <h3>Referral</h3>
-                                <div class="text-left">
+                                <?php
+                                    $sql_depts = "SELECT deptid, deptname FROM departments WHERE deptlocation = 'Medical Service' AND deptstat = 0";
+                                    $result1 = $conn->query($sql_depts);
+
+                                    $departments = [];
+
+                                    if ($result1 && $result1->num_rows > 0) {
+                                        while($row = $result1->fetch_assoc()) {
+                                            $departments[] = $row;
+                                        }
+                                    }
+
+                                ?>
+                                
+                                <div class="text-left padding-inline-10">
                                     <label for="consultReferFrom" class="rfl">
                                         Referred fro:
-                                        <input type="text" name="refer_from" id="consultReferFrom" class="width-100 center-text">
+                                        <select name="refer_from" id="consultReferFrom" class="width-100 center-text">
+                                            <option value="N/A" hidden disabled selected>N/A</option>
+                                            <?php foreach ($departments as $dept): ?>
+                                                <option value="<?= $dept['deptid']; ?>"><?= htmlspecialchars($dept['deptname']); ?></option>
+                                            <?php endforeach; ?>
+                                            <option value="Other">Other</option>
+                                        </select>
                                     </label>
                                 </div>
                                     
-                                <div class="text-left">   
+                                <div class="text-left padding-inline-10">   
                                     <label for="consultReferTo" class="rfl">
-                                        Referred to:
-                                        <input type="text" name="refer_to" id="consultReferTo" class="width-100 center-text">
+                                        Refer to:
+                                        <select name="refer_to" id="consultReferTo" class="width-100 center-text">
+                                            <option value="N/A" hidden disabled selected>N/A</option>
+                                            <?php foreach ($departments as $dept): ?>
+                                                <option value="<?= $dept['deptid']; ?>"><?= htmlspecialchars($dept['deptname']); ?></option>
+                                            <?php endforeach; ?>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                        <input type="text" class="otherInstitute width-100 center-text" placeholder="Other Institute">
                                     </label>
                                 </div>
                             </div>
 
                             <div class="width-100 consult-followUp">
                                 <h3>Follow Up</h3>
-                                <div>
+                                <div class="padding-inline-10">
                                     <label for="consultFollowUp">
                                         <input type="checkbox" name="follow_up" value="Follow Up" id="consultFollowUp">
                                         Follow Up
                                     </label>
                                 </div>
-                                <div class="calendar text-left">
+                                <div class="calendar text-left padding-inline-10">
                                     <label for="">
                                         Date:
                                         <!-- <input type="date" id="consultDate" name="date_sched" class="width-100 center-text"> -->
@@ -291,45 +507,261 @@
     <script src="js/consultation.js"></script>
     <script src="js/functions.js"></script>
     <script src="js/calendar_booking.js"></script>
+    <script src="js/vital_signs.js"></script>
+
     <script>
-        // Timer function with HH:MM:SS format using Date for elapsed time
-        function startTimer(timerElement, startButton, endButton) {
-            let startTime = 0;
-            let interval;
+        // DIAGNOSIS wrapping data entry
+        const inputField = document.getElementById('diagnosis');
+        const tagsWrapper = document.getElementById("tagsWrapper");
+
+        // Handle "Enter" keypress to create a tag inside the input field
+        inputField.addEventListener("keypress", function (event) {
+            if (event.key === "Enter" && inputField.value.trim() !== "") {
+                event.preventDefault(); // Prevent default Enter behavior (e.g., submitting)
+
+                // Create a tag div with the value
+                const tag = document.createElement("div");
+                tag.classList.add("tag");
+
+                // Add the value as text inside the tag
+                const text = document.createElement("span");
+                text.textContent = inputField.value.trim();
+                tag.appendChild(text);
+
+                // Add a remove button to the tag
+                const removeBtn = document.createElement("span");
+                removeBtn.textContent = "x";
+                removeBtn.classList.add("remove-tag");
+                removeBtn.onclick = function () {
+                    tag.remove(); // Remove the tag when clicked
+                    // After removing the tag, focus the input
+                    inputField.focus();
+                };
+                tag.appendChild(removeBtn);
+
+                // Append the tag inside the tags wrapper
+                tagsWrapper.appendChild(tag);
+
+                // Clear the input field for the next value
+                inputField.value = "";
+
+                // Focus back to input
+                inputField.focus();
+            }
+        });
+
+        // Add this inside your <script> where diagnosis tags are handled
+        document.querySelector('form').addEventListener('submit', function(e) {
+            // Remove any previously added hidden diagnosis inputs
+            document.querySelectorAll('input[name="diagnosis[]"]').forEach(el => el.remove());
+
+            // Collect all tag values
+            const tags = document.querySelectorAll('#tagsWrapper .tag span:first-child');
+            tags.forEach(tag => {
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'diagnosis[]';
+                hiddenInput.value = tag.textContent;
+                this.appendChild(hiddenInput);
+            });
+
+            // If the input field has a value, add it as well
+            if (inputField.value.trim() !== "") {
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'diagnosis[]';
+                hiddenInput.value = inputField.value.trim();
+                this.appendChild(hiddenInput);
+            }
+        });
+        
+        // Consultant type selection functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const consultant1Type = document.getElementById('consultant1_type');
+            const consultant2Type = document.getElementById('consultant2_type');
+            const consultant1Label = document.getElementById('consultant1_label');
+            const consultant2Label = document.getElementById('consultant2_label');
             
-            // Function to format the elapsed time into HH:MM:SS
-            function formatTime(elapsedTime) {
-                const hours = Math.floor(elapsedTime / 3600);
-                const minutes = Math.floor((elapsedTime % 3600) / 60);
-                const seconds = Math.floor(elapsedTime % 60);
-
-                return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            // Update label based on selection
+            function updateConsultantLabel(select, label) {
+                label.textContent = select.value + ':';
             }
-
-            // Update the timer display
-            function updateTimer() {
-                const elapsedTime = (new Date() - startTime) / 1000; // Elapsed time in seconds
-                timerElement.textContent = `${formatTime(elapsedTime)}`;
+            
+            // Set initial labels
+            updateConsultantLabel(consultant1Type, consultant1Label);
+            updateConsultantLabel(consultant2Type, consultant2Label);
+            
+            // Update labels when selection changes
+            consultant1Type.addEventListener('change', function() {
+                updateConsultantLabel(consultant1Type, consultant1Label);
+            });
+            
+            consultant2Type.addEventListener('change', function() {
+                updateConsultantLabel(consultant2Type, consultant2Label);
+            });
+        });
+    </script>
+    <script>
+        // MEDICATION handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const addMedicationBtn = document.getElementById('add-medication');
+            const medicationContainer = document.getElementById('medication-container');
+            
+            // Function to create a medicine search results container
+            function createMedicineSearchResults() {
+                const resultsContainer = document.createElement('div');
+                resultsContainer.className = 'medicine-search-results';
+                return resultsContainer;
             }
-
-            // Start the timer
-            startButton.addEventListener('click', () => {
-                startTime = new Date(); // Record the time when the start button is clicked
-                interval = setInterval(updateTimer, 1000); // Update every second
-                startButton.disabled = true; // Disable start button after it's clicked
+            
+            // Function to handle medicine search
+            function setupMedicineSearch(inputElement) {
+                let searchTimeout;
+                const resultsContainer = createMedicineSearchResults();
+                inputElement.parentNode.appendChild(resultsContainer);
+                
+                inputElement.addEventListener('keyup', function() {
+                    clearTimeout(searchTimeout);
+                    const searchTerm = this.value.trim();
+                    
+                    // Hide results if search term is empty
+                    if (searchTerm === '') {
+                        resultsContainer.innerHTML = '';
+                        resultsContainer.style.display = 'none';
+                        return;
+                    }
+                    
+                    // Set a timeout to avoid too many requests while typing
+                    searchTimeout = setTimeout(function() {
+                        // Fetch medicine data from the server
+                        fetch(`api/get/search_medicines.php?search=${encodeURIComponent(searchTerm)}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                resultsContainer.innerHTML = '';
+                                
+                                if (data.length > 0) {
+                                    data.forEach(medicine => {
+                                        const medicineItem = document.createElement('div');
+                                        medicineItem.className = 'medicine-item';
+                                        
+                                        // Create medicine display with generic name, brand name, and strength
+                                        const displayText = `${medicine.generic_name} ${medicine.brand_name ? `(${medicine.brand_name})` : ''} ${medicine.strength} ${medicine.strength_description || ''}`;
+                                        
+                                        medicineItem.innerHTML = `
+                                            <div class="generic-name">${medicine.generic_name}</div>
+                                            <div class="brand-name">${medicine.brand_name || ''}</div>
+                                            <div class="strength">${medicine.strength} ${medicine.strength_description || ''}</div>
+                                        `;
+                                        
+                                        // Add click event to select the medicine
+                                        medicineItem.addEventListener('click', function() {
+                                            inputElement.value = displayText;
+                                            resultsContainer.style.display = 'none';
+                                            
+                                            // Store the medicine ID in a hidden input
+                                            const medicineIdInput = inputElement.parentNode.querySelector('input[name="medicine_id[]"]');
+                                            if (medicineIdInput) {
+                                                medicineIdInput.value = medicine.id;
+                                            }
+                                        });
+                                        
+                                        resultsContainer.appendChild(medicineItem);
+                                    });
+                                    
+                                    resultsContainer.style.display = 'block';
+                                } else {
+                                    resultsContainer.style.display = 'none';
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error fetching medicines:', error);
+                                resultsContainer.style.display = 'none';
+                            });
+                    }, 300); // 300ms delay
+                });
+                
+                // Hide results when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!inputElement.contains(event.target) && !resultsContainer.contains(event.target)) {
+                        resultsContainer.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Setup search for the initial medication input
+            const initialMedicationInput = medicationContainer.querySelector('input[name="medication[]"]');
+            setupMedicineSearch(initialMedicationInput);
+            
+            // Add hidden input for medicine ID
+            const medicineIdInput = document.createElement('input');
+            medicineIdInput.type = 'hidden';
+            medicineIdInput.name = 'medicine_id[]';
+            initialMedicationInput.parentNode.appendChild(medicineIdInput);
+            
+            addMedicationBtn.addEventListener('click', function() {
+                const medicationEntry = document.createElement('div');
+                medicationEntry.className = 'medication-entry flex-row padding-inline-10';
+                
+                const medicationInput = document.createElement('div');
+                medicationInput.className = 'width-80';
+                medicationInput.innerHTML = `
+                    <input type="text" name="medication[]" class="width-100 center-text" placeholder="Enter medication">
+                    <input type="hidden" name="medicine_id[]">
+                `;
+                
+                const qtyInput = document.createElement('div');
+                qtyInput.className = 'width-20';
+                qtyInput.innerHTML = `
+                    <input type="number" name="medQty[]" class="width-100 center-text" placeholder="Qty">
+                `;
+                
+                const removeBtn = document.createElement('div');
+                removeBtn.className = 'width-10';
+                removeBtn.innerHTML = `
+                    <button type="button" class="btn btn-red remove-medication">
+                        &#45;
+                    </button>
+                `;
+                
+                medicationEntry.appendChild(medicationInput);
+                medicationEntry.appendChild(qtyInput);
+                medicationEntry.appendChild(removeBtn);
+                
+                medicationContainer.appendChild(medicationEntry);
+                
+                // Setup search for the new medication input
+                const newMedicationInput = medicationInput.querySelector('input[name="medication[]"]');
+                setupMedicineSearch(newMedicationInput);
+                
+                // Add event listener to the new remove button
+                const newRemoveBtn = medicationEntry.querySelector('.remove-medication');
+                newRemoveBtn.addEventListener('click', function() {
+                    medicationEntry.remove();
+                });
             });
+        });
+    </script>
+   <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const referToSelect = document.getElementById('consultReferTo');
+        const otherInstituteInput = document.querySelector('.otherInstitute');
 
-            // Stop the timer
-            endButton.addEventListener('click', () => {
-                clearInterval(interval); // Stop the timer
-                startButton.disabled = false; // Enable start button after stopping
-            });
+        function toggleOtherInstitute() {
+            if (referToSelect.value === 'Other') {
+                otherInstituteInput.style.display = 'block';
+            } else {
+                otherInstituteInput.style.display = 'none';
+            }
         }
 
-        // Apply the startTimer function to each timer
-        startTimer(document.querySelector('.timer1'), document.querySelector('#startTimer1'), document.querySelector('#endTimer1'));
-        startTimer(document.querySelector('.timer2'), document.querySelector('#startTimer2'), document.querySelector('#endTimer2'));
-        startTimer(document.querySelector('.timer3'), document.querySelector('#startTimer3'), document.querySelector('#endTimer3'));
-    </script>
+        // Initial check in case of form repopulation
+        toggleOtherInstitute();
+
+        referToSelect.addEventListener('change', toggleOtherInstitute);
+    });
+   </script>
+    <?php
+        $conn->close();
+    ?>
 </body>
 </html>

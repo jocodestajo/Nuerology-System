@@ -1,6 +1,6 @@
 // DATE FORMAT CONVERTION
 function formatDate(inputDate) {
-  let months = {
+  const months = {
     Jan: "01",
     Feb: "02",
     Mar: "03",
@@ -15,17 +15,29 @@ function formatDate(inputDate) {
     Dec: "12",
   };
 
-  let parts = inputDate.split("-"); // Split "25-Sep-1968" into ["25", "Sep", "1968"]
+  const parts = inputDate.split("-");
   if (parts.length !== 3) {
     console.error("Invalid date format:", inputDate);
-    return ""; // Return empty if format is incorrect
+    return "";
   }
 
-  let day = parts[0].padStart(2, "0"); // Ensure 2-digit day
-  let month = months[parts[1]]; // Convert "Sep" to "09"
-  let year = parts[2]; // Get year
+  let day, month, year;
 
-  return `${year}-${month}-${day}`; // Return in "YYYY-MM-DD" format
+  // Check if the middle part is a month name (e.g., "Nov")
+  if (isNaN(parts[1]) && months[parts[1]]) {
+    // Format: DD-MMM-YYYY (e.g., 10-Nov-1999)
+    day = parts[0].padStart(2, "0");
+    month = months[parts[1]];
+    year = parts[2];
+  } else {
+    // Format: DD-MM-YYYY (e.g., 10-10-1960)
+    day = parts[0].padStart(2, "0");
+    month = parts[1].padStart(2, "0");
+    year = parts[2];
+  }
+
+  // Return in YYYY-MM-DD format (required by <input type="date">)
+  return `${year}-${month}-${day}`;
 }
 
 // calculate age from birthday
@@ -48,8 +60,8 @@ function calculateAge(birthday) {
 if (document.querySelectorAll(".birthdayInput")) {
   document.querySelectorAll(".birthdayInput").forEach((input) => {
     input.addEventListener("input", function () {
-      let birthday = this.value; // Get selected date
-      let ageOutputId = this.getAttribute("data-age-output"); // Get linked span ID
+      let birthday = this.value;
+      let ageOutputId = this.getAttribute("data-age-output");
       let age = calculateAge(birthday);
 
       document.getElementById(ageOutputId).value = age;
@@ -62,3 +74,22 @@ if (document.querySelectorAll(".birthdayInput")) {
     });
   });
 }
+
+// Get all client select elements
+const clientSelects = document.querySelectorAll(".clientSelection");
+
+// Loop through each client select element and add an event listener
+clientSelects.forEach((clientSelect) => {
+  const consultationSelectId = clientSelect.getAttribute("data-consult-type");
+  const consultationSelect = document.getElementById(consultationSelectId);
+
+  // Event listener for the "Type of Client" dropdown
+  clientSelect.addEventListener("change", function () {
+    if (clientSelect.value === "New") {
+      consultationSelect.value = "Face to Face"; // Default to "Face to Face"
+      consultationSelect.disabled = true; // Disable the consultation select
+    } else if (clientSelect.value === "Old") {
+      consultationSelect.disabled = false; // Enable the consultation select
+    }
+  });
+});

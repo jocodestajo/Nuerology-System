@@ -336,7 +336,7 @@ function uncheckHeaderCheckboxes() {
   });
 }
 
-// Function to handle cancellation for both individual and bulk actions
+// Cancellation for both individual and bulk actions
 function handleCancellation(recordIds) {
   const modal = document.getElementById("confirmModal");
   modal.style.display = "block";
@@ -362,7 +362,8 @@ function handleCancellation(recordIds) {
           });
           document.querySelector(".btn-div-checkbox").classList.remove("show");
           uncheckHeaderCheckboxes(); // Uncheck header checkboxes
-          alert("Selected appointments cancelled successfully!");
+          // alert("Selected appointments cancelled successfully!");
+          window.location.reload();
         } else {
           alert("Some appointments could not be cancelled.");
         }
@@ -409,7 +410,7 @@ document
 // Initialize the calendar
 initRescheduleCalendar();
 
-// Add the reschedule calendar functionality
+// RESCHEDULE CALENDAR
 function initRescheduleCalendar() {
   // Update the reschedule button handler /////////////////////////////////////////////////////////////////////////
   document
@@ -534,21 +535,6 @@ function initRescheduleCalendar() {
     // calendarContainer.style.display = "none";
   }
 
-  // // Show/hide calendar on trigger click
-  // calendarTrigger.addEventListener("click", function (e) {
-  //   e.preventDefault();
-  //   // console.log(calendarContainer.style.display == "none");
-  //   if (calendarContainer.style.display === "none") {
-  //     // console.log(calendarContainer);
-  //     calendarContainer.style.display = "block";
-  //     updateCalendar();
-  //     return;
-  //   } else {
-  //     calendarContainer.style.display = "none";
-  //     return;
-  //   }
-  // });
-
   // Handle confirm reschedule
   document.getElementById("confirmReschedule").onclick = function () {
     const newDate = dateInput.value;
@@ -594,7 +580,9 @@ function initRescheduleCalendar() {
           // clear date input value
           document.getElementById("reschedule-date").value = "";
           uncheckHeaderCheckboxes();
-          alert("Appointments rescheduled successfully!");
+          window.location.reload();
+
+          // alert("Appointments rescheduled successfully!");
         } else {
           alert("Some appointments could not be rescheduled.");
         }
@@ -643,8 +631,10 @@ document.querySelectorAll(".update-approve").forEach(function (button) {
       .then((data) => {
         if (data.success) {
           if (row) row.remove();
-          alert("Appointment Approved!");
+          // Instead of alert, reload the page to show the session message
+          window.location.reload();
         } else {
+          // For errors, you might still want to use alert or implement error display
           alert("Error: " + data.message);
         }
       })
@@ -672,7 +662,8 @@ document.querySelectorAll(".update-processed").forEach(function (button) {
       .then((data) => {
         if (data.success) {
           if (row) row.remove();
-          alert("Appointment Processed");
+          // alert("Appointment Processed");
+          window.location.reload();
         } else {
           alert("Error: " + data.message);
         }

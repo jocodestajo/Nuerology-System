@@ -122,11 +122,12 @@
                                 <div class="calendar">
                                     <div class="calendar-date">
                                         <label for="date">Date Schedule:</label>
-                                        <input type="date" id="date" name="date_sched">
+                                        <input type="date" id="dateSched5" name="date_sched">
                                     </div>
-                                    <div class="calendar-btn">
-                                        <span class="btn btn-blue">Calendar</span>
-                                    </div>
+                                    <!-- <div class="calendar-btn">
+                                        <span class="datePicker btn btn-blue" data-sched-output="dateSched5">Calendar</span>
+                                    </div> -->
+                                    <!-- <?php include('calendarTable_modal.php'); ?> -->
                                 </div>
                             </div>
                         </div>
@@ -141,12 +142,19 @@
                             <label for="q1">Ano ang ipapakunsulta?</label>
                             <select name="complaint" class="options">
                                 <option value="" hidden></option>
-                                <option value="Epilepsy / Seisure (Kombulsyon)">Epilepsy / Seisure (Kombulsyon)</option>
-                                <option value="Dementia (pagkalimot)">Dementia (pagkalimot)</option>
-                                <option value="Stroke">Stroke</option>
-                                <option value="Pananakit ng ulo">Pananakit ng ulo</option>
-                                <option value="Panghihina / Pamamanhid ng isang bahagi ng katawan">Panghihina / Pamamanhid ng isang bahagi ng katawan</option>
-                                <option value="Iba pang karamdaman">Iba pang karamdaman</option>
+                                <?php
+                                    $sql1 = "SELECT id, name FROM neurology_classifications WHERE archived = 0";
+                                    $result1 = $conn->query($sql1);
+                                    
+                                    if ($result1->num_rows > 0) {
+                                        while($row = $result1->fetch_assoc()) {
+                                            echo "<option value='" . $row['name'] . "'>" . htmlspecialchars($row['name']) . "</option>";
+                                        }
+                                    } else {
+                                        echo "<option disabled>No classifications found</option>";
+                                    }
+                                ?>
+                                <option value="Other">Other</option>
                                 </select>
                             </div>
                             

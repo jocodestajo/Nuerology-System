@@ -20,20 +20,20 @@ viewButtons.forEach((button) => {
     fetch("api/get/fetch_record.php?id=" + recordId)
       .then((response) => response.json())
       .then((data) => {
-        // check data
         // console.log(data);
 
         // Fill the modal form with the data
         document.querySelector('input[name="hrn"]').value = data.hrn;
         document.querySelector('input[name="name"]').value = data.name;
-        document.querySelector('input[name="age"]').value = data.age;
         document.querySelector('input[name="address"]').value = data.address;
 
         // Convert and set the birthday field
         if (data.birthday) {
-          document.querySelector('input[name="birthday"]').value = formatDate(
-            data.birthday
-          );
+          document.querySelector('input[name="birthday"]').value =
+            data.birthday;
+
+          let age = calculateAge(data.birthday); // Ensure calculateAge() also expects YYYY-MM-DD
+          document.querySelector('input[name="age"]').value = age;
         }
         // document.querySelector('input[name="birthday"]').value = data.birthday;
         document.querySelector('input[name="email"]').value = data.email;
@@ -48,7 +48,7 @@ viewButtons.forEach((button) => {
         document.querySelector('input[name="date_sched"]').value =
           data.date_sched;
         document.querySelector('textarea[name="history"]').value = data.history;
-        document.querySelector('input[name="referal"]').value = data.referal;
+        document.querySelector('input[name="referal"]').value = data.refer_from;
 
         // Set the correct option in the select inputs
         document.querySelector('select[name="typeofappoint"]').value =
@@ -79,9 +79,7 @@ viewButtons.forEach((button) => {
         // Set fields to disabled
         document.getElementById("view-hrn").readOnly = true;
         document.getElementById("view-name").readOnly = true;
-        // document.getElementById("view-age").readOnly = true;
-        // document.getElementById("view-birthday").readOnly = true;
-        // document.getElementById("view-contact").readOnly = true;
+
         document.getElementById("view-address").readOnly = true;
         document.getElementById("view-clientSelect").readOnly = true;
 
@@ -156,4 +154,47 @@ view_appointment.addEventListener("change", function () {
   } else if (this.value !== "Referral") {
     viewReferalContent.style.display = "none";
   }
+});
+
+// FOR VITAL SIGNS AND CONSULTATION MODAL
+var viewConsultation = document.querySelectorAll(".action-img[alt='Approve']");
+var vitalSignsConsultModal = document.getElementById("vitalSignsConsultModal");
+var closeBtn = vitalSignsConsultModal.querySelector(".close");
+var vitalSignsBtn = document.getElementById("vitalSignsBtn");
+var consultationBtn = document.getElementById("consultationBtn");
+
+viewConsultation.forEach((button) => {
+  button.addEventListener("click", function (e) {
+    e.preventDefault();
+    var recordId = this.getAttribute("data-record-id");
+    vitalSignsConsultModal.style.display = "block";
+
+    // Store the record ID for use by the buttons
+    vitalSignsBtn.setAttribute("data-record-id", recordId);
+    consultationBtn.setAttribute("data-record-id", recordId);
+  });
+});
+
+// Close modal when clicking the X
+closeBtn.addEventListener("click", function () {
+  vitalSignsConsultModal.style.display = "none";
+});
+
+// Close modal when clicking outside
+window.addEventListener("click", function (event) {
+  if (event.target === vitalSignsConsultModal) {
+    vitalSignsConsultModal.style.display = "none";
+  }
+});
+
+// Handle Vital Signs button click
+vitalSignsBtn.addEventListener("click", function () {
+  var recordId = this.getAttribute("data-record-id");
+  window.open("vital_signs.php?id=" + recordId, "_blank");
+});
+
+// Handle Consultation button click
+consultationBtn.addEventListener("click", function () {
+  var recordId = this.getAttribute("data-record-id");
+  window.open("consultation.php?id=" + recordId, "_blank");
 });

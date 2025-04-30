@@ -266,8 +266,8 @@ body {
 }
 .borderbox .col-2 .calendar .calendar-date input {
   width: 100%;
-  border: none;
-  border-bottom: 1px solid var(--grey-color);
+  /* border: none;
+  border-bottom: 1px solid var(--grey-color); */
   text-align: center;
 }
 .borderbox .col-2 .calendar .calendar-btn .btn {
@@ -869,16 +869,10 @@ tr .th-consultation {
 }
 
 #rescheduleCalendarTable {
-  min-width: 300px; /* Minimum width to prevent squishing */
+  min-width: 300px;
   width: 100%;
   table-layout: fixed;
 }
-
-/* #rescheduleCalendarTable td {
-  height: 80px;
-  padding: 5px;
-  vertical-align: middle;
-} */
 
 .rescheduleContent {
   margin-top: 15px;
@@ -909,11 +903,11 @@ tr .th-consultation {
   grid-template-columns: repeat(6, 1fr);
 }
 
-.container3-Content div:nth-child(1),
+.container3-Content div:nth-child(2),
 .container3-Content div:nth-child(4) {
   grid-column: span 4;
 }
-.container3-Content div:nth-child(2),
+.container3-Content div:nth-child(1),
 .container3-Content div:nth-child(3) {
   grid-column: span 2;
 }
@@ -942,37 +936,28 @@ tr .th-consultation {
   padding-top: 2rem;
 }
 
-.turnaroundContent div span {
-  border-top-left-radius: 1.5rem;
-  border-top-right-radius: 1.5rem;
-  border-bottom-right-radius: 1.5rem;
-  border-bottom-left-radius: 1.5rem;
-}
-
-.turnaroundContent div .timer1,
-.turnaroundContent div .timer2,
-.turnaroundContent div .timer3 {
-  display: block;
-  margin-top: 2rem;
-  text-align: center;
-}
-
 .consultants {
   margin: 20px;
   border: 1px solid var(--grey-color);
 }
 
-.consultants div {
-  display: flex;
-  justify-content: center;
+.consultsss {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
 }
 
-.consultants div select {
-  width: 400px;
-  text-align: center;
+.consultsss:nth-child(1),
+.consultsss:nth-child(3) {
+  grid-column: span 1;
 }
 
-.consultants div h2,
+.consultsss:nth-child(2),
+.consultsss:nth-child(4) {
+  grid-column: span 5;
+}
+
+.consultants h2,
 #personalInformation h2,
 #contactDetails h2,
 #informantDetails h2,
@@ -1124,4 +1109,8 @@ tr .th-consultation {
   border: 1px solid var(--grey-color);
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
+}
+
+.otherInstitute {
+  display: none;
 }
