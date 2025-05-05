@@ -16,7 +16,7 @@ LEFT JOIN neurology_records r ON c.record_id = r.id
 WHERE YEAR(c.date_sched) = ? 
     AND MONTH(c.date_sched) = ?
     AND c.status = 'approved'
-    AND c.consultation = 'face to face'
+    AND c.consultation = 'face to face' OR c.status = 'follow up' AND c.consultation = 'face to face'
 GROUP BY c.date_sched";
 
 
@@ -29,7 +29,7 @@ LEFT JOIN neurology_records r ON c.record_id = r.id
 WHERE YEAR(c.date_sched) = ? 
     AND MONTH(c.date_sched) = ?
     AND c.status = 'approved'
-    AND c.consultation = 'teleconsultation'
+    AND c.consultation = 'teleconsultation' OR c.status = 'follow up' AND c.consultation = 'teleconsultation'
     GROUP BY c.date_sched";
 
 $counts = [];

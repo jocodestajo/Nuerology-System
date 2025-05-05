@@ -159,7 +159,7 @@
             <!-- <h2 class="consult-h2-header">Consultation</h2> -->
             <a href="./index.php" class="btn btn-grey ">Back</a>
         </div>
-        <form action="api/post/updateConsult.php" method="post" class="container3-Content">
+        <form action="api/post/updateConsult.php" method="post" id="diagnosisForm" class="container3-Content">
 
             <div class="turnaroundTime">
                 <div class="heading1">
@@ -169,31 +169,25 @@
 
                 <div class="turnaroundContent">
                     <div class="doctorConsult">
-                        <!-- <span class="timer2">00:00:00</span> -->
-
                         <div>
                             <label for="">Start Time</label>
-                            <input type="time" name="vs_start" step="1" required>
+                            <input type="time" name="consultStart" step="1" required>
                         </div>
                         
                         <div>
                             <label for="">End Time</label>
-                            <input type="time" name="vs_end" step="1" required>
+                            <input type="time" name="consultEnd" step="1" required>
                         </div>
                     </div>
                     <div class="nurseFinal">
-                        <!-- <span class="btn btn-green" id="startTimer3">Start</span>
-                        <span class="btn" id="endTimer3">End</span>
-                        <span class="timer3">00:00:00</span> -->
-
                         <div>
                             <label for="">Start Time</label>
-                            <input type="time" name="vs_start" step="1" required>
+                            <input type="time" name="educStart" step="1" required>
                         </div>
                         
                         <div>
                             <label for="">End Time</label>
-                            <input type="time" name="vs_end" step="1" required>
+                            <input type="time" name="educEnd" step="1" required>
                         </div>
                     </div>
                 </div>
@@ -204,20 +198,20 @@
                 <div class="consultsss pad-hor-20 margin-b-20 width-100">
                     <!-- <div>     -->
                         <div class="margin-b-5 width-100">
-                            <select id="consultant1_type" class="margin-r-5 width-100 center-text">
+                            <select name="consultant_1_type" id="consultant1_type" class="margin-r-5 width-100 center-text">
                                 <option value="Doctor" selected>Doctor</option>
                                 <option value="Nurse">Nurse</option>
-                                <option value="Nurse Attendant">Nurse Attendant</option>
+                                <option value="NA.">Nurse Attendant</option>
                             </select>
                         </div>
                         <div>
-                            <input name="consultant1" id="consultant1" class="width-100" placeholder="Name" require>
+                            <input name="consultant_1" id="consultant1" class="width-100" placeholder="Name" require>
                             <!-- <label for="consultant1" id="consultant1_label">Consultant I:</label> -->
                         </div>
                     <!-- </div> -->
                     <!-- <div> -->
                         <div class="margin-b-5 width-100">
-                            <select id="consultant2_type" class="margin-r-5 width-100 center-text">
+                            <select name="consultant_2_type" id="consultant2_type" class="margin-r-5 width-100 center-text">
                                 <option value="Doctor">Doctor</option>
                                 <option value="Nurse" selected>Nurse</option>
                                 <option value="Nurse Attendant">Nurse Attendant</option>
@@ -225,7 +219,7 @@
                             <!-- <label for="consultant2" id="consultant2_label">Consultant II:</label> -->
                         </div>
                         <div class="width-100">
-                            <input name="consultant2" id="consultant2" class="width-100" placeholder="Name" require>
+                            <input name="consultant_2" id="consultant2" class="width-100" placeholder="Name" require>
                         </div>
                     <!-- </div>                         -->
                 </div>
@@ -372,12 +366,10 @@
                             <h3>Diagnosis</h3>
                             <div class="input-container padding-inline-10 margin-t-10 margin-b-10" id="inputContainer">
                                 <div class="tags-wrapper" id="tagsWrapper"></div>
-                                <input type="text" name="diagnosis[]" id="diagnosis" class="diagnosis"/>
+                                <input type="text" id="diagnosis" class="diagnosis" placeholder="Write down diagnosis and press Enter"/>
                             </div>
                         </div>
                         
-
-
                         <div class="space-evenly">
                             <div class="classification">
                                 <h3>Classification</h3>
@@ -458,11 +450,11 @@
                                         <select name="refer_to" id="consultReferTo" class="width-100 center-text">
                                             <option value="N/A" hidden disabled selected>N/A</option>
                                             <?php foreach ($departments as $dept): ?>
-                                                <option value="<?= $dept['deptid']; ?>"><?= htmlspecialchars($dept['deptname']); ?></option>
+                                                <option value="<?= $dept['deptname']; ?>"><?= htmlspecialchars($dept['deptname']); ?></option>
                                             <?php endforeach; ?>
                                             <option value="Other">Other</option>
                                         </select>
-                                        <input type="text" class="otherInstitute width-100 center-text" placeholder="Other Institute">
+                                        <input type="text" name="otherInstitute" class="otherInstitute width-100 center-text" placeholder="Other Institute">
                                     </label>
                                 </div>
                             </div>
@@ -471,7 +463,7 @@
                                 <h3>Follow Up</h3>
                                 <div class="padding-inline-10">
                                     <label for="consultFollowUp">
-                                        <input type="checkbox" name="follow_up" value="Follow Up" id="consultFollowUp">
+                                        <input type="checkbox" name="follow_up" value="follow up" id="consultFollowUp">
                                         Follow Up
                                     </label>
                                 </div>
@@ -489,6 +481,11 @@
 
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="padding-inline-10">
+                            <h3>Remarks</h3>
+                            <textarea rows="4" name="remarks" class="padding-5"></textarea>
                         </div>
                     </div>
 
@@ -510,70 +507,67 @@
     <script src="js/vital_signs.js"></script>
 
     <script>
-        // DIAGNOSIS wrapping data entry
-        const inputField = document.getElementById('diagnosis');
-        const tagsWrapper = document.getElementById("tagsWrapper");
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('diagnosisForm');
+            const inputField = document.getElementById('diagnosis');
+            const tagsWrapper = document.getElementById("tagsWrapper");
 
-        // Handle "Enter" keypress to create a tag inside the input field
-        inputField.addEventListener("keypress", function (event) {
-            if (event.key === "Enter" && inputField.value.trim() !== "") {
-                event.preventDefault(); // Prevent default Enter behavior (e.g., submitting)
+            // Handle Enter keypress to create a tag
+            inputField.addEventListener("keypress", function (event) {
+                if (event.key === "Enter" && inputField.value.trim() !== "") {
+                    event.preventDefault(); // Prevent form submission
 
-                // Create a tag div with the value
-                const tag = document.createElement("div");
-                tag.classList.add("tag");
+                    // Create tag element
+                    const tag = document.createElement("div");
+                    tag.classList.add("tag");
 
-                // Add the value as text inside the tag
-                const text = document.createElement("span");
-                text.textContent = inputField.value.trim();
-                tag.appendChild(text);
+                    // Tag text
+                    const text = document.createElement("span");
+                    text.textContent = inputField.value.trim();
+                    tag.appendChild(text);
 
-                // Add a remove button to the tag
-                const removeBtn = document.createElement("span");
-                removeBtn.textContent = "x";
-                removeBtn.classList.add("remove-tag");
-                removeBtn.onclick = function () {
-                    tag.remove(); // Remove the tag when clicked
-                    // After removing the tag, focus the input
-                    inputField.focus();
-                };
-                tag.appendChild(removeBtn);
+                    // Remove button
+                    const removeBtn = document.createElement("span");
+                    removeBtn.textContent = "x";
+                    removeBtn.classList.add("remove-tag");
+                    removeBtn.onclick = () => {
+                        tag.remove();
+                        inputField.focus();
+                    };
+                    tag.appendChild(removeBtn);
 
-                // Append the tag inside the tags wrapper
-                tagsWrapper.appendChild(tag);
-
-                // Clear the input field for the next value
-                inputField.value = "";
-
-                // Focus back to input
-                inputField.focus();
-            }
-        });
-
-        // Add this inside your <script> where diagnosis tags are handled
-        document.querySelector('form').addEventListener('submit', function(e) {
-            // Remove any previously added hidden diagnosis inputs
-            document.querySelectorAll('input[name="diagnosis[]"]').forEach(el => el.remove());
-
-            // Collect all tag values
-            const tags = document.querySelectorAll('#tagsWrapper .tag span:first-child');
-            tags.forEach(tag => {
-                const hiddenInput = document.createElement('input');
-                hiddenInput.type = 'hidden';
-                hiddenInput.name = 'diagnosis[]';
-                hiddenInput.value = tag.textContent;
-                this.appendChild(hiddenInput);
+                    // Add to wrapper
+                    tagsWrapper.appendChild(tag);
+                    inputField.value = ""; // Clear input
+                }
             });
 
-            // If the input field has a value, add it as well
-            if (inputField.value.trim() !== "") {
-                const hiddenInput = document.createElement('input');
-                hiddenInput.type = 'hidden';
-                hiddenInput.name = 'diagnosis[]';
-                hiddenInput.value = inputField.value.trim();
-                this.appendChild(hiddenInput);
-            }
+            // Before submitting, create hidden inputs from tags
+            form.addEventListener('submit', function (e) {
+                // Clean up any existing hidden inputs
+                form.querySelectorAll('input[name="diagnosis[]"]').forEach(el => el.remove());
+
+                // For each tag, create a hidden input
+                const tags = tagsWrapper.querySelectorAll('.tag span:first-child');
+                tags.forEach(tag => {
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = 'diagnosis[]';
+                    hiddenInput.value = tag.textContent;
+                    form.appendChild(hiddenInput);
+                });
+
+                // Include current input field value if not empty
+                if (inputField.value.trim() !== "") {
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = 'diagnosis[]';
+                    hiddenInput.value = inputField.value.trim();
+                    form.appendChild(hiddenInput);
+                }
+            });
         });
+
         
         // Consultant type selection functionality
         document.addEventListener('DOMContentLoaded', function() {

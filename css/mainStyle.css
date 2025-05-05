@@ -1029,12 +1029,12 @@ tr .th-consultation {
 
 #consultation #consultTable div textarea {
   width: 100%;
-  min-height: 200px;
-  padding: 20px;
-  border: none;
+  /* min-height: 200px; */
+  /* padding: 20px; */
+  /* border: none; */
 }
 #consultation #consultTable div textarea:focus {
-  border: none;
+  /* border: none; */
   box-shadow: none;
 }
 
@@ -1113,4 +1113,8 @@ tr .th-consultation {
 
 .otherInstitute {
   display: none;
+}
+
+#consultTable textarea {
+  border: 1px solid var(--grey-color);
 }

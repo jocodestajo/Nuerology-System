@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/general.css">
     <link rel="stylesheet" href="css/appointment_form.css">
     <link rel="stylesheet" href="css/mediaQuery.css">
+    <link rel="stylesheet" href="css/modals.css">
     <style>
         .container-3 {
             max-width: 800px;
@@ -145,8 +146,9 @@
     <?php include('includes/header.php'); ?>
 
     <!-- Confirmation Modal -->
-    <div id="confirmationModal" class="modal">
-        <div class="modal-content">
+    <div id="confirmationModal" class="modal confirmModal">
+        <div class="modal-cancelContent">
+            <span class="close" onclick="closeModal()">&times;</span>
             <h3>Confirm Save</h3>
             <p>Are you sure you want to save these vital signs?</p>
             <div class="modal-buttons">

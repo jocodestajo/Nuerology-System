@@ -11,7 +11,7 @@
 
             <div class="nav-list">
                 <a href="#neurology" class="btn-navbar">Neurology</a>
-                <a href="#EEG" class="btn-navbar">EEG</a>
+                <!-- <a href="#EEG" class="btn-navbar">EEG</a> -->
                 <!-- <a href="#reports" class="btn-navbar">Reports</a> -->
                 <a href="#profile" class="btn-navbar">Profile</a>
             </div>

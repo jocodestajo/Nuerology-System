@@ -31,18 +31,18 @@ $response = ['success' => false, 'message' => ''];
 
         try {
             // Update the record in the database
-            $query = "UPDATE neurology_consultations SET 
-                blood_pressure = '$bp',
-                temperature = '$temp',
-                heart_rate = '$heartRate',
-                respiratory_rate = '$respiratoryRate',
-                oxygen_saturation = '$oxygenSat',
-                height = '$height',
-                weight = '$weight',
-                vs_notes = '$notes',
-                vs_start = '$vs_start',
-                vs_end = '$vs_end'
-            WHERE record_id = '$record_id'";
+            $query = "UPDATE neurology_records r LEFT JOIN neurology_consultations c ON r.id = c.record_id  SET 
+                c.blood_pressure = '$bp',
+                c.temperature = '$temp',
+                c.heart_rate = '$heartRate',
+                c.respiratory_rate = '$respiratoryRate',
+                c.oxygen_saturation = '$oxygenSat',
+                c.height = '$height',
+                c.weight = '$weight',
+                c.vs_notes = '$notes',
+                c.vs_start = '$vs_start',
+                c.vs_end = '$vs_end'
+            WHERE r.id = '$record_id'";
 
             if (!mysqli_query($conn, $query)) {
                 throw new Exception("Error updating neurology_consultations: " . mysqli_error($conn));

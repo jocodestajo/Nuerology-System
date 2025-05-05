@@ -1,5 +1,7 @@
 <?php
 require '../../config/dbcon.php';
+session_start();
+
 
 // Initialize response
 $response = ['success' => false, 'message' => ''];
@@ -19,10 +21,7 @@ $response = ['success' => false, 'message' => ''];
         $informant_relation = mysqli_real_escape_string($conn, $_POST['informant_relation']);
         $old_new = isset($_POST['old_new']) ? mysqli_real_escape_string($conn, $_POST['old_new']) : '';
         $consultation = isset($_POST['consultation']) ? mysqli_real_escape_string($conn, $_POST['consultation']) : '';
-        $date_sched = mysqli_real_escape_string($conn, $_POST['date_sched']);
-
-        $refer_from = mysqli_real_escape_string($conn, $_POST['refer_from']);
-        $refer_to = mysqli_real_escape_string($conn, $_POST['refer_to']);
+        $consultPurpose = isset($_POST['consultPurpose']) ? mysqli_real_escape_string($conn, $_POST['consultPurpose']) : '';
         
         $diagnosis = '';
         if (isset($_POST['diagnosis']) && is_array($_POST['diagnosis'])) {
@@ -31,15 +30,65 @@ $response = ['success' => false, 'message' => ''];
             }, $_POST['diagnosis']);
             $diagnosis = implode(', ', $diagnosisArray);
         }
-        $classification = mysqli_real_escape_string($conn, $_POST['classification']);
-        $medication = isset($_POST['medication']) ? implode(', ', array_map(function($item) use ($conn) {
-            return mysqli_real_escape_string($conn, $item);
-        }, $_POST['medication'])) : '';
-        
 
-        $doctorName = mysqli_real_escape_string($conn, $_POST['doctorName']);
-        $nurseName = mysqli_real_escape_string($conn, $_POST['nurseName']);
-        $consultPurpose = isset($_POST['consultPurpose']) ? mysqli_real_escape_string($conn, $_POST['consultPurpose']) : '';
+        $classification = mysqli_real_escape_string($conn, $_POST['classification']);
+        
+        // $medication = isset($_POST['medication']) ? implode(', ', array_map(function($item) use ($conn) {
+        //     return mysqli_real_escape_string($conn, $item);
+        // }, $_POST['medication'])) : '';
+
+        $medicationEntries = [];
+
+        if (isset($_POST['medication'], $_POST['medQty']) && is_array($_POST['medication']) && is_array($_POST['medQty'])) {
+            for ($i = 0; $i < count($_POST['medication']); $i++) {
+                $med = trim($_POST['medication'][$i]);
+                $qty = trim($_POST['medQty'][$i]);
+
+                // Only include non-empty values
+                if ($med !== '' && $qty !== '') {
+                    $medSanitized = mysqli_real_escape_string($conn, $med);
+                    $qtySanitized = (int)$qty;
+                    $medicationEntries[] = $qtySanitized . ' ' . $medSanitized;
+                }
+            }
+        }
+
+        // Final medication string like "12 ALBENDAZOLE, 10 AMIKACIN"
+        $medication = implode(', ', $medicationEntries);
+
+        
+        
+        $refer_from = mysqli_real_escape_string($conn, $_POST['refer_from']);
+        $otherInstitute = mysqli_real_escape_string($conn, $_POST['otherInstitute']);
+        $refer_to = mysqli_real_escape_string($conn, $_POST['refer_to']);
+        if ($refer_to === "Other") {
+            $referTo = $otherInstitute;
+        } else {
+            $referTo = $refer_to;
+        }
+
+        $date_sched = mysqli_real_escape_string($conn, $_POST['date_sched']);
+        $remarks = mysqli_real_escape_string($conn, $_POST['remarks']);
+
+        // Get current date for time fields
+        $currentDate = date('Y-m-d');
+
+        $consultStart = $currentDate . ' ' . mysqli_real_escape_string($conn, $_POST['consultStart']) . ':00';
+        $consultEnd = $currentDate . ' ' . mysqli_real_escape_string($conn, $_POST['consultEnd']) . ':00';
+        $educStart = $currentDate . ' ' . mysqli_real_escape_string($conn, $_POST['educStart']) . ':00';
+        $educEnd = $currentDate . ' ' . mysqli_real_escape_string($conn, $_POST['educEnd']) . ':00';
+        // $vs_end = $currentDate . ' ' . mysqli_real_escape_string($conn, $_POST['vs_end']) . ':00';
+
+        $type1 = mysqli_real_escape_string($conn, $_POST['consultant_1_type']);
+        $doctorName = mysqli_real_escape_string($conn, $_POST['consultant_1']);
+
+        $type2 = mysqli_real_escape_string($conn, $_POST['consultant_2_type']);
+        $nurseName = mysqli_real_escape_string($conn, $_POST['consultant_2']);
+
+        // Combine type and name
+        $consultant1 = $type1 . ' ' . $doctorName;
+        $consultant2 = $type2 . ' ' . $nurseName;
+
 
         // Check if follow-up checkbox is checked
         $status = isset($_POST['follow_up']) ? 'follow up' : 'processed';
@@ -47,57 +96,56 @@ $response = ['success' => false, 'message' => ''];
         // Automatically set appointment_type to 'Follow Up' if status is 'follow up'
         $appointment_type = ($status === 'follow up') ? 'Follow Up' : mysqli_real_escape_string($conn, $_POST['appointment_type']);
 
+
         // Start transaction
         mysqli_begin_transaction($conn);
 
         try {
             // Update neurology_records
-            $query1 = "UPDATE neurology_records SET 
-                            name = '$name',
-                            age = '$age',
-                            birthday = '$birthday',
-                            contact = '$contact',
-                            address = '$address',
-                            email = '$email',
-                            viber = '$viber',
-                            informant = '$informant',
-                            informant_relation = '$informant_relation'
-                        WHERE id = '$record_id'";
+            $query = "UPDATE neurology_records r LEFT JOIN neurology_consultations c ON r.id = c.record_id SET 
+                            r.name = '$name',
+                            r.age = '$age',
+                            r.birthday = '$birthday',
+                            r.contact = '$contact',
+                            r.address = '$address',
+                            r.email = '$email',
+                            r.viber = '$viber',
+                            r.informant = '$informant',
+                            r.informant_relation = '$informant_relation',
+                            c.old_new = '$old_new',
+                            c.consultation = '$consultation',
+                            c.rx_mc = '$consultPurpose',
+                            c.diagnosis = '$diagnosis',
+                            c.classification = '$classification',
+                            c.medication = '$medication',             
+                            c.refer_from = '$refer_from',
+                            c.refer_to = '$referTo',
+                            c.appointment_type = '$appointment_type',
+                            c.remarks = '$remarks',
+                            c.date_request = NOW(),
+                            c.date_sched = '$date_sched',
+                            c.consult_start = '$consultStart',
+                            c.consult_end = '$consultEnd',
+                            c.educ_start = '$educStart',
+                            c.educ_end = '$educEnd',
+                            c.doctor = '$consultant1',
+                            c.nurse = '$consultant2',
+                            c.status = '$status'
+                        WHERE r.id = '$record_id'";
 
-            if (!mysqli_query($conn, $query1)) {
-                throw new Exception("Error updating neurology_records: " . mysqli_error($conn));
-            }
-
-            // Update neurology_consultations
-            $query2 = "UPDATE neurology_consultations SET 
-                            old_new = '$old_new',
-                            consultation = '$consultation',
-                            rx_mc = '$consultPurpose',
-                            refer_from = '$refer_from',
-                            refer_to = '$refer_to',
-                            appointment_type = '$appointment_type',
-                            diagnosis = '$diagnosis',
-                            classification = '$classification',
-                            medication = '$medication',
-                            doctor = '$docName',
-                            nurse = '$nurseName',
-                            date_request = NOW(),
-                            date_sched = '$date_sched',
-                            status = '$status'
-                        WHERE record_id = '$record_id'";
-
-            if (!mysqli_query($conn, $query2)) {
-                throw new Exception("Error updating neurology_consultations: " . mysqli_error($conn));
+            if (!mysqli_query($conn, $query)) {
+                throw new Exception("Error updating: " . mysqli_error($conn));
             }
 
             // Commit transaction if both queries succeed
             mysqli_commit($conn);
-            echo "Records updated successfully!";
+            $_SESSION['message'] = "Successful!";
             header("Location: ../../index.php"); // Redirect after success
             exit;
         } catch (Exception $e) {
             mysqli_rollback($conn); // Rollback if any query fails
-            echo "Transaction failed: " . $e->getMessage();
+            // echo "Transaction failed: " . $e->getMessage();
+            $_SESSION['message'] = "Transaction failed: " . $e->getMessage();
         }
 
         // Close connection

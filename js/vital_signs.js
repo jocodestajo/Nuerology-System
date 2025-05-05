@@ -39,6 +39,9 @@ fetch("api/get/fetch_record.php?id=" + recordId)
     document.querySelector('input[name="weight"]').value = data.weight || "";
     document.querySelector('textarea[name="notes"]').value =
       data.vs_notes || "";
+    document.querySelector('input[name="vs_start"]').value =
+      data.vs_start || "";
+    document.querySelector('input[name="vs_end"]').value = data.vs_end || "";
 
     // Set hidden record_id field
     document.querySelector('input[name="record_id"]').value = recordId;
@@ -48,40 +51,33 @@ fetch("api/get/fetch_record.php?id=" + recordId)
     alert("Error loading patient data. Please try again.");
   });
 
-document.addEventListener("DOMContentLoaded", function () {
-  // Get the current time
-  const now = new Date();
-
-  // Format the time with seconds
-  const hours = String(now.getHours()).padStart(2, "0");
-  const minutes = String(now.getMinutes()).padStart(2, "0");
-  const seconds = String(now.getSeconds()).padStart(2, "0");
-
-  const currentTime = `${hours}:${minutes}:${seconds}`;
-
-  // Set the start time input value
-  const startTimeInput = document.querySelector('input[name="vs_start"]');
-  if (startTimeInput) {
-    startTimeInput.value = currentTime;
-  }
-
-  // Function to update end time
-  function updateEndTime() {
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-    const seconds = String(now.getSeconds()).padStart(2, "0");
-    const currentTime = `${hours}:${minutes}:${seconds}`;
-
-    const endTimeInput = document.querySelector('input[name="vs_end"]');
-    if (endTimeInput) {
-      endTimeInput.value = currentTime;
-    }
-  }
-
-  // Update end time every second
-  setInterval(updateEndTime, 1000);
-
-  // Initial update
-  updateEndTime();
-});
+// document.addEventListener("DOMContentLoaded", function () {
+//   // Get the current time
+//   const now = new Date();
+//   // Format the time with seconds
+//   const hours = String(now.getHours()).padStart(2, "0");
+//   const minutes = String(now.getMinutes()).padStart(2, "0");
+//   const seconds = String(now.getSeconds()).padStart(2, "0");
+//   const currentTime = `${hours}:${minutes}:${seconds}`;
+//   // Set the start time input value
+//   const startTimeInput = document.querySelector('input[name="vs_start"]');
+//   if (startTimeInput) {
+//     startTimeInput.value = currentTime;
+//   }
+//   // Function to update end time
+//   function updateEndTime() {
+//     const now = new Date();
+//     const hours = String(now.getHours()).padStart(2, "0");
+//     const minutes = String(now.getMinutes()).padStart(2, "0");
+//     const seconds = String(now.getSeconds()).padStart(2, "0");
+//     const currentTime = `${hours}:${minutes}:${seconds}`;
+//     const endTimeInput = document.querySelector('input[name="vs_end"]');
+//     if (endTimeInput) {
+//       endTimeInput.value = currentTime;
+//     }
+//   }
+//   // Update end time every second
+//   setInterval(updateEndTime, 1000);
+//   // Initial update
+//   updateEndTime();
+// });
