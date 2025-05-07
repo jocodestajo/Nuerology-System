@@ -55,8 +55,6 @@ $response = ['success' => false, 'message' => ''];
 
         // Final medication string like "12 ALBENDAZOLE, 10 AMIKACIN"
         $medication = implode(', ', $medicationEntries);
-
-        
         
         $refer_from = mysqli_real_escape_string($conn, $_POST['refer_from']);
         $otherInstitute = mysqli_real_escape_string($conn, $_POST['otherInstitute']);
@@ -89,13 +87,11 @@ $response = ['success' => false, 'message' => ''];
         $consultant1 = $type1 . ' ' . $doctorName;
         $consultant2 = $type2 . ' ' . $nurseName;
 
-
         // Check if follow-up checkbox is checked
         $status = isset($_POST['follow_up']) ? 'follow up' : 'processed';
 
         // Automatically set appointment_type to 'Follow Up' if status is 'follow up'
         $appointment_type = ($status === 'follow up') ? 'Follow Up' : mysqli_real_escape_string($conn, $_POST['appointment_type']);
-
 
         // Start transaction
         mysqli_begin_transaction($conn);
@@ -122,8 +118,8 @@ $response = ['success' => false, 'message' => ''];
                             c.refer_to = '$referTo',
                             c.appointment_type = '$appointment_type',
                             c.remarks = '$remarks',
-                            c.date_request = NOW(),
                             c.date_sched = '$date_sched',
+                            c.date_process = NOW(),
                             c.consult_start = '$consultStart',
                             c.consult_end = '$consultEnd',
                             c.educ_start = '$educStart',
