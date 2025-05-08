@@ -15,6 +15,23 @@
     <link rel="stylesheet" href="css/appointment_form.css">
     <link rel="stylesheet" href="css/modals.css">
 </head>
+<style>
+    .radio-group, .checkbox-group {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 0.5rem;
+        align-items: center;
+    }
+
+    .radio-group label, .checkbox-group label  {
+        display: flex;
+        align-items: center;
+        font-size: 1rem;
+        cursor: pointer;
+        gap: 0.5rem;
+    }
+</style>
 <body>
     <?php include('includes/messages/message.php'); ?>
 
@@ -60,9 +77,9 @@
                     </div>
 
                     <!-- 6 -->
-                    <div>
-                        <h2 class="contactDetails">Contact Details</h2>
-                    </div>
+                    <!-- <div>
+                             <h2 class="contactDetails">Contact Details</h2>
+                    </div> -->
 
                     <!-- 7 -->
                     <div>
@@ -86,23 +103,43 @@
                     </div>
 
                     <!-- 10 -->
-                    <div class="informantDetails">
-                        <h2>Informant's Details</h2>
+                    <div class="margin-t-20">
+                        <h2>May iba pa bang kasama ang pasyente?</h2>
+                        <p><i>*Is there anyone else accompanying the patient?</i></p>
+                        <fieldset style="border: none; padding: 0; margin: 0;">
+                            <div class="radio-group">
+                                <label for="informantQA-true">
+                                    <input type="radio" name="informantQA" id="informantQA-true">
+                                    Yes
+                                </label>
+
+                                <label for="informantQA-false">
+                                    <input type="radio" name="informantQA" id="informantQA-false">
+                                    No
+                                </label>
+                            </div>
+                        </fieldset>
                     </div>
 
-                    <!-- 11 -->
-                    <div>
-                        <label for="">Name:
-                            <input type="text" name="informant" required>
-                        </label>
-                    </div>
 
                     <!-- 12 -->
                     <div>
-                        <label for="">Relation:
-                            <input type="text" name="informant_relation" required>
+                        <label for="" class="display-informant" style="display: none;">Name of Informant:
+                            <input type="text" name="informant">
                         </label>
                     </div>
+
+                    <!-- 13 -->
+                    <div>
+                        <label for="" class="display-informant" style="display: none;">Relationship to patient:
+                            <input type="text" name="informant_relation">
+                        </label>
+                    </div>
+
+                    <!-- 11 -->
+                    <!-- <div class="informantDetails">
+                        <h2>Informant's Details</h2>
+                    </div> -->
                 </div>
 
                 <div class="appointmentDetails">
@@ -144,31 +181,42 @@
                         <?php include('includes/calendarTable_modal.php'); ?>
                     </div>
 
-                    <div class="complaint">
+                    <!-- <div class="complaint">
                         <h2>Complaint</h2>
-                    </div>
+                    </div> -->
 
-                    <div class="input">
-                        <label for="">Ano ang ipapakunsulta?</label>
-                        <select name="complaint" class="center-text">
-                            <option value="" hidden disabled selected>--- Select Option ---</option>
-                            
-                            <?php
-                                $sql1 = "SELECT id, name FROM neurology_classifications WHERE archived = 0";
-                                $result1 = $conn->query($sql1);
-                                
-                                if ($result1->num_rows > 0) {
-                                    while($row = $result1->fetch_assoc()) {
-                                        echo "<option value='" . $row['id'] . "'>" . htmlspecialchars($row['name']) . "</option>";
-                                    }
-                                } else {
-                                    echo "<option disabled>No classifications found</option>";
-                                }
-                                
-                                
-                            ?>
-                            <option value="Others" >Others</option>
-                        </select>
+                    <div class="input margin-t-20">
+                        <div><label for="">Ano ang ipapakunsulta?</label></div>
+
+                        <!-- Trigger Button -->
+                        <button type="button" onclick="toggleComplaintModal()" class="btn border width-100">--- Select Option ---</button>
+
+                        <!-- Modal Container -->
+                        <div id="complaintModal" class="complaintShow">
+                            <div class="modal-content" style="background: #fff; padding: 20px; border-radius: 8px; width: 400px; margin: 10% auto; position: relative;">
+                                <!-- <span class="close-modal" onclick="toggleComplaintModal()" style="position: absolute; top: 10px; right: 15px; cursor: pointer;">&times;</span>
+                                <h3>Piliin ang mga ikinokonsulta</h3> -->
+
+                                <div class="checkbox-group" style="display: flex; flex-direction: column; gap: 5px; max-height: 300px; overflow-y: auto;">
+                                    <?php
+                                        $sql1 = "SELECT id, name FROM neurology_classifications WHERE archived = 0";
+                                        $result1 = $conn->query($sql1);
+                                        
+                                        if ($result1->num_rows > 0) {
+                                            while($row = $result1->fetch_assoc()) {
+                                                echo "<label><input type='checkbox' name='complaint[]' value='" . htmlspecialchars($row['name']) . "'> " . htmlspecialchars($row['name']) . "</label>";
+                                            }
+                                        } else {
+                                            echo "<label><input type='checkbox' disabled> No classifications found</label>";
+                                        }
+                                    ?>
+                                    <label><input type="checkbox" name="complaint[]" value="Others"> Others</label>
+                                </div>
+
+                                <!-- <br>
+                                <button type="button" id="saveSelectionBtn">Save Selection</button> -->
+                            </div>
+                        </div>
                     </div>
 
                     <div class="input">
@@ -186,11 +234,7 @@
             </form>
         </div>
     </div>
-
-    <script src="js/mainScript.js"></script>
-    <script src="js/functions.js"></script>
-    <script src="js/calendar_booking.js"></script>
-
+    
     <!-- Confirmation Modal -->
     <div id="confirmationModal" class="modal">
         <div class="modal-con-confirmation">
@@ -198,10 +242,14 @@
             <p>Are you sure you want to submit this appointment?</p>
             <div class="modal-buttons">
                 <button class="btn btn-red" onclick="closeModal()">Cancel</button>
-                <button class="btn btn-blue" onclick="submitForm()">Confirm</button>
+                <button class="btn btn-blue" onclick="submitForm()">Yes</button>
             </div>
         </div>
     </div>
+
+    <!-- <script src="js/mainScript.js"></script> -->
+    <script src="js/functions.js"></script>
+    <script src="js/calendar_booking.js"></script>
 
     <script>
         function showModal() {
@@ -229,6 +277,61 @@
             e.preventDefault();
             showModal();
         });
+
+        // INFORMANT DETAILS DISPLAY
+        const inTrue = document.getElementById("informantQA-true");
+        const informants = document.querySelectorAll(".display-informant");
+
+        // Function to show or hide informant details
+        function toggleInformantDetails() {
+            if (inTrue.checked) {
+                informants.forEach((element) => {
+                    element.style.display = "block"; // Show informant details
+                });
+            } else {
+                informants.forEach((element) => {
+                    element.style.display = "none"; // Hide informant details
+                });
+            }
+        }
+
+        // Initial call to set the display state when the page loads
+        toggleInformantDetails();
+
+        // Add event listeners to both radio buttons to detect changes
+        const radioButtons = document.querySelectorAll('input[name="informantQA"]');
+        radioButtons.forEach((radio) => {
+            radio.addEventListener("change", toggleInformantDetails);
+        });
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const modal = document.getElementById("complaintModal");
+            const saveBtn = document.getElementById("saveSelectionBtn");
+
+            // Toggle modal visibility
+            function toggleComplaintModal() {
+                modal.classList.toggle("show");
+            }
+
+            // Save button closes modal (you can add logic to capture selections)
+            // saveBtn.onclick = () => {
+            //     modal.classList.remove("show");
+            //     alert("Selections saved!");
+            // };
+
+            // Close modal when clicking outside content
+            window.onclick = function (event) {
+                if (event.target === modal) {
+                    modal.classList.remove("show");
+                }
+            };
+
+            // Make toggle function globally accessible
+            window.toggleComplaintModal = toggleComplaintModal;
+        });
+    </script>
+
 </body>
 </html>

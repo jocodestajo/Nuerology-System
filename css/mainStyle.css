@@ -667,8 +667,7 @@ tr .th-consultation {
 }
 
 .clickable-date:hover {
-  color: var(--yellow-color);
-  background-color: var(--primary-color);
+  background-color: var(--beige-color);
 }
 
 /* Style for disabled dates */

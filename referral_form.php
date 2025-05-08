@@ -59,9 +59,9 @@
                     </div>
 
                     <!-- 6 -->
-                    <div>
+                    <!-- <div>
                         <h2 class="contactDetails">Contact Details</h2>
-                    </div>
+                    </div> -->
 
                     <!-- 7 -->
                     <div>
@@ -92,16 +92,16 @@
                     <!-- 11 -->
                     <div>
                         <label for="">Name:
-                            <input type="text" name="informant" required>
+                            <input type="text" name="informant" value="User Logged In">
                         </label>
                     </div>
 
                     <!-- 12 -->
-                    <div>
+                    <!-- <div>
                         <label for="">Relation:
                             <input type="text" name="informant_relation" required>
                         </label>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="appointmentDetails">
@@ -143,11 +143,11 @@
                         <?php include('includes/calendarTable_modal.php'); ?>
                     </div>
 
-                    <div class="complaint">
+                    <!-- <div class="complaint">
                         <h2>Complaint</h2>
-                    </div>
+                    </div> -->
 
-                    <div class="input">
+                    <div class="input margin-t-20">
                         <label for="">Ano ang ipapakunsulta?</label>
                         <select name="complaint" class="center-text">
                             <option value="" hidden disabled selected>--- Select Option ---</option>
@@ -158,7 +158,7 @@
                                 
                                 if ($result1->num_rows > 0) {
                                     while($row = $result1->fetch_assoc()) {
-                                        echo "<option value='" . $row['id'] . "'>" . htmlspecialchars($row['name']) . "</option>";
+                                        echo "<option value='" . $row['name'] . "'>" . htmlspecialchars($row['name']) . "</option>";
                                     }
                                 } else {
                                     echo "<option disabled>No classifications found</option>";
@@ -208,22 +208,22 @@
         </div>
     </div>
 
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-con-confirmation">
+            <h3>Confirm Submission</h3>
+            <p>Are you sure you want to submit this form?</p>
+            <div class="modal-buttons">
+                <button class="btn btn-red" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-blue" onclick="submitForm()">Yes</button>
+            </div>
+        </div>
+    </div>
 
     <script src="js/mainScript.js"></script>
     <script src="js/functions.js"></script>
     <script src="js/calendar_booking.js"></script>
 
-    <!-- Confirmation Modal -->
-    <div id="confirmationModal" class="modal">
-        <div class="modal-con-confirmation">
-            <h3>Confirm Submission</h3>
-            <p>Are you sure you want to submit this referral?</p>
-            <div class="modal-buttons">
-                <button class="btn btn-red" onclick="closeModal()">Cancel</button>
-                <button class="btn btn-blue" onclick="submitForm()">Confirm</button>
-            </div>
-        </div>
-    </div>
 
     <script>
         function showModal() {

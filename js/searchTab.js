@@ -18,17 +18,22 @@ async function searchData() {
 
   try {
     const response = await fetch(`api/get/searchQuery.php?query=${query}`);
+    // console.log(response);
     const appointments = await response.json();
+    // console.log(appointments);
 
     const pendingAppointments = appointments.filter(
       (app) => app.status === "pending"
     );
     const faceToFaceAppointments = appointments.filter(
-      (app) => app.status === "approved" && app.consultation === "Face to face"
+      (app) =>
+        app.status === "approved" ||
+        (app.status === "follow up" && app.consultation === "Face to face")
     );
     const teleconsultationAppointments = appointments.filter(
       (app) =>
-        app.status === "approved" && app.consultation === "Teleconsultation"
+        app.status === "approved" ||
+        (app.status === "follow up" && app.consultation === "Teleconsultation")
     );
     const processedAppointments = appointments.filter(
       (app) => app.status === "processed"
@@ -36,6 +41,12 @@ async function searchData() {
     const cancelledAppointments = appointments.filter(
       (app) => app.status === "cancelled"
     );
+
+    // console.log(pendingAppointments);
+    // console.log(faceToFaceAppointments);
+    // console.log(teleconsultationAppointments);
+    // console.log(processedAppointments);
+    // console.log(cancelledAppointments);
 
     displayTable("pendingTable", "Pending", pendingAppointments);
     displayTable("faceToFaceTable", "Face to Face", faceToFaceAppointments);
