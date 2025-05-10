@@ -93,3 +93,29 @@ clientSelects.forEach((clientSelect) => {
     }
   });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Toggle modal visibility
+  function toggleModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      modal.classList.toggle("show");
+
+      // Close when clicking outside the modal content
+      modal.onclick = function (event) {
+        if (event.target === modal) {
+          modal.classList.remove("show");
+        }
+      };
+    }
+  }
+
+  // Attach event listeners to all trigger buttons with data-modal-target
+  const triggerButtons = document.querySelectorAll("[data-modal-target]");
+  triggerButtons.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const targetId = this.getAttribute("data-modal-target");
+      toggleModal(targetId);
+    });
+  });
+});

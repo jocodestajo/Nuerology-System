@@ -77,6 +77,34 @@ body {
   grid-column: span 2;
 }
 
+.radio-group {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 0.5rem;
+  align-items: center;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  cursor: pointer;
+  gap: 0.5rem;
+}
+
+.selectDefault {
+  color: var(--gray-color);
+}
+
+.appointmentDetails {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 5px;
+}
+
+/* style for complaint modal */
 .complaintShow {
   display: none;
   position: fixed;
@@ -93,15 +121,25 @@ body {
   display: block;
 }
 
-.selectDefault {
-  color: var(--gray-color);
-}
-
-.appointmentDetails {
+/* checkbox for comlaint */
+.checkbox-group {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  justify-content: left;
   gap: 5px;
+  /* max-height: 300px; */
+  height: fit-content;
+  overflow-y: auto;
+}
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  cursor: pointer;
+  gap: 5px;
+}
+.checkbox-group input {
+  width: fit-content;
 }
 
 .calendar-flex {

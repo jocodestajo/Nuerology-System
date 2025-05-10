@@ -16,7 +16,14 @@ if (isset($_POST['save_btn']))
     $old_new = mysqli_real_escape_string($conn, $_POST['old_new']);
     $consultation = mysqli_real_escape_string($conn, $_POST['consultation']);
     $date_sched = mysqli_real_escape_string($conn, $_POST['date_sched']);
-    $complaint = mysqli_real_escape_string($conn, $_POST['complaint']);
+    // $complaint = mysqli_real_escape_string($conn, $_POST['complaint']);
+    $complaint = '';
+        if (isset($_POST['complaint']) && is_array($_POST['complaint'])) {
+            $complaintArray = array_map(function($diag) use ($conn) {
+                return mysqli_real_escape_string($conn, $diag);
+            }, $_POST['complaint']);
+            $complaint = implode(', ', $complaintArray);
+        }
     $history = mysqli_real_escape_string($conn, $_POST['history']);
     $referal = mysqli_real_escape_string($conn, $_POST['referal']);
     $appointment_type = mysqli_real_escape_string($conn, $_POST['typeofappoint']);

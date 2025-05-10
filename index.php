@@ -205,7 +205,7 @@ require 'config/dbcon.php';
                         </div>
 
                         <!-- div.box Child element 15 -->
-                        <div class="input">
+                        <!-- <div class="input">
                             <label for="q1">Ano ang ipapakunsulta? <i class="asterisk">*</i></label>
                             <select name="complaint" class="options" required>
                                 <option value="" hidden disabled selected>--- Select Option ---</option>
@@ -225,6 +225,34 @@ require 'config/dbcon.php';
                                 
                                 <option value="Other">Other</option>
                             </select>
+                        </div> -->
+
+                        <div class="input margin-t-20">
+                            <div><label for="">Ano ang ipapakunsulta?</label></div>
+
+                            <!-- Trigger Button -->
+                            <button type="button" data-modal-target="complaintModal1" class="btn border width-100">--- Select Option ---</button>
+
+                            <!-- Modal Container -->
+                            <div id="complaintModal1" class="complaintShow">
+                                <div class="modal-content" style="width: 400px; margin: 10% auto; position: relative;">
+                                    <div class="checkbox-group">
+                                        <?php
+                                            $sql1 = "SELECT id, name FROM neurology_classifications WHERE archived = 0";
+                                            $result1 = $conn->query($sql1);
+                                            
+                                            if ($result1->num_rows > 0) {
+                                                while($row = $result1->fetch_assoc()) {
+                                                    echo "<label><input type='checkbox' name='complaint[]' value='" . htmlspecialchars($row['name']) . "'> " . htmlspecialchars($row['name']) . "</label>";
+                                                }
+                                            } else {
+                                                echo "<label><input type='checkbox' disabled> No classifications found</label>";
+                                            }
+                                        ?>
+                                        <label><input type="checkbox" name="complaint[]" value="Others"> Others</label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
                         <!-- div.box Child element 16 -->
@@ -277,20 +305,32 @@ require 'config/dbcon.php';
                     </thead>
                     <tbody>
                         <?php
-                            $query = "SELECT r.id, r.hrn, r.name, r.contact, 
-                                     c.consultation, c.date_sched, c.complaint, c.status
-                              FROM neurology_records r
-                              INNER JOIN neurology_consultations c ON r.id = c.record_id
-                              WHERE c.status = 'pending'";
+                            // $query = "SELECT r.id, r.hrn, r.name, r.contact, 
+                            //          c.consultation, c.date_sched, c.complaint, c.status
+                            //   FROM neurology_records r
+                            //   INNER JOIN neurology_consultations c ON r.id = c.record_id
+                            //   WHERE c.status = 'pending'";
+
+                            $query = "
+                                SELECT 
+                                    r.id, r.hrn, r.name, r.contact,
+                                    c.consultation, c.date_sched, c.complaint, c.status,
+                                    (SELECT COUNT(*) FROM neurology_consultations nc WHERE nc.record_id = r.id) AS consultation_count
+                                FROM neurology_records r
+                                INNER JOIN neurology_consultations c ON r.id = c.record_id
+                                WHERE c.status = 'pending'
+                            ";
 
                             $query_run = mysqli_query($conn, $query);
 
                             if(mysqli_num_rows($query_run) > 0)
                             {
                                 foreach($query_run as $records)
-                                {
+                                    {
+                                        $is_new_client = ($records['consultation_count'] == 1);
+                                        $row_class = $is_new_client ? 'new-client' : '';
                                     ?>
-                                        <tr id="patient_<?=$records['id'];?>">
+                                        <tr id="patient_<?=$records['id'];?>" class="<?= $row_class ?>">
                                             <td class="th-check border-left">
                                                 <input type="checkbox" class="checkbox custom-checkbox">
                                             </td>
@@ -301,18 +341,14 @@ require 'config/dbcon.php';
                                             <td class="th-schedule"><?= $records['date_sched']; ?></td>
                                             <td class="th-complaint"><?= $records['complaint']; ?></td>
                                             <td class="th-action action border-right">
-                                                <!-- Action / Mark as Approve -->
                                                 <img src="img/check-circle.png" class="action-img update-approve margin-right" alt="image here" data-id="<?=$records['id'];?>">
-                                            
-                                                <!-- Action / View -->
                                                 <img src="img/edit.png" class="action-img view-button margin-right" alt="image here" data-record-id="<?=$records['id'];?>">
-                                                
-                                                <!-- Action / Mark as Cancelled -->
                                                 <img src="img/cancel.png" class="action-img update-cancelled" alt="image here" data-id="<?=$records['id'];?>">
                                             </td>
                                         </tr>
                                     <?php
                                 }
+
                             }
                             // else
                             // {

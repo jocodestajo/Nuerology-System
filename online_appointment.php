@@ -15,23 +15,6 @@
     <link rel="stylesheet" href="css/appointment_form.css">
     <link rel="stylesheet" href="css/modals.css">
 </head>
-<style>
-    .radio-group, .checkbox-group {
-        display: flex;
-        justify-content: center;
-        gap: 2rem;
-        margin-top: 0.5rem;
-        align-items: center;
-    }
-
-    .radio-group label, .checkbox-group label  {
-        display: flex;
-        align-items: center;
-        font-size: 1rem;
-        cursor: pointer;
-        gap: 0.5rem;
-    }
-</style>
 <body>
     <?php include('includes/messages/message.php'); ?>
 
@@ -162,9 +145,9 @@
                         <label for="">
                             Type of Consultation:
                             <select name="consultation" class="consultationSelect" id="consultationSelect1" required>
-                            <option value="" hidden disabled selected>--- Select Option ---</option>
-                            <option value="Face to Face">Face to Face</option>
-                            <option value="Teleconsultation">Teleconsultation</option>
+                                <option value="" hidden disabled selected>--- Select Option ---</option>
+                                <option value="Face to Face">Face to Face</option>
+                                <option value="Teleconsultation">Teleconsultation</option>
                             </select>
                         </label>
                     </div>
@@ -189,15 +172,12 @@
                         <div><label for="">Ano ang ipapakunsulta?</label></div>
 
                         <!-- Trigger Button -->
-                        <button type="button" onclick="toggleComplaintModal()" class="btn border width-100">--- Select Option ---</button>
+                        <button type="button" data-modal-target="complaintModal2" class="btn border width-100">--- Select Option ---</button>
 
                         <!-- Modal Container -->
-                        <div id="complaintModal" class="complaintShow">
-                            <div class="modal-content" style="background: #fff; padding: 20px; border-radius: 8px; width: 400px; margin: 10% auto; position: relative;">
-                                <!-- <span class="close-modal" onclick="toggleComplaintModal()" style="position: absolute; top: 10px; right: 15px; cursor: pointer;">&times;</span>
-                                <h3>Piliin ang mga ikinokonsulta</h3> -->
-
-                                <div class="checkbox-group" style="display: flex; flex-direction: column; gap: 5px; max-height: 300px; overflow-y: auto;">
+                        <div id="complaintModal2" class="complaintShow">
+                            <div class="modal-content" style="width: 400px; margin: 10% auto; position: relative;">
+                                <div class="checkbox-group">
                                     <?php
                                         $sql1 = "SELECT id, name FROM neurology_classifications WHERE archived = 0";
                                         $result1 = $conn->query($sql1);
@@ -212,9 +192,6 @@
                                     ?>
                                     <label><input type="checkbox" name="complaint[]" value="Others"> Others</label>
                                 </div>
-
-                                <!-- <br>
-                                <button type="button" id="saveSelectionBtn">Save Selection</button> -->
                             </div>
                         </div>
                     </div>
@@ -247,7 +224,7 @@
         </div>
     </div>
 
-    <!-- <script src="js/mainScript.js"></script> -->
+    <script src="js/mainScript.js"></script>
     <script src="js/functions.js"></script>
     <script src="js/calendar_booking.js"></script>
 
@@ -305,21 +282,14 @@
         });
     </script>
 
-    <script>
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", function () {
             const modal = document.getElementById("complaintModal");
-            const saveBtn = document.getElementById("saveSelectionBtn");
 
             // Toggle modal visibility
             function toggleComplaintModal() {
                 modal.classList.toggle("show");
             }
-
-            // Save button closes modal (you can add logic to capture selections)
-            // saveBtn.onclick = () => {
-            //     modal.classList.remove("show");
-            //     alert("Selections saved!");
-            // };
 
             // Close modal when clicking outside content
             window.onclick = function (event) {
@@ -331,7 +301,7 @@
             // Make toggle function globally accessible
             window.toggleComplaintModal = toggleComplaintModal;
         });
-    </script>
+    </script> -->
 
 </body>
 </html>

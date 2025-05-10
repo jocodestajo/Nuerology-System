@@ -327,10 +327,6 @@ body {
   display: none;
 }
 
-.btn-clearData {
-  /* border: 1px solid var(--primary-color); */
-  /* background-color: inherit; */
-}
 .btn-clearData:hover {
   box-shadow: 0px 0px 10px var(--grey-color);
 }
@@ -358,6 +354,11 @@ body {
 }
 
 /* TAB 2 / Pending Appointments */
+/* .table-pending {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+} */
 table {
   margin: 0;
   padding: 0;
@@ -366,6 +367,16 @@ table {
   border-collapse: collapse;
   table-layout: fixed;
 }
+
+table td,
+table th {
+  white-space: normal; /* Allow text to wrap */
+  word-wrap: break-word; /* Break long words if needed */
+  word-break: break-word; /* Break very long strings (like emails, URLs) */
+  overflow-wrap: break-word;
+  padding: 8px; /* Ensure spacing is consistent */
+  vertical-align: top; /* Align content to top for better readability */
+}
 th,
 td {
   padding: 8px;
@@ -373,10 +384,10 @@ td {
   text-align: center;
 }
 th {
-  background-color: var(--blue-color);
-  color: var(--white-color);
+  background-color: var(--grey-color);
+  /* color: var(--white-color); */
   font-weight: bold;
-  border-top: 1px solid var(--grey-color);
+  border-top: 1px solid var(--white-color);
   white-space: nowrap;
 }
 td {
@@ -396,14 +407,20 @@ table .action-img:hover {
   box-shadow: 0px 0px 10px var(--blue-color);
 }
 
+.th-contact,
+.th-complaint {
+  max-width: 200px; /* Adjust as needed */
+}
+
 tr .th-check,
 tr .th-check {
   width: 3%;
 }
-
 tr .th-hrn {
   width: 7%;
 }
+
+/* 
 tr .th-action {
   width: 10%;
 }
@@ -423,7 +440,7 @@ tr .th-complaint {
 }
 tr .th-consultation {
   width: 10%;
-}
+} */
 
 .selectDate-border {
   border: 1px solid var(--blue-color);
@@ -1116,4 +1133,8 @@ tr .th-consultation {
 
 #consultTable textarea {
   border: 1px solid var(--grey-color);
+}
+
+.new-client {
+  background-color: #d4edda; /* light green background */
 }
