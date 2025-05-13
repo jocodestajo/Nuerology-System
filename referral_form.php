@@ -156,7 +156,7 @@
                         <!-- Modal Container -->
                         <div id="complaintModal3" class="complaintShow">
                             <div class="modal-content" style="width: 400px; margin: 10% auto; position: relative;">
-                                <div class="checkbox-group">
+                                <div class="checkbox-complaint checkbox-group">
                                     <?php
                                         $sql1 = "SELECT id, name FROM neurology_classifications WHERE archived = 0";
                                         $result1 = $conn->query($sql1);

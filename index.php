@@ -236,7 +236,7 @@ require 'config/dbcon.php';
                             <!-- Modal Container -->
                             <div id="complaintModal1" class="complaintShow">
                                 <div class="modal-content" style="width: 400px; margin: 10% auto; position: relative;">
-                                    <div class="checkbox-group">
+                                    <div class="checkbox-complaint checkbox-group">
                                         <?php
                                             $sql1 = "SELECT id, name FROM neurology_classifications WHERE archived = 0";
                                             $result1 = $conn->query($sql1);
@@ -602,10 +602,17 @@ require 'config/dbcon.php';
     
                         <div class="limit">
                             <h2>Limit per day</h2>
-                            <form action="" class="limit_form">
+                            <form action="api/post/saveLimits.php" method="POST" class="limit_form">
                                 <div class="space-between">
                                     <label for="onlinef2f">F2F: New</label>
                                     <input type="number" name="online_F2F_limit">
+                                    <!-- <select name="" id="onlinef2f">
+                                    </select> -->
+                                </div>
+
+                                <div class="space-between">
+                                    <label for="">Follow Up</label>
+                                    <input type="number" name="follow_up">
                                     <!-- <select name="" id="onlinef2f">
                                     </select> -->
                                 </div>
