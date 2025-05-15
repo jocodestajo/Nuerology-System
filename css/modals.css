@@ -399,3 +399,111 @@
 .checkbox-complaint input {
   width: fit-content;
 }
+
+/* Add Patient Button */
+.add-patient-btn {
+  margin-left: auto;
+  padding: 8px 16px;
+  font-weight: 600;
+}
+
+/* Add Patient Modal */
+#addPatientModal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#addPatientModal .modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#addPatientModal .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f1f1f1;
+  border-bottom: 1px solid #ddd;
+}
+
+#addPatientModal .modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+#addPatientModal .modal-body {
+  background-color: var(--white-color);
+  padding: 20px;
+}
+
+#addPatientModal .close-btn {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#addPatientModal .close-btn:hover,
+#addPatientModal .close-btn:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#addPatientForm {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+#addPatientModal div:nth-child(1),
+#addPatientModal div:nth-child(1),
+#addPatientModal div:nth-child(1),
+#addPatientModal div:nth-child(1),
+#addPatientModal div:nth-child(1),
+#addPatientModal div:nth-child(1) {
+  grid-column: span 2;
+}
+
+#modal_searchResult {
+  position: absolute;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+#modal_searchResult .search-item {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+#modal_searchResult .search-item:hover {
+  background-color: #f1f1f1;
+}
+
+/* Responsive adjustments for small screens */
+@media screen and (max-width: 768px) {
+  #addPatientModal .modal-content {
+    width: 95% !important;
+    margin: 5% auto !important;
+  }
+
+  .add-patient-btn {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+}

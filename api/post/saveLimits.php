@@ -13,7 +13,7 @@ if (isset($_POST['submit_limit'])) {
 
     // Update the limit
     $query = "UPDATE neurology_weekdaysettings
-              SET dailyLimit_new = '$limit_new', dailyLimit_referral = '$limit_referral'";
+              SET dailyLimit_new = '$limit_new', dailyLimit_referral = '$limit_referral', follow_up = '$followUp'";
 
     $query_run = mysqli_query($conn, $query);
 
@@ -28,7 +28,6 @@ if (isset($_POST['submit_limit'])) {
         header("Location: ../../index.php"); // Redirect after success
     }
 }
-
 
 // Output the response as JSON
 header('Content-Type: application/json');

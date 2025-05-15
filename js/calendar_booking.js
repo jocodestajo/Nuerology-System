@@ -1,3 +1,12 @@
+document.addEventListener("DOMContentLoaded", async function () {
+  await fetchAppointmentCounts();
+  loadCalendarSettings();
+});
+
+// Assume daily limits are defined globally or fetched from the server
+const dailyLimitNew = 1; // Example value
+const dailyLimitReferral = 1; // Example value
+
 // Initialize calendar when DOM is loaded
 document.addEventListener("DOMContentLoaded", function () {
   // Load calendar settings first
@@ -45,8 +54,23 @@ async function loadCalendarSettings() {
   }
 }
 
-// Define updateCalendar function globally
-function updateCalendar() {
+let appointmentData = {};
+let dailyLimits = {};
+
+async function fetchAppointmentData() {
+  try {
+    const response = await fetch("api/get/countSchedule.php");
+    const data = await response.json();
+    appointmentData = data.appointmentCounts || {};
+    dailyLimits = data.dailyLimits || { new: 0, referral: 0 };
+  } catch (error) {
+    console.error("Error fetching appointment data:", error);
+  }
+}
+
+async function updateCalendar() {
+  await fetchAppointmentData(); // Ensure data is fetched before rendering
+
   const table = document.getElementById("calendarTable");
   const monthTitle = document.getElementById("calendarMonthTitle");
 
@@ -116,7 +140,22 @@ function updateCalendar() {
         );
         const isEnabled = enabledDays.includes(date.getDay());
 
-        if (isEnabled) {
+        const dateStr = date.toISOString().split("T")[0];
+        const counts = appointmentData[dateStr] || { new: 0, referral: 0 };
+
+        const isNewFullyBooked = counts.new >= dailyLimits.new;
+        const isReferralFullyBooked = counts.referral >= dailyLimits.referral;
+
+        if (isNewFullyBooked && isReferralFullyBooked) {
+          cell.className = "fully-booked-date";
+          cell.title = "Fully booked for new consultations and referrals";
+        } else if (isNewFullyBooked) {
+          cell.className = "fully-booked-new";
+          cell.title = "Fully booked for new consultations";
+        } else if (isReferralFullyBooked) {
+          cell.className = "fully-booked-referral";
+          cell.title = "Fully booked for referrals";
+        } else if (isEnabled) {
           cell.className = "clickable-date";
           cell.onclick = () => {
             handleDateClick(
@@ -346,18 +385,29 @@ async function loadCheckboxStates() {
 }
 
 // Add this CSS to your stylesheet
-const style = document.createElement("style");
-style.textContent = `
-  .disabled-date {
-    color: #ccc;
-    cursor: not-allowed;
-    background-color: #f5f5f5;
-  }
-`;
-document.head.appendChild(style);
+// const style = document.createElement("style");
+// style.textContent = `
+//   .disabled-date {
+//     color: #ccc;
+//     cursor: not-allowed;
+//     background-color: #f5f5f5;
+//   }
+// `;
+// document.head.appendChild(style);
 
 // Only hide the calendar container if it exists
 const calendarContainer = document.getElementById("calendarContainer");
 if (calendarContainer) {
   calendarContainer.style.display = "none";
 }
+
+// let appointmentCounts = {};
+
+// async function fetchAppointmentCounts() {
+//   try {
+//     const response = await fetch("api/get/countSchedule.php");
+//     appointmentCounts = await response.json();
+//   } catch (error) {
+//     console.error("Error fetching appointment counts:", error);
+//   }
+// }

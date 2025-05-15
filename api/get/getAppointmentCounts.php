@@ -19,7 +19,6 @@ WHERE YEAR(c.date_sched) = ?
     AND c.consultation = 'face to face' OR c.status = 'follow up' AND c.consultation = 'face to face'
 GROUP BY c.date_sched";
 
-
 // Get Telecon appointment counts
 $telecon_query = "SELECT 
     c.date_sched,

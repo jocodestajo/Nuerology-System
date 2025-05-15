@@ -27,6 +27,7 @@ require 'config/dbcon.php';
         <!-- Messages -->
         <?php include('includes/messages/message.php'); ?>
         <?php include('includes/messages/cancelConfirmation.php'); ?>
+        <?php include('includes/addPatientModal.php'); ?>
 
         <!-- EDIT RECORDS MODAL-->
         <?php include('includes/editRecords.php'); ?>
@@ -276,6 +277,8 @@ require 'config/dbcon.php';
             <div class="content ">
                 <div class="flex">
 
+                    <Label>Date Filter:</Label>
+
                     <select name="" class="sortData-Pending selectDate-border" id="monthFilter1">
                         <option value="" hidden disabled selected>Select Month</option>
                     </select>
@@ -364,6 +367,8 @@ require 'config/dbcon.php';
             <div class="content">
                 <div class="flex">
                     
+                    <Label>Date Filter:</Label>
+
                     <select name="" class="sortData-Pending selectDate-border" id="monthFilter2">
                         <option value="" hidden disabled selected>Select Month</option>
                     </select>
@@ -376,6 +381,7 @@ require 'config/dbcon.php';
                         <option value="" hidden disabled selected>Select Year</option>
                     </select>
 
+                    <button class="btn btn-green add-patient-btn" data-type="f2f">Add Patient</button>
                 </div>
                 
                 <table class="table-face-to-face" id="table2">
@@ -435,6 +441,8 @@ require 'config/dbcon.php';
             <!-- TAB 4 / TELECONSULTATION -->
             <div class="content">
                 <div class="flex">
+
+                    <Label>Date Filter:</Label>
                     
                     <select name="" class="sortData-Pending selectDate-border" id="monthFilter3">
                         <option value="" hidden disabled selected>Select Month</option>
@@ -448,6 +456,7 @@ require 'config/dbcon.php';
                         <option value="" hidden disabled selected>Select Year</option>
                     </select>
                
+                    <button class="btn btn-green add-patient-btn" data-type="telecon">Add Patient</button>
                 </div>
                     
                 <table class="table-teleconsultation" id="table3">
@@ -603,23 +612,33 @@ require 'config/dbcon.php';
                         <div class="limit">
                             <h2>Limit per day</h2>
                             <form action="api/post/saveLimits.php" method="POST" class="limit_form">
+                                <?php
+                                    $query = "SELECT DISTINCT dailyLimit_new, dailyLimit_referral, follow_up FROM neurology_weekdaysettings";
+                                    $query_run = mysqli_query($conn, $query);
+
+                                    if(mysqli_num_rows($query_run) > 0){
+                                        foreach($query_run as $records)
+                                        {
+                                        }
+                                    }
+                                ?>
                                 <div class="space-between">
                                     <label for="onlinef2f">F2F: New</label>
-                                    <input type="number" name="online_F2F_limit">
+                                    <input type="number" name="online_F2F_limit" value="<?= $records['dailyLimit_new']; ?>" class="center-text">
                                     <!-- <select name="" id="onlinef2f">
                                     </select> -->
                                 </div>
 
                                 <div class="space-between">
                                     <label for="">Follow Up</label>
-                                    <input type="number" name="follow_up">
+                                    <input type="number" name="follow_up" value="<?= $records['follow_up']; ?>" class="center-text">
                                     <!-- <select name="" id="onlinef2f">
                                     </select> -->
                                 </div>
     
                                 <div class="space-between">
                                     <label for="referrals_limit">Referrals:</label>
-                                    <input type="number" name="referral_limit">
+                                    <input type="number" name="referral_limit" value="<?= $records['dailyLimit_referral']; ?>" class="center-text">
                                     <!-- <select name="" id="referrals_limit">
                                     </select> -->
                                 </div>
@@ -668,8 +687,6 @@ require 'config/dbcon.php';
             </div>
         </div>
 
-
-
         <div id="footer">
             <h4>&copy; 2024 - MMWGH (IMISU)</h4>
         </div>
@@ -686,22 +703,6 @@ require 'config/dbcon.php';
     <script src="js/functions.js"></script>
 
     <script>
-        // // LIMIT PER DAY - APPOINTMENT
-        // function populateDropdown(dropdownId) {
-        //     let dropdown = document.getElementById(dropdownId);
-        //     for (let i = 0; i <= 100; i++) {
-        //         let option = document.createElement('option');
-        //         option.value = i;
-        //         option.textContent = i;
-        //         dropdown.appendChild(option);
-        //     }
-        // }
-    
-        // populateDropdown('onlinef2f');
-        // populateDropdown('referrals_limit');
-
-
-
         // Function to display the footer
         function checkScroll() {
             // Get the scroll position, total height, and the viewport height

@@ -198,3 +198,149 @@ consultationBtn.addEventListener("click", function () {
   var recordId = this.getAttribute("data-record-id");
   window.open("consultation.php?id=" + recordId, "_blank");
 });
+
+// ADD PATIENT MODAL
+document.addEventListener("DOMContentLoaded", function () {
+  // Get modal elements
+  const addPatientModal = document.getElementById("addPatientModal");
+  const closeAddPatientModal = document.getElementById("closeAddPatientModal");
+  const cancelAddPatient = document.getElementById("cancelAddPatient");
+  const addPatientForm = document.getElementById("addPatientForm");
+  const consultationType = document.getElementById("consultation_type");
+  const addPatientTitle = document.getElementById("addPatientTitle");
+
+  // Add event listeners to all add patient buttons
+  const addPatientButtons = document.querySelectorAll(".add-patient-btn");
+  addPatientButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      const type = this.getAttribute("data-type");
+
+      if (type === "f2f") {
+        consultationType.value = "Face to face";
+        addPatientTitle.textContent = "Add Face to Face Patient";
+      } else if (type === "telecon") {
+        consultationType.value = "Teleconsultation";
+        addPatientTitle.textContent = "Add Teleconsultation Patient";
+      }
+
+      addPatientModal.style.display = "block";
+    });
+  });
+
+  // Close modal when clicking X button
+  if (closeAddPatientModal) {
+    closeAddPatientModal.addEventListener("click", function () {
+      addPatientModal.style.display = "none";
+    });
+  }
+
+  // Close modal when clicking Cancel button
+  if (cancelAddPatient) {
+    cancelAddPatient.addEventListener("click", function () {
+      addPatientModal.style.display = "none";
+    });
+  }
+
+  // Close modal when clicking outside the modal
+  window.addEventListener("click", function (event) {
+    if (event.target === addPatientModal) {
+      addPatientModal.style.display = "none";
+    }
+  });
+
+  // Show referral field when Referral option is selected
+  const modalTypeOfAppointment = document.getElementById(
+    "modal_typeOfAppointment"
+  );
+  const modalReferral = document.getElementById("modalReferral");
+
+  if (modalTypeOfAppointment) {
+    modalTypeOfAppointment.addEventListener("change", function () {
+      if (this.value === "Referral") {
+        modalReferral.style.display = "block";
+      } else {
+        modalReferral.style.display = "none";
+      }
+    });
+  }
+
+  // Patient name search in modal
+  const modalName = document.getElementById("modal_name");
+  const modalHrn = document.getElementById("modal_hrn");
+  const modalAddress = document.getElementById("modal_address");
+  const modalBirthday = document.getElementById("modal_birthday");
+  const modalAge = document.getElementById("modal_age");
+  const modalContact = document.getElementById("modal_contact");
+  const modalSearchResult = document.getElementById("modal_searchResult");
+  const modalResult = document.getElementById("modal_result");
+
+  if (modalName) {
+    modalName.addEventListener("input", function () {
+      const searchQuery = this.value;
+
+      if (searchQuery.length >= 3) {
+        // Fetch matching patient data
+        fetch(
+          `api/get/searchPatient.php?query=${encodeURIComponent(searchQuery)}`
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            modalResult.innerHTML = "";
+            modalSearchResult.style.display = "block";
+
+            if (data.length > 0) {
+              data.forEach((patient) => {
+                const item = document.createElement("div");
+                item.classList.add("search-item");
+                item.textContent = patient.name;
+                item.addEventListener("click", function () {
+                  modalName.value = patient.name;
+                  modalHrn.value = patient.hrn;
+                  modalAddress.value = patient.address;
+                  modalBirthday.value = patient.birthday;
+                  modalAge.value = calculateAge(patient.birthday);
+                  modalContact.value = patient.contact;
+                  modalSearchResult.style.display = "none";
+                });
+                modalResult.appendChild(item);
+              });
+            } else {
+              const item = document.createElement("div");
+              item.classList.add("search-item");
+              item.textContent = "No matching patients found";
+              modalResult.appendChild(item);
+            }
+          })
+          .catch((error) => console.error("Error:", error));
+      } else {
+        modalSearchResult.style.display = "none";
+      }
+    });
+  }
+
+  // Calculate age function for modal
+  if (modalBirthday) {
+    modalBirthday.addEventListener("change", function () {
+      const birthDate = new Date(this.value);
+      const age = calculateAge(this.value);
+      modalAge.value = age;
+    });
+  }
+
+  // Helper function to calculate age from birthday
+  function calculateAge(birthDateString) {
+    const birthDate = new Date(birthDateString);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
+  }
+});
