@@ -693,6 +693,7 @@ require 'config/dbcon.php';
     </div>
 
     <!-- Javascript -->
+    <script src="js/reports.js"></script>
     <script src="js/mainScript.js"></script>
     <script src="js/approval-f2f-telecon.js"></script>
     <script src="js/modal.js"></script>
@@ -725,82 +726,6 @@ require 'config/dbcon.php';
         checkScroll();
 
     </script>
-
-    <script>
-        // REPORTS TABS
-        function openTab(tabName) {
-            // Hide all tab contents
-            var tabContents = document.getElementsByClassName('tab-content');
-            for (var i = 0; i < tabContents.length; i++) {
-                tabContents[i].classList.remove('active');
-            }
-            
-            // Remove active class from all tabs
-            var tabs = document.getElementsByClassName('tabRep');
-            for (var i = 0; i < tabs.length; i++) {
-                tabs[i].classList.remove('active');
-            }
-            
-            // Show the current tab and add active class
-            document.getElementById(tabName).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
-    </script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const applyFiltersBtn = document.querySelector('.filters button');
-        
-        applyFiltersBtn.addEventListener('click', fetchPatientData);
-        
-        // Initial load
-        fetchPatientData();
-        
-        function fetchPatientData() {
-            const timeframe = document.getElementById('timeframe').value;
-            const patientType = document.getElementById('patient-type').value;
-            
-            fetch(`api/get/reports_record.php?timeframe=${encodeURIComponent(timeframe)}&patient-type=${encodeURIComponent(patientType)}`)
-                .then(response => response.json())
-                .then(data => {
-                    updateSummaryCards(data.summary);
-                    renderTable(data.data);
-                    // You would also update the chart here
-                })
-                .catch(error => console.error('Error:', error));
-        }
-        
-        function updateSummaryCards(summary) {
-            document.querySelector('.card:nth-child(1) .value').textContent = summary.totalPatients;
-            // Update other cards similarly
-        }
-        
-        function renderTable(data) {
-            const tbody = document.querySelector('table tbody');
-            tbody.innerHTML = '';
-            
-            data.forEach((row, index) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${row.hrn}</td>
-                    <td>${row.name}</td>
-                    <td>${formatDate(row.schedule_date)}</td>
-                    <td>${row.processed_date ? formatDate(row.processed_date) : 'N/A'}</td>
-                    <td>${row.department}</td>
-                    <td>${row.diagnosis || 'N/A'}</td>
-                    <td><span class="status ${row.status.toLowerCase().replace(' ', '-')}">${row.status}</span></td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-        
-        function formatDate(dateString) {
-            // Implement date formatting
-            return new Date(dateString).toLocaleDateString();
-        }
-    });
-</script>
 
 </body>
 </html>

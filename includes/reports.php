@@ -1,22 +1,11 @@
-
 <style>
-    /* .container {
-        width: 95%;
-        max-width: 1200px;
-        margin: 20px auto;
-        background: white;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        border-radius: 8px;
-        overflow: hidden;
-    } */
-
     .tabs-Rep {
         display: flex;
         background: var(--beige-color);
     }
 
     .tabRep {
-        padding: 15px 25px;
+        padding: 10px 20px;
         color: black;
         cursor: pointer;
         transition: all 0.3s;
@@ -112,27 +101,6 @@
         font-weight: bold;
         color: #2c3e50;
     }
-
-    /* select, input {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
-
-    button {
-        background: var(--blue-color);
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background 0.3s;
-    }
-
-    button:hover {
-        background: var(--blue-color);
-    } */
 </style>
 
 <div class="tabs-Rep">
@@ -157,18 +125,6 @@
             </select>
         </div>
         
-        <!-- <div class="filter-group">
-            <label for="department">Department:</label>
-            <select id="department">
-                <option>All Departments</option>
-                <option>Cardiology</option>
-                <option>Neurology</option>
-                <option>Oncology</option>
-                <option>Pediatrics</option>
-                <option>General Medicine</option>
-            </select>
-        </div> -->
-        
         <div class="filter-group">
             <label for="patient-type">Patient Type:</label>
             <select id="patient-type">
@@ -186,7 +142,7 @@
         </div>
     </div>
     
-    <div class="summary-cards">
+    <!-- <div class="summary-cards">
         <div class="card">
             <h3>Total Patients</h3>
             <div class="value">1,248</div>
@@ -210,11 +166,6 @@
             <div class="value">4.6/5</div>
             <div>+0.2 from last period</div>
         </div>
-    </div>
-    
-    <!-- <div class="chart-container"> -->
-        <!-- Chart would be rendered here with a library like Chart.js -->
-        <!-- <img src="https://via.placeholder.com/1200x400?text=Patient+Admissions+Trend+Chart" alt="Patient Admissions Trend Chart" style="width:100%; height:100%; object-fit: cover;">
     </div> -->
     
     <table>
@@ -225,8 +176,6 @@
                 <th>Name</th>
                 <th>Date Schedule</th>
                 <th>Date Processed</th>
-                <th>Department</th>
-                <th>Diagnosis</th>
                 <th>Status</th>
             </tr>
         </thead>
@@ -302,10 +251,6 @@
         </div>
     </div>
     
-    <!-- <div class="chart-container"> -->
-        <!-- Chart would be rendered here with a library like Chart.js -->
-        <!-- <img src="https://via.placeholder.com/1200x400?text=Medication+Consumption+Trend+Chart" alt="Medication Consumption Trend Chart" style="width:100%; height:100%; object-fit: cover;">
-    </div> -->
     
     <table>
         <thead>
@@ -433,11 +378,6 @@
             <div>Workload rating</div>
         </div>
     </div>
-    
-    <!-- <div class="chart-container"> -->
-        <!-- Chart would be rendered here with a library like Chart.js -->
-        <!-- <img src="https://via.placeholder.com/1200x400?text=Case+Load+Distribution+Chart" alt="Case Load Distribution Chart" style="width:100%; height:100%; object-fit: cover;">
-    </div> -->
     
     <table>
         <thead>

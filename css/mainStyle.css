@@ -561,10 +561,10 @@ tr .th-consultation {
 
 .checkbox-group {
   display: none;
-  position: absolute;
+  /* position: absolute;
   top: 100%;
   left: 0;
-  right: 0;
+  right: 0; */
   background: var(--white-color);
   border: 1px solid #ccc;
   border-radius: 4px;

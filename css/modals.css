@@ -15,7 +15,7 @@
 .modal-content {
   background-color: #fefefe;
   margin: auto;
-  border: 1px solid #888;
+  /* border: 1px solid #888; */
   background-color: rgba(255, 255, 255, 0.3);
 }
 .edit-content {
@@ -363,16 +363,22 @@
 }
 
 /* style for complaint modal */
+#complaintBtn {
+  position: relative;
+}
 .complaintShow {
   display: none;
   position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 1000;
-  left: 0;
-  top: 0;
+
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(1px);
+  background-color: rgba(255, 255, 255, 0.196);
 }
 
 .complaintShow.show {
@@ -385,7 +391,7 @@
   flex-direction: column;
   justify-content: left;
   gap: 5px;
-  /* max-height: 300px; */
+  width: 300px;
   height: fit-content;
   overflow-y: auto;
 }
@@ -425,6 +431,19 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  margin: 6% auto;
+  width: 80%;
+  max-width: 800px;
+}
+
+#modalComplaint .modal-content {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -15%);
+
+  /* width: 20%; */
 }
 
 #addPatientModal .modal-header {
@@ -464,15 +483,42 @@
 #addPatientForm {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
 }
 
-#addPatientModal div:nth-child(1),
+#addPatientModal div:nth-child(8),
+#addPatientModal div:nth-child(14),
+#addPatientModal div:nth-child(15),
+#addPatientModal div:nth-child(16),
+#addPatientModal div:nth-child(17) {
+  grid-column: span 6;
+}
 #addPatientModal div:nth-child(1),
 #addPatientModal div:nth-child(1),
 #addPatientModal div:nth-child(1),
 #addPatientModal div:nth-child(1),
 #addPatientModal div:nth-child(1) {
+  grid-column: span 4;
+}
+
+#addPatientModal div:nth-child(2),
+#addPatientModal div:nth-child(3),
+#addPatientModal div:nth-child(11),
+#addPatientModal div:nth-child(12),
+#addPatientModal div:nth-child(13) {
   grid-column: span 2;
+}
+
+#addPatientModal div:nth-child(5),
+#addPatientModal div:nth-child(6),
+#addPatientModal div:nth-child(7),
+#addPatientModal div:nth-child(9),
+#addPatientModal div:nth-child(10) {
+  grid-column: span 3;
+}
+
+#addPatientModal div:nth-child(4) {
+  grid-column: span 1;
 }
 
 #modal_searchResult {
