@@ -134,11 +134,11 @@
                     <div><label for="">Ano ang ipapakunsulta?</label></div>
 
                     <!-- Trigger Button -->
-                    <button type="button" id="complaintBtn" data-modal-target="modalComplaint" class="btn border width-100">--- Select Option ---</button>
+                    <button type="button" id="complaintBtn" data-modal-target="complaintModal3" class="btn border width-100">--- Select Option ---</button>
 
                     <!-- Modal Container -->
-                    <div id="modalComplaint" class="complaintShow">
-                        <div class="modal-content" style="width: 80%; ">
+                    <div id="complaintModal3" class="complaintShow">
+                        <div class="modal-content">
                             <div class="checkbox-complaint checkbox-group">
                                 <?php
                                     $sql1 = "SELECT id, name FROM neurology_classifications WHERE archived = 0";

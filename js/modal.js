@@ -156,47 +156,30 @@ view_appointment.addEventListener("change", function () {
   }
 });
 
-// FOR VITAL SIGNS AND CONSULTATION MODAL
-var viewConsultation = document.querySelectorAll(".action-img[alt='Approve']");
-var vitalSignsConsultModal = document.getElementById("vitalSignsConsultModal");
-var closeBtn = vitalSignsConsultModal.querySelector(".close");
-var vitalSignsBtn = document.getElementById("vitalSignsBtn");
-var consultationBtn = document.getElementById("consultationBtn");
+// FOR VITAL SIGNS AND CONSULTATION BUTTONS
+var vitalSignsButtons = document.querySelectorAll(
+  ".action-img[alt='VitalSigns']"
+);
+var consultationButtons = document.querySelectorAll(
+  ".action-img[alt='Consultation']"
+);
 
-viewConsultation.forEach((button) => {
+// Handle Vital Signs button clicks
+vitalSignsButtons.forEach((button) => {
   button.addEventListener("click", function (e) {
     e.preventDefault();
     var recordId = this.getAttribute("data-record-id");
-    vitalSignsConsultModal.style.display = "block";
-
-    // Store the record ID for use by the buttons
-    vitalSignsBtn.setAttribute("data-record-id", recordId);
-    consultationBtn.setAttribute("data-record-id", recordId);
+    window.open("vital_signs.php?id=" + recordId, "_blank");
   });
 });
 
-// Close modal when clicking the X
-closeBtn.addEventListener("click", function () {
-  vitalSignsConsultModal.style.display = "none";
-});
-
-// Close modal when clicking outside
-window.addEventListener("click", function (event) {
-  if (event.target === vitalSignsConsultModal) {
-    vitalSignsConsultModal.style.display = "none";
-  }
-});
-
-// Handle Vital Signs button click
-vitalSignsBtn.addEventListener("click", function () {
-  var recordId = this.getAttribute("data-record-id");
-  window.open("vital_signs.php?id=" + recordId, "_blank");
-});
-
-// Handle Consultation button click
-consultationBtn.addEventListener("click", function () {
-  var recordId = this.getAttribute("data-record-id");
-  window.open("consultation.php?id=" + recordId, "_blank");
+// Handle Consultation button clicks
+consultationButtons.forEach((button) => {
+  button.addEventListener("click", function (e) {
+    e.preventDefault();
+    var recordId = this.getAttribute("data-record-id");
+    window.open("consultation.php?id=" + recordId, "_blank");
+  });
 });
 
 // ADD PATIENT MODAL

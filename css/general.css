@@ -197,3 +197,11 @@ a {
   border-color: var(--grey-color);
   box-shadow: 0px 0px 10px var(--grey-color);
 }
+
+.radio-group {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 0.5rem;
+  align-items: center;
+}

@@ -86,43 +86,37 @@
                     </div>
 
                     <!-- 10 -->
-                    <div class="margin-t-20">
+                    <div class="question-block margin-t-20">
                         <h2>May iba pa bang kasama ang pasyente?</h2>
                         <p><i>*Is there anyone else accompanying the patient?</i></p>
                         <fieldset style="border: none; padding: 0; margin: 0;">
                             <div class="radio-group">
-                                <label for="informantQA-true">
-                                    <input type="radio" name="informantQA" id="informantQA-true">
+                                <label for="informantQA-true-2">
+                                    <input type="radio" name="informantQA" id="informantQA-true-2">
                                     Yes
                                 </label>
 
-                                <label for="informantQA-false">
-                                    <input type="radio" name="informantQA" id="informantQA-false">
+                                <label for="informantQA-false-2">
+                                    <input type="radio" name="informantQA" id="informantQA-false-2">
                                     No
                                 </label>
                             </div>
                         </fieldset>
                     </div>
 
+                    <div class="informant-details">
+                        <div class="display-informant" style="display: none;">
+                            <label for="">Name of Informant:
+                                <input type="text" name="informant">
+                            </label>
+                        </div>
 
-                    <!-- 12 -->
-                    <div>
-                        <label for="" class="display-informant" style="display: none;">Name of Informant:
-                            <input type="text" name="informant">
-                        </label>
+                        <div class="display-informant" style="display: none;">
+                            <label for="">Relationship to patient:
+                                <input type="text" name="informant_relation">
+                            </label>
+                        </div>
                     </div>
-
-                    <!-- 13 -->
-                    <div>
-                        <label for="" class="display-informant" style="display: none;">Relationship to patient:
-                            <input type="text" name="informant_relation">
-                        </label>
-                    </div>
-
-                    <!-- 11 -->
-                    <!-- <div class="informantDetails">
-                        <h2>Informant's Details</h2>
-                    </div> -->
                 </div>
 
                 <div class="appointmentDetails">
@@ -163,10 +157,6 @@
 
                         <?php include('includes/calendarTable_modal.php'); ?>
                     </div>
-
-                    <!-- <div class="complaint">
-                        <h2>Complaint</h2>
-                    </div> -->
 
                     <div class="input margin-t-20">
                         <div><label for="">Ano ang ipapakunsulta?</label></div>
@@ -255,31 +245,31 @@
             showModal();
         });
 
-        // INFORMANT DETAILS DISPLAY
-        const inTrue = document.getElementById("informantQA-true");
-        const informants = document.querySelectorAll(".display-informant");
+        // // INFORMANT DETAILS DISPLAY
+        // const inTrue = document.getElementById("informantQA-true");
+        // const informants = document.querySelectorAll(".display-informant");
 
-        // Function to show or hide informant details
-        function toggleInformantDetails() {
-            if (inTrue.checked) {
-                informants.forEach((element) => {
-                    element.style.display = "block"; // Show informant details
-                });
-            } else {
-                informants.forEach((element) => {
-                    element.style.display = "none"; // Hide informant details
-                });
-            }
-        }
+        // // Function to show or hide informant details
+        // function toggleInformantDetails() {
+        //     if (inTrue.checked) {
+        //         informants.forEach((element) => {
+        //             element.style.display = "block"; // Show informant details
+        //         });
+        //     } else {
+        //         informants.forEach((element) => {
+        //             element.style.display = "none"; // Hide informant details
+        //         });
+        //     }
+        // }
 
-        // Initial call to set the display state when the page loads
-        toggleInformantDetails();
+        // // Initial call to set the display state when the page loads
+        // toggleInformantDetails();
 
-        // Add event listeners to both radio buttons to detect changes
-        const radioButtons = document.querySelectorAll('input[name="informantQA"]');
-        radioButtons.forEach((radio) => {
-            radio.addEventListener("change", toggleInformantDetails);
-        });
+        // // Add event listeners to both radio buttons to detect changes
+        // const radioButtons = document.querySelectorAll('input[name="informantQA"]');
+        // radioButtons.forEach((radio) => {
+        //     radio.addEventListener("change", toggleInformantDetails);
+        // });
     </script>
 
     <!-- <script>

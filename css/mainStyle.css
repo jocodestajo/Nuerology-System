@@ -399,7 +399,7 @@ tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 table .action-img {
-  width: 20px;
+  width: 24px;
   cursor: pointer;
   margin-inline: 5px;
 }

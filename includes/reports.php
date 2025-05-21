@@ -115,19 +115,8 @@
     
     <div class="filters">
         <div class="filter-group">
-            <label for="timeframe">Timeframe:</label>
-            <select id="timeframe">
-                <option>Last 7 days</option>
-                <option>Last 30 days</option>
-                <option>Last 90 days</option>
-                <option>Last year</option>
-                <option>Custom range</option>
-            </select>
-        </div>
-        
-        <div class="filter-group">
             <label for="patient-type">Patient Type:</label>
-            <select id="patient-type">
+            <select id="patient-type" class="width-100">
                 <option>All Patients</option>
                 <option>Pending</option>
                 <option>Face to Face</option>
@@ -136,9 +125,20 @@
                 <option>Cancelled</option>
             </select>
         </div>
+
+        <div class="filter-group">
+            <label for="timeframe">Timeframe:</label>
+            <select id="timeframe" class="width-100">
+                <option>Last 7 days</option>
+                <option>Last 30 days</option>
+                <option>Last 90 days</option>
+                <option>Last year</option>
+                <option>Custom range</option>
+            </select>
+        </div>
         
         <div class="filter-group" style="align-self: flex-end;">
-            <button>Apply Filters</button>
+            <button class="btn btn-blue">Apply Filters</button>
         </div>
     </div>
     

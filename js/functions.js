@@ -94,6 +94,37 @@ clientSelects.forEach((clientSelect) => {
   });
 });
 
+// INFORMANT DETAILS based on radio selection
+function toggleInformantDetails(event) {
+  const radioGroup = event.target.closest(".question-block");
+  const informants =
+    radioGroup.nextElementSibling.querySelectorAll(".display-informant");
+
+  if (event.target.id.includes("true")) {
+    informants.forEach((element) => {
+      element.style.display = "block";
+    });
+  } else {
+    informants.forEach((element) => {
+      element.style.display = "none";
+    });
+  }
+}
+
+// Set up event listeners for all radio buttons with name "informantQA"
+document.querySelectorAll('input[name="informantQA"]').forEach((radio) => {
+  radio.addEventListener("change", toggleInformantDetails);
+});
+
+// Initial call to set the display state on page load
+document.querySelectorAll(".question-block").forEach((block) => {
+  const selectedRadio = block.querySelector('input[type="radio"]:checked');
+  if (selectedRadio) {
+    toggleInformantDetails({ target: selectedRadio });
+  }
+});
+
+// COMPLAINT SELECTED VALUE WRAPPER
 document.addEventListener("DOMContentLoaded", function () {
   // Toggle modal visibility
   function toggleModal(modalId) {
@@ -118,4 +149,39 @@ document.addEventListener("DOMContentLoaded", function () {
       toggleModal(targetId);
     });
   });
+
+  // Handle complaint selection for both modals
+  function setupComplaintModal(modalId) {
+    const complaintModal = document.getElementById(modalId);
+    if (!complaintModal) return;
+
+    const complaintCheckboxes = complaintModal.querySelectorAll(
+      'input[type="checkbox"]'
+    );
+    const complaintButton = document.querySelector(
+      `[data-modal-target="${modalId}"]`
+    );
+
+    function updateComplaintDisplay() {
+      const selectedComplaints = Array.from(complaintCheckboxes)
+        .filter((checkbox) => checkbox.checked)
+        .map((checkbox) => checkbox.value);
+
+      if (selectedComplaints.length > 0) {
+        complaintButton.textContent = selectedComplaints.join(", ");
+      } else {
+        complaintButton.textContent = "--- Select Option ---";
+      }
+    }
+
+    // Add change event listeners to all complaint checkboxes
+    complaintCheckboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", updateComplaintDisplay);
+    });
+  }
+
+  // Setup both complaint modals
+  setupComplaintModal("complaintModal1");
+  setupComplaintModal("complaintModal2");
+  setupComplaintModal("complaintModal3");
 });

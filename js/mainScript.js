@@ -1,19 +1,33 @@
 // TABS FUNCTION (navbar-2) ////////////////////////////////////////////////////////////////////
 function showContent(index) {
+  console.log("showContent called with index:", index);
   let contents = document.querySelectorAll(".content");
   let tabs = document.querySelectorAll(".tab");
+  console.log("Found contents:", contents.length);
+  console.log("Found tabs:", tabs.length);
+
   contents.forEach(function (content) {
     content.classList.remove("active");
   });
 
   // Show the content of the clicked tab
-  if (contents[index]) contents[index].classList.add("active");
+  if (contents[index]) {
+    console.log("Activating content at index:", index);
+    contents[index].classList.add("active");
+  } else {
+    console.log("No content found at index:", index);
+  }
 
   // Remove active class from all tabs and add it to the clicked tab
   tabs.forEach(function (tab) {
     tab.classList.remove("active");
   });
-  if (tabs[index]) tabs[index].classList.add("active");
+  if (tabs[index]) {
+    console.log("Activating tab at index:", index);
+    tabs[index].classList.add("active");
+  } else {
+    console.log("No tab found at index:", index);
+  }
 
   // Uncheck all checkboxes
   const checkboxes = document.querySelectorAll(".checkbox");

@@ -15,6 +15,17 @@ require 'config/dbcon.php';
     <link rel="stylesheet" href="css/general.css">
     <link rel="stylesheet" href="css/mediaQuery.css">
     <link rel="stylesheet" href="css/modals.css">
+    
+    <!-- Javascript -->
+    <script src="js/reports.js" defer></script>
+    <script src="js/mainScript.js" defer></script>
+    <script src="js/approval-f2f-telecon.js" defer></script>
+    <script src="js/modal.js" defer></script>
+    <script src="js/calendar_booking.js" defer></script>
+    <script src="js/calendar_schedule.js" defer></script>
+    <script src="js/searchTab.js" defer></script>
+    <script src="js/consultation.js" defer></script>
+    <script src="js/functions.js" defer></script>
 </head>
 
 <body>
@@ -31,7 +42,6 @@ require 'config/dbcon.php';
 
         <!-- EDIT RECORDS MODAL-->
         <?php include('includes/editRecords.php'); ?>
-        <?php include('includes/vitalSignsConsultModal.php'); ?>
 
         <!-- navigation bar / TAB -->
         <div class="navbar-2">
@@ -42,6 +52,7 @@ require 'config/dbcon.php';
             <div class="tab" onclick="showContent(4)">Calendar</div>
             <div class="tab" onclick="showContent(5)">Search</div>
             <div class="tab" onclick="showContent(6)">Reports</div>
+            <div class="tab" onclick="showContent(7)">History</div>
         </div>
         
         <div class="container-2">
@@ -55,11 +66,11 @@ require 'config/dbcon.php';
                         <div class="input appointment-type">
                             <label>Type of appointment: <i class="asterisk">*</i></label>
                             <select id="typeOfAppointment" name="typeofappoint" class="appointment" required>
-                                <option class="select" value="" hidden disabled selected>--- Select Option ---</option>
+                                <!-- <option class="select" value="" hidden disabled >--- Select Option ---</option> -->
+                                <option value="Walk-In" selected>Walk-in</option>
                                 <option value="SMS">SMS</option>
                                 <option value="Receive Call">Call</option>
                                 <option value="Online">Online</option>
-                                <option value="Walk-In">Walk-in</option>
                                 <option value="Follow Up">Follow up</option>
                                 <option value="Referral">Referral</option>
                             </select>
@@ -144,17 +155,36 @@ require 'config/dbcon.php';
                             <label for="" class="viber">Viber Account:</label>
                             <input type="text" name="viber" class="viber">
                         </div>
-                        
-                        <!-- div.box Child element 11 -->
-                        <div class="input">
-                            <label for="" class="informant_name">Informant's Name: <i class="asterisk">*</i></label>
-                            <input type="text" name="informant" class="informant_name" require>
+
+                        <!-- 10 -->
+                        <div class="question-block margin-t-20">
+                            <label>May iba pa bang kasama ang pasyente?</label>
+                            <p><i>*Is there anyone else accompanying the patient?</i></p>
+                            <fieldset style="border: none; padding: 0; margin: 0;">
+                                <div class="radio-group">
+                                    <label for="informantQA-true-1">
+                                        <input type="radio" name="informantQA" id="informantQA-true-1">
+                                        Yes
+                                    </label>
+
+                                    <label for="informantQA-false-1">
+                                        <input type="radio" name="informantQA" id="informantQA-false-1">
+                                        No
+                                    </label>
+                                </div>
+                            </fieldset>
                         </div>
-                        
-                        <!-- div.box Child element 12 -->
-                        <div class="input">
-                            <label for="" class="rel_informant">Relation to informant: <i class="asterisk">*</i></label>
-                            <input type="text" name="informant_relation" class="rel_informant" require>
+
+                        <div class="informant-details">
+                            <div class="display-informant" style="display: none;">
+                                <label for="">Name of Informant:</label>
+                                <input type="text" name="informant" class="width-100">
+                            </div>
+
+                            <div class="display-informant" style="display: none;">
+                                <label for="">Relationship to patient:</label>
+                                <input type="text" name="informant_relation" class="width-100">
+                            </div>
                         </div>
                         
                         <!-- div.box Child element 13 -->
@@ -172,15 +202,18 @@ require 'config/dbcon.php';
 
                                     <div>
                                         <h3>Type of Consultation:</h3>
-                                        <div class="radio-div">
-                                            <div>
-                                                <input type="radio" name="consultation" id="f2f" value="Face to face" class="custom-radio">
-                                                <label for="f2f">Face to face</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name="consultation" id="teleconsult" value="Teleconsultation" class="custom-radio">
-                                                <label for="teleconsult">Teleconsultation</label>
-                                            </div>
+                                        <div class="radio-div radio-group">
+                             
+                                                <label for="f2f">
+                                                    <input type="radio" name="consultation" id="f2f" value="Face to face" class="custom-radio">
+                                                    Face to face
+                                                </label>
+
+                                                <label for="teleconsult">
+                                                    <input type="radio" name="consultation" id="teleconsult" value="Teleconsultation" class="custom-radio">
+                                                    Teleconsultation
+                                                </label>
+
                                         </div>
                                     </div>
                                 </div>
@@ -206,29 +239,7 @@ require 'config/dbcon.php';
                         </div>
 
                         <!-- div.box Child element 15 -->
-                        <!-- <div class="input">
-                            <label for="q1">Ano ang ipapakunsulta? <i class="asterisk">*</i></label>
-                            <select name="complaint" class="options" required>
-                                <option value="" hidden disabled selected>--- Select Option ---</option>
-                                
-                                <?php
-                                    $sql1 = "SELECT id, name FROM neurology_classifications WHERE archived = 0";
-                                    $result1 = $conn->query($sql1);
-                                    
-                                    if ($result1->num_rows > 0) {
-                                        while($row = $result1->fetch_assoc()) {
-                                            echo "<option value='" . $row['name'] . "'>" . htmlspecialchars($row['name']) . "</option>";
-                                        }
-                                    } else {
-                                        echo "<option disabled>No classifications found</option>";
-                                    }
-                                ?>
-                                
-                                <option value="Other">Other</option>
-                            </select>
-                        </div> -->
-
-                        <div class="input margin-t-20">
+                        <div class="input">
                             <div><label for="">Ano ang ipapakunsulta?</label></div>
 
                             <!-- Trigger Button -->
@@ -419,10 +430,9 @@ require 'config/dbcon.php';
                                         <td class="th-schedule"><?= $records['date_sched']; ?></td>
                                         <td class="th-complaint"><?= $records['complaint']; ?></td>
                                         <td class="th-action action border-right">
-                                            <!-- <a href="">  -->
-                                                <img src="img/check-circle.png" class=" action-img margin-right" alt="Approve" data-record-id="<?=$records['id'];?>">
-                                            <!-- </a> -->
-                                            <!-- update-processed data-id="<?=$records['id'];?>"-->
+                                            <img src="img/check-circle.png" class="action-img margin-right" alt="Approve" data-record-id="<?=$records['id'];?>">
+                                            <img src="img/vitalSigns.png" class="action-img margin-right" alt="VitalSigns" data-record-id="<?=$records['id'];?>">
+                                            <img src="img/chat.png" class=" action-img margin-right" alt="Consultation" data-record-id="<?=$records['id'];?>">
                                             <img src="img/edit.png" class="action-img view-button margin-right" alt="View" data-record-id="<?=$records['id'];?>">
                                             <img src="img/cancel.png" class="action-img update-cancelled" alt="Cancel" data-id="<?=$records['id'];?>">
                                         </td>
@@ -494,9 +504,9 @@ require 'config/dbcon.php';
                                         <td class="th-schedule"><?= $records['date_sched']; ?></td>
                                         <td class="th-complaint"><?= $records['complaint']; ?></td>
                                         <td class="th-action action border-right">
-                                            <!-- <a href="./consultation.php" target="_blank" rel="noopener noreferrer">  -->
-                                                <img src="img/check-circle.png" class=" action-img margin-right" alt="Approve" data-record-id="<?=$records['id'];?>">
-                                            <!-- </a> -->
+                                            <img src="img/check-circle.png" class=" action-img margin-right" alt="Approve" data-record-id="<?=$records['id'];?>">
+                                            <img src="img/vitalSigns.png" class="action-img margin-right" alt="VitalSigns" data-record-id="<?=$records['id'];?>">
+                                            <img src="img/chat.png" class=" action-img margin-right" alt="Consultation" data-record-id="<?=$records['id'];?>">
                                             <img src="img/edit.png" class="action-img update-processed margin-right" alt="View" data-record-id="<?=$records['id'];?>">
                                             <img src="img/cancel.png" class="action-img update-cancelled" alt="Cancel" data-id="<?=$records['id'];?>">
                                         </td>
@@ -685,23 +695,95 @@ require 'config/dbcon.php';
             <div class="content">
                 <?php include('includes/reports.php'); ?>
             </div>
+
+            <!-- TAB 8 / HISTORY -->
+            <div class="content">
+                <div class="filters">
+                    <Label class="filter-group">Sort By:
+                        <div>
+                            <select name="" class="btn width-100" id="sortDataReport">
+                                <option value="All" selected>All</option>
+                                <option value="Processed">Processed</option>
+                                <option value="Follow up">Follow up</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </Label>
+    
+                    <label class="filter-group"> Date From:
+                        <div>
+                            <input type="date" class="width-100">
+                        </div>
+                    </label>
+
+                    <label class="filter-group"> Date To:
+                        <div>
+                            <input type="date" class="width-100">
+                        </div>
+                    </label>
+
+                    <label class="filter-group" style="align-self: flex-end;">
+                        <button class="btn btn-blue">Apply Filter</button>
+                    </label>
+                </div>
+                    
+                <table class="table-history" id="table4">
+                    <thead>
+                        <tr>
+                            <!-- <th class="th-check "><input type="checkbox" class="checkbox checkbox-header custom-checkbox"></th> -->
+                            <!-- <th class="th-hrn border-left">HRN</th> -->
+                            <th class="th-name">Name</th>
+                            <!-- <th class="th-contact">Contact</th> -->
+                            <th class="th-consultation">Consultation</th>
+                            <th class="th-schedule">Schedule</th>
+                            <th class="th-complaint">Complaint</th>
+                            <th class="th-status">Status</th>
+                            <th class="th-date-process">Date Processed</th>
+                            <th class="th-action border-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            // Query for history records
+                            $query = "SELECT r.id, r.hrn, r.name, r.contact, 
+                                     c.consultation, c.date_sched, c.complaint, c.status, c.date_process
+                                     FROM neurology_records r
+                                     INNER JOIN neurology_consultations c ON r.id = c.record_id
+                                     WHERE c.status IN ('processed', 'follow up', 'cancelled')
+                                     ORDER BY c.date_process DESC";
+
+                            $query_run = mysqli_query($conn, $query);
+
+                            if(mysqli_num_rows($query_run) > 0) {
+                                foreach($query_run as $records) {
+                                    ?>
+                                    <tr id="patient_<?=$records['id'];?>">
+                                        <!-- <td class="th-check border-left"><input type="checkbox" class="checkbox custom-checkbox"></td> -->
+                                        <!-- <td class="th-hrn"><?= $records['hrn']; ?></td> -->
+                                        <td class="th-name"><?= $records['name']; ?></td>
+                                        <!-- <td class="th-contact"><?= $records['contact']; ?></td> -->
+                                        <td class="th-consultation"><?= $records['consultation']; ?></td>
+                                        <td class="th-schedule"><?= $records['date_sched']; ?></td>
+                                        <td class="th-complaint"><?= $records['complaint']; ?></td>
+                                        <td class="th-status"><?= $records['status']; ?></td>
+                                        <td class="th-date-process"><?= $records['date_process']; ?></td>
+                                        <td class="th-action action border-right">
+                                            <img src="img/edit.png" class="action-img view-button margin-right" alt="View" data-record-id="<?=$records['id'];?>">
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                            }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div id="footer">
-            <h4>&copy; 2024 - MMWGH (IMISU)</h4>
+            <h4>&copy; 2025 - MMWGH (IMISU)</h4>
         </div>
     </div>
-
-    <!-- Javascript -->
-    <script src="js/reports.js"></script>
-    <script src="js/mainScript.js"></script>
-    <script src="js/approval-f2f-telecon.js"></script>
-    <script src="js/modal.js"></script>
-    <script src="js/calendar_booking.js"></script>
-    <script src="js/calendar_schedule.js"></script>
-    <script src="js/searchTab.js"></script>
-    <script src="js/consultation.js"></script>
-    <script src="js/functions.js"></script>
 
     <script>
         // Function to display the footer
@@ -724,7 +806,6 @@ require 'config/dbcon.php';
 
         // Initial check in case the user is already at the bottom when the page loads
         checkScroll();
-
     </script>
 
 </body>
