@@ -65,7 +65,6 @@ $response = ['success' => false, 'message' => ''];
             $referTo = $refer_to;
         }
 
-        $date_sched = mysqli_real_escape_string($conn, $_POST['date_sched']);
         $remarks = mysqli_real_escape_string($conn, $_POST['remarks']);
 
         // Get current date for time fields
@@ -75,7 +74,6 @@ $response = ['success' => false, 'message' => ''];
         $consultEnd = $currentDate . ' ' . mysqli_real_escape_string($conn, $_POST['consultEnd']) . ':00';
         $educStart = $currentDate . ' ' . mysqli_real_escape_string($conn, $_POST['educStart']) . ':00';
         $educEnd = $currentDate . ' ' . mysqli_real_escape_string($conn, $_POST['educEnd']) . ':00';
-        // $vs_end = $currentDate . ' ' . mysqli_real_escape_string($conn, $_POST['vs_end']) . ':00';
 
         $type1 = mysqli_real_escape_string($conn, $_POST['consultant_1_type']);
         $doctorName = mysqli_real_escape_string($conn, $_POST['consultant_1']);
@@ -89,6 +87,15 @@ $response = ['success' => false, 'message' => ''];
 
         // Check if follow-up checkbox is checked
         $status = isset($_POST['follow_up']) ? 'follow up' : 'processed';
+
+        // date_sched is only updated if the status is follow up
+        if ($status == 'follow up') {
+            $date_sched_sql = "NOW()";
+        } else {
+            // Keep the previously saved value from the database
+            $date_sched = mysqli_real_escape_string($conn, $_POST['date_sched']);
+            $date_sched_sql = "'$date_sched'";
+        }
 
         // Automatically set appointment_type to 'Follow Up' if status is 'follow up'
         $appointment_type = ($status === 'follow up') ? 'Follow Up' : mysqli_real_escape_string($conn, $_POST['appointment_type']);
@@ -118,7 +125,7 @@ $response = ['success' => false, 'message' => ''];
                             c.refer_to = '$referTo',
                             c.appointment_type = '$appointment_type',
                             c.remarks = '$remarks',
-                            c.date_sched = '$date_sched',
+                            c.date_sched = $date_sched_sql,
                             c.date_process = NOW(),
                             c.consult_start = '$consultStart',
                             c.consult_end = '$consultEnd',

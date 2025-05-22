@@ -26,6 +26,8 @@ require 'config/dbcon.php';
     <script src="js/searchTab.js" defer></script>
     <script src="js/consultation.js" defer></script>
     <script src="js/functions.js" defer></script>
+    <script src="js/filterHistory.js" defer></script>
+    <script src="js/historyModal.js" defer></script>
 </head>
 
 <body>
@@ -699,46 +701,52 @@ require 'config/dbcon.php';
             <!-- TAB 8 / HISTORY -->
             <div class="content">
                 <div class="filters">
-                    <Label class="filter-group">Sort By:
+                    <Label class="filter-group">Filter by:
+                        <div>
+                            <select name="" class="btn width-100" id="filterDataReport">
+                                <option value="All" selected>All</option>
+                                <option value="processed">Processed</option>
+                                <option value="follow up">Follow up</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </Label>
+
+                    <Label class="filter-group">Sort by:
                         <div>
                             <select name="" class="btn width-100" id="sortDataReport">
                                 <option value="All" selected>All</option>
-                                <option value="Processed">Processed</option>
-                                <option value="Follow up">Follow up</option>
-                                <option value="Cancelled">Cancelled</option>
+                                <option value="Face to Face">Face to Face</option>
+                                <option value="Teleconsult">Teleconsult</option>
                             </select>
                         </div>
                     </Label>
     
                     <label class="filter-group"> Date From:
                         <div>
-                            <input type="date" class="width-100">
+                            <input type="date" id="dateFrom" class="width-100">
                         </div>
                     </label>
 
                     <label class="filter-group"> Date To:
                         <div>
-                            <input type="date" class="width-100">
+                            <input type="date" id="dateTo" class="width-100">
                         </div>
                     </label>
 
                     <label class="filter-group" style="align-self: flex-end;">
-                        <button class="btn btn-blue">Apply Filter</button>
+                        <button class="btn btn-blue" id="applyFilterBtn">Apply Filter</button>
                     </label>
                 </div>
                     
                 <table class="table-history" id="table4">
                     <thead>
                         <tr>
-                            <!-- <th class="th-check "><input type="checkbox" class="checkbox checkbox-header custom-checkbox"></th> -->
-                            <!-- <th class="th-hrn border-left">HRN</th> -->
                             <th class="th-name">Name</th>
-                            <!-- <th class="th-contact">Contact</th> -->
                             <th class="th-consultation">Consultation</th>
                             <th class="th-schedule">Schedule</th>
                             <th class="th-complaint">Complaint</th>
                             <th class="th-status">Status</th>
-                            <th class="th-date-process">Date Processed</th>
                             <th class="th-action border-right">Action</th>
                         </tr>
                     </thead>
@@ -758,17 +766,13 @@ require 'config/dbcon.php';
                                 foreach($query_run as $records) {
                                     ?>
                                     <tr id="patient_<?=$records['id'];?>">
-                                        <!-- <td class="th-check border-left"><input type="checkbox" class="checkbox custom-checkbox"></td> -->
-                                        <!-- <td class="th-hrn"><?= $records['hrn']; ?></td> -->
                                         <td class="th-name"><?= $records['name']; ?></td>
-                                        <!-- <td class="th-contact"><?= $records['contact']; ?></td> -->
                                         <td class="th-consultation"><?= $records['consultation']; ?></td>
                                         <td class="th-schedule"><?= $records['date_sched']; ?></td>
                                         <td class="th-complaint"><?= $records['complaint']; ?></td>
                                         <td class="th-status"><?= $records['status']; ?></td>
-                                        <td class="th-date-process"><?= $records['date_process']; ?></td>
                                         <td class="th-action action border-right">
-                                            <img src="img/edit.png" class="action-img view-button margin-right" alt="View" data-record-id="<?=$records['id'];?>">
+                                            <img src="img/edit.png" class="action-img view-history  margin-right" alt="View" data-record-id="<?=$records['id'];?>">
                                         </td>
                                     </tr>
                                     <?php
@@ -780,9 +784,7 @@ require 'config/dbcon.php';
             </div>
         </div>
 
-        <div id="footer">
-            <h4>&copy; 2025 - MMWGH (IMISU)</h4>
-        </div>
+        <footer id="footer">&copy; 2025 - MMWGH (IMISU)</footer>
     </div>
 
     <script>
