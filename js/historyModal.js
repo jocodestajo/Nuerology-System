@@ -1,48 +1,84 @@
 // Function to open the history modal
 function openHistoryModal(recordId) {
-  // Load the modal content
-  fetch(`includes/historyModal.php?id=${recordId}`)
-    .then((response) => response.text())
-    .then((html) => {
-      // Add the modal to the document
-      document.body.insertAdjacentHTML("beforeend", html);
+  // Get the modal element
+  const modal = document.getElementById("historyModal");
 
-      // Get the modal element
-      const modal = document.getElementById("historyModal");
+  // Fetch the patient data
+  fetch(`api/get/fetch_history.php?id=${recordId}`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        const patient = data.data;
 
-      // Show the modal
-      modal.style.display = "block";
+        // Update the record ID in the form
+        const form = document.getElementById("historyForm");
+        form.querySelector('input[name="record_id"]').value = recordId;
 
-      // Add event listener to close button
-      const closeBtn = modal.querySelector(".close-btn");
-      closeBtn.onclick = function () {
-        closeHistoryModal();
-      };
+        // Populate the form fields
+        form.querySelector('input[name="name"]').value = patient.name;
+        form.querySelector('input[name="hrn"]').value = patient.hrn;
+        form.querySelector('input[name="birthday"]').value = patient.birthday;
+        form.querySelector('input[name="age"]').value = patient.age;
+        form.querySelector('input[name="address"]').value = patient.address;
+        form.querySelector('input[name="contact"]').value = patient.contact;
+        form.querySelector('input[name="email"]').value = patient.email;
+        form.querySelector('input[name="viber"]').value = patient.viber;
+        form.querySelector('select[name="typeofappoint"]').value =
+          patient.appointment_type;
+        form.querySelector('select[name="consultation"]').value =
+          patient.consultation;
+        form.querySelector('input[name="date_sched"]').value =
+          patient.date_sched;
+        form.querySelector('select[name="status"]').value = patient.status;
+        form.querySelector('textarea[name="complaint"]').value =
+          patient.complaint;
+        form.querySelector('textarea[name="history"]').value = patient.history;
+        form.querySelector('input[name="blood_pressure"]').value =
+          patient.blood_pressure;
+        form.querySelector('input[name="temperature"]').value =
+          patient.temperature;
+        form.querySelector('input[name="pulse_rate"]').value =
+          patient.pulse_rate;
+        form.querySelector('input[name="respiratory_rate"]').value =
+          patient.respiratory_rate;
 
-      // Close modal when clicking outside
-      window.onclick = function (event) {
-        if (event.target == modal) {
-          closeHistoryModal();
-        }
-      };
-
-      // Handle form submission
-      const form = document.getElementById("historyForm");
-      form.onsubmit = function (e) {
-        e.preventDefault();
-        updateHistory(form);
-      };
+        // Show the modal
+        modal.style.display = "block";
+      } else {
+        alert("Error loading patient data: " + data.message);
+      }
     })
     .catch((error) => {
       console.error("Error:", error);
+      alert("Error loading patient data");
     });
+
+  // Add event listener to close button
+  const closeBtn = modal.querySelector(".close-btn");
+  closeBtn.onclick = function () {
+    closeHistoryModal();
+  };
+
+  // Close modal when clicking outside
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      closeHistoryModal();
+    }
+  };
+
+  // Handle form submission
+  const form = document.getElementById("historyForm");
+  form.onsubmit = function (e) {
+    e.preventDefault();
+    updateHistory(form);
+  };
 }
 
 // Function to close the history modal
 function closeHistoryModal() {
   const modal = document.getElementById("historyModal");
   if (modal) {
-    modal.remove();
+    modal.style.display = "none";
   }
 }
 

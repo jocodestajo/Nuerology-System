@@ -63,7 +63,6 @@ body {
 .header-1 .navbar .btn-navbar {
   color: var(--white-color);
   text-decoration: none;
-  /* margin-left: 35px; */
 }
 .header-1 select:focus {
   border: none;
@@ -129,9 +128,7 @@ footer {
 .container-2 {
   display: flex;
   flex-wrap: wrap;
-  /* background-color: var(--white-color); */
   padding: 0 100px;
-  /* box-shadow: 0px 0px 10px rgba(101, 101, 101, 0.3); */
 }
 
 .content {
@@ -211,20 +208,6 @@ footer {
   color: var(--red-color);
 }
 
-/*box child element 1 / DATE */
-/* .box .currentdate {
-  display: flex;
-  flex-direction: row;
-  justify-content: end;
-}
-.box .currentdate input {
-  border: none;
-  border-bottom: 1px solid var(--grey-color);
-}
-.box .datetime {
-  text-align: center;
-} */
-
 /* box child element 2 / Type of appointment */
 .box #referralContent {
   display: none;
@@ -263,8 +246,6 @@ footer {
 }
 .borderbox .col-2 .calendar .calendar-date input {
   width: 100%;
-  /* border: none;
-  border-bottom: 1px solid var(--grey-color); */
   text-align: center;
 }
 .borderbox .col-2 .calendar .calendar-btn .btn {
@@ -288,35 +269,12 @@ footer {
   grid-column: span 6;
   display: flex;
   justify-content: flex-end;
-  /* margin-top: 30px; */
 }
 .div-btn-submit .btn {
   width: 150px;
   padding: 12px;
   margin-left: 20px;
-  border-radius: 2px;
-}
-.div-btn-submit .btn:hover {
-  cursor: pointer;
-  transition: 0.35s;
-  height: auto;
-}
-.div-btn-submit .btn-red:hover {
-  border-color: var(--red-color);
-  box-shadow: 0px 0px 10px var(--red-color);
-}
-.div-btn-submit .btn-green:hover {
-  border-color: var(--primary-color);
-  box-shadow: 0px 0px 10px var(--primary-color);
-}
-
-.flex {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 14px;
-  margin-top: 22px;
-  margin-bottom: 32px;
+  border-radius: 5px;
 }
 
 /* EDIT RECORDS FORM */
@@ -339,7 +297,6 @@ footer {
   bottom: 10%;
   transform: translate(-10%, -6%);
 
-  /* margin-top: 40px; */
   opacity: 0;
   transform: translateX(-30px);
   transition: opacity 1s ease, transform 1s ease;
@@ -351,11 +308,6 @@ footer {
 }
 
 /* TAB 2 / Pending Appointments */
-/* .table-pending {
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
-} */
 table {
   margin: 0;
   padding: 0;
@@ -371,7 +323,7 @@ table th {
   word-wrap: break-word; /* Break long words if needed */
   word-break: break-word; /* Break very long strings (like emails, URLs) */
   overflow-wrap: break-word;
-  padding: 8px; /* Ensure spacing is consistent */
+  padding: 8px;
   vertical-align: top; /* Align content to top for better readability */
 }
 th,
@@ -382,7 +334,6 @@ td {
 }
 th {
   background-color: var(--grey-color);
-  /* color: var(--white-color); */
   font-weight: bold;
   border-top: 1px solid var(--white-color);
   white-space: nowrap;
@@ -406,7 +357,7 @@ table .action-img:hover {
 
 .th-contact,
 .th-complaint {
-  max-width: 200px; /* Adjust as needed */
+  max-width: 200px;
 }
 
 tr .th-check,
@@ -416,28 +367,6 @@ tr .th-check {
 tr .th-hrn {
   width: 7%;
 }
-
-/* 
-tr .th-action {
-  width: 10%;
-}
-tr .th-contact,
-tr .th-schedule {
-  width: 8%;
-}
-tr .th-name {
-  text-align: left;
-  width: 28%;
-}
-tr .th-name {
-  padding-left: 24px;
-}
-tr .th-complaint {
-  width: 27%;
-}
-tr .th-consultation {
-  width: 10%;
-} */
 
 .selectDate-border {
   border: 1px solid var(--blue-color);

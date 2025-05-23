@@ -339,8 +339,8 @@
 
                                 <div class="">
                                     <label for="consultTelecon">
-                                        <input type="radio" value="Teleconsult" id="consultTelecon" name="consultation">
-                                        Teleconsult
+                                        <input type="radio" value="Teleconsultation" id="consultTelecon" name="consultation">
+                                        Teleconsultation
                                     </label>
                                 </div>
                             </div>

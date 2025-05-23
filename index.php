@@ -45,6 +45,9 @@ require 'config/dbcon.php';
         <!-- EDIT RECORDS MODAL-->
         <?php include('includes/editRecords.php'); ?>
 
+        <!-- HISTORY MODAL -->
+        <?php include('includes/historyModal.php'); ?>
+
         <!-- navigation bar / TAB -->
         <div class="navbar-2">
             <div class="tab active" onclick="showContent(0)">Inquiry</div>
@@ -717,7 +720,7 @@ require 'config/dbcon.php';
                             <select name="" class="btn width-100" id="sortDataReport">
                                 <option value="All" selected>All</option>
                                 <option value="Face to Face">Face to Face</option>
-                                <option value="Teleconsult">Teleconsult</option>
+                                <option value="Teleconsultation">Teleconsultation</option>
                             </select>
                         </div>
                     </Label>
