@@ -32,15 +32,29 @@ function openHistoryModal(recordId) {
         form.querySelector('select[name="status"]').value = patient.status;
         form.querySelector('textarea[name="complaint"]').value =
           patient.complaint;
+
         form.querySelector('textarea[name="history"]').value = patient.history;
         form.querySelector('input[name="blood_pressure"]').value =
           patient.blood_pressure;
         form.querySelector('input[name="temperature"]').value =
           patient.temperature;
-        form.querySelector('input[name="pulse_rate"]').value =
-          patient.pulse_rate;
+        form.querySelector('input[name="heart_rate"]').value =
+          patient.heart_rate;
         form.querySelector('input[name="respiratory_rate"]').value =
           patient.respiratory_rate;
+        form.querySelector('input[name="oxygen_saturation"]').value =
+          patient.oxygen_saturation;
+        form.querySelector('input[name="height"]').value = patient.height;
+        form.querySelector('input[name="weight"]').value = patient.weight;
+        form.querySelector('textarea[name="notes"]').value = patient.vs_notes;
+
+        form.querySelector('select[name="rx_mc"]').value = patient.rx_mc;
+        form.querySelector('input[name="diagnosis"]').value = patient.diagnosis;
+        form.querySelector('input[name="classifications"]').value =
+          patient.classification;
+        form.querySelector('input[name="medication"]').value =
+          patient.medication;
+        form.querySelector('textarea[name="remarks"]').value = patient.remarks;
 
         // Show the modal
         modal.style.display = "block";

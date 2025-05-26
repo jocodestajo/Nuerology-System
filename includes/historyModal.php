@@ -109,7 +109,7 @@
                         </div>
 
                         <div class="form-group full-width">
-                            <label>History of Present Illness:</label>
+                            <label>History of Illness:</label>
                             <textarea name="history" rows="3" class="width-100" required></textarea>
                         </div>
 
@@ -126,11 +126,56 @@
                                 </div>
                                 <div>
                                     <label>Pulse Rate:</label>
-                                    <input type="text" name="pulse_rate" class="width-100">
+                                    <input type="text" name="heart_rate" class="width-100">
                                 </div>
                                 <div>
                                     <label>Respiratory Rate:</label>
                                     <input type="text" name="respiratory_rate" class="width-100">
+                                </div>
+                                <div>
+                                    <label>Oxygen Saturation:</label>
+                                    <input type="text" name="oxygen_saturation" class="width-100">
+                                </div>
+                                <div>
+                                    <label>Height:</label>
+                                    <input type="text" name="height" class="width-100">
+                                </div>
+                                <div>
+                                    <label>Weight:</label>
+                                    <input type="text" name="weight" class="width-100">
+                                </div>
+                                <div>
+                                    <label>Notes:</label>
+                                    <textarea name="notes" rows="1" class="width-100"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Consultations:</label>
+                            <div class="vital-signs-grid">
+                                <div class="form-group">
+                                    <label>RX / MC:</label>
+                                    <select name="rx_mc" class="width-100" required>
+                                        <option value="MC">MC</option>
+                                        <option value="RX">RX</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>Classifications:</label>
+                                    <input type="text" name="classifications" class="width-100">
+                                </div>
+                                <div>
+                                    <label>Diagnosis:</label>
+                                    <input type="text" name="diagnosis" class="width-100">
+                                </div>
+                                <div>
+                                    <label>Medications:</label>
+                                    <input type="text" name="medication" class="width-100">
+                                </div>
+                                <div>
+                                    <label>Remarks:</label>
+                                    <textarea name="remarks" class="width-100"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -181,6 +226,11 @@
     padding: 1rem;
     border: 1px solid #ddd;
     border-radius: 5px;
+}
+
+.section h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
 .form-grid {
