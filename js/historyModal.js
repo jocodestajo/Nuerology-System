@@ -49,12 +49,26 @@ function openHistoryModal(recordId) {
         form.querySelector('textarea[name="notes"]').value = patient.vs_notes;
 
         form.querySelector('select[name="rx_mc"]').value = patient.rx_mc;
-        form.querySelector('input[name="diagnosis"]').value = patient.diagnosis;
-        form.querySelector('input[name="classifications"]').value =
-          patient.classification;
-        form.querySelector('input[name="medication"]').value =
+        form.querySelector('textarea[name="diagnosis"]').value =
+          patient.diagnosis;
+        form.querySelector('textarea[name="medication"]').value =
           patient.medication;
         form.querySelector('textarea[name="remarks"]').value = patient.remarks;
+
+        form.querySelector('input[name="turnaround_vs_start"]').value =
+          patient.vs_start;
+        form.querySelector('input[name="turnaround_vs_end"]').value =
+          patient.vs_end;
+        form.querySelector('input[name="turnaround_consult_start"]').value =
+          patient.consult_start;
+        form.querySelector('input[name="turnaround_consult_end"]').value =
+          patient.consult_end;
+        form.querySelector('input[name="turnaround_briefing_start"]').value =
+          patient.educ_start;
+        form.querySelector('input[name="turnaround_briefing_end"]').value =
+          patient.educ_end;
+        form.querySelector('input[name="consultant_1"]').value = patient.doctor;
+        form.querySelector('input[name="consultant_2"]').value = patient.nurse;
 
         // Show the modal
         modal.style.display = "block";

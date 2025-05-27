@@ -59,46 +59,6 @@
                     </div>
                 </div>
 
-                <!-- Consultation Details Section -->
-                <div class="section">
-                    <h3>Consultation Details</h3>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Type of Appointment:</label>
-                            <select name="typeofappoint" class="width-100" required>
-                                <option value="Walk-In">Walk-in</option>
-                                <option value="SMS">SMS</option>
-                                <option value="Receive Call">Call</option>
-                                <option value="Online">Online</option>
-                                <option value="Follow Up">Follow up</option>
-                                <option value="Referral">Referral</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Consultation Type:</label>
-                            <select name="consultation" class="width-100" required>
-                                <option value="Face to face">Face to face</option>
-                                <option value="Teleconsultation">Teleconsultation</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Date Schedule:</label>
-                            <input type="date" name="date_sched" class="width-100" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Status:</label>
-                            <select name="status" class="width-100" required>
-                                <option value="processed">Processed</option>
-                                <option value="follow up">Follow Up</option>
-                                <option value="cancelled">Cancelled</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Medical Information Section -->
                 <div class="section">
                     <h3>Medical Information</h3>
@@ -161,23 +121,120 @@
                                         <option value="RX">RX</option>
                                     </select>
                                 </div>
-                                <div>
-                                    <label>Classifications:</label>
-                                    <input type="text" name="classifications" class="width-100">
+                                <div class="form-group">
+                                    <h3>Classification</h3>
+                                    <select name="classification" id="consultClassification" class="center-text">
+                                        <option value="" hidden disabled selected>--- Select Option ---</option>
+                                        
+                                        <?php
+                                            $sql1 = "SELECT id, name FROM neurology_classifications WHERE archived = 0";
+                                            $result1 = $conn->query($sql1);
+                                            
+                                            if ($result1->num_rows > 0) {
+                                                while($row = $result1->fetch_assoc()) {
+                                                    echo "<option value='" . $row['id'] . "'>" . htmlspecialchars($row['name']) . "</option>";
+                                                }
+                                            } else {
+                                                echo "<option disabled>No classifications found</option>";
+                                            }
+                                        ?>
+                                        <option value="Other">Other</option>
+
+                                    </select>
                                 </div>
                                 <div>
                                     <label>Diagnosis:</label>
-                                    <input type="text" name="diagnosis" class="width-100">
+                                    <textarea rows="3" name="diagnosis" class="width-100"></textarea>
                                 </div>
                                 <div>
                                     <label>Medications:</label>
-                                    <input type="text" name="medication" class="width-100">
+                                    <textarea rows="3" name="medication" class="width-100"></textarea>
                                 </div>
                                 <div>
                                     <label>Remarks:</label>
                                     <textarea name="remarks" class="width-100"></textarea>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Consultation Details Section -->
+                <div class="section">
+                    <h3>Consultation Details</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Type of Appointment:</label>
+                            <select name="typeofappoint" class="width-100" required>
+                                <option value="Walk-In">Walk-in</option>
+                                <option value="SMS">SMS</option>
+                                <option value="Receive Call">Call</option>
+                                <option value="Online">Online</option>
+                                <option value="Follow Up">Follow up</option>
+                                <option value="Referral">Referral</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Consultation Type:</label>
+                            <select name="consultation" class="width-100" required>
+                                <option value="Face to face">Face to face</option>
+                                <option value="Teleconsultation">Teleconsultation</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Date Schedule:</label>
+                            <input type="date" name="date_sched" class="width-100" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Status:</label>
+                            <select name="status" class="width-100" required>
+                                <option value="processed">Processed</option>
+                                <option value="follow up">Follow Up</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Turnaround Time VS Start:</label>
+                            <input type="time" name="turnaround_vs_start" class="width-100">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Turnaround Time VS End:</label>
+                            <input type="time" name="turnaround_vs_end" class="width-100">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Turnaround Time Consultation Start:</label>
+                            <input type="time" name="turnaround_consult_start" class="width-100">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Turnaround Time Consultation End:</label>
+                            <input type="time" name="turnaround_consult_end" class="width-100">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Turnaround Time Briefing Start:</label>
+                            <input type="time" name="turnaround_briefing_start" class="width-100">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Turnaround Time Briefing End:</label>
+                            <input type="time" name="turnaround_briefing_end" class="width-100">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Consultant I:</label>
+                            <input type="text" name="consultant_1" class="width-100">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Consultant II:</label>
+                            <input type="text" name="consultant_2" class="width-100">
                         </div>
                     </div>
                 </div>

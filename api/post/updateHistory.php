@@ -1,5 +1,6 @@
 <?php
 require_once '../../config/dbcon.php';
+session_start();
 
 header('Content-Type: application/json');
 
@@ -33,95 +34,92 @@ try {
     $diagnosis = $_POST['diagnosis'];
     $medication = $_POST['medication'];
     $remarks = $_POST['remarks'];
+    $vs_start = $_POST['turnaround_vs_start'];
+    $vs_end = $_POST['turnaround_vs_end'];
+    $consult_start = $_POST['turnaround_consult_start'];
+    $consult_end = $_POST['turnaround_consult_end'];
+    $educ_start = $_POST['turnaround_briefing_start'];
+    $educ_end = $_POST['turnaround_briefing_end'];
+    $doctor = $_POST['consultant_1'];
+    $nurse = $_POST['consultant_2'];
 
     // Start transaction
     $conn->begin_transaction();
 
-    // First update neurology_records
-    $sql1 = "UPDATE neurology_records SET 
-            name = ?,
-            hrn = ?,
-            birthday = ?,
-            age = ?,
-            address = ?,
-            contact = ?,
-            email = ?,
-            viber = ?
-            WHERE id = ?";
+    // Single UPDATE query using LEFT JOIN
+    $sql = "UPDATE neurology_records r 
+            LEFT JOIN neurology_consultations c ON r.id = c.record_id 
+            SET 
+                r.name = ?,
+                r.hrn = ?,
+                r.birthday = ?,
+                r.age = ?,
+                r.address = ?,
+                r.contact = ?,
+                r.email = ?,
+                r.viber = ?,
+                c.appointment_type = ?,
+                c.consultation = ?,
+                c.date_sched = ?,
+                c.status = ?,
+                c.complaint = ?,
+                c.history = ?,
+                c.blood_pressure = ?,
+                c.temperature = ?,
+                c.heart_rate = ?,
+                c.respiratory_rate = ?,
+                c.oxygen_saturation = ?,
+                c.height = ?,
+                c.weight = ?,
+                c.vs_notes = ?,
+                c.rx_mc = ?,
+                c.classification = ?,
+                c.diagnosis = ?,
+                c.medication = ?,
+                c.remarks = ?,
+                c.vs_start = ?,
+                c.vs_end = ?,
+                c.consult_start = ?,
+                c.consult_end = ?,
+                c.educ_start = ?,
+                c.educ_end = ?,
+                c.doctor = ?,
+                c.nurse = ?
+            WHERE r.id = ?";
 
-    $stmt1 = $conn->prepare($sql1);
-    if (!$stmt1) {
-        throw new Exception("Error preparing records update: " . $conn->error);
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        throw new Exception("Error preparing update query: " . $conn->error);
     }
 
-    $stmt1->bind_param("ssssssssi", 
-        $name, $hrn, $birthday, $age, $address, $contact, $email, $viber, $record_id
-    );
-
-    if (!$stmt1->execute()) {
-        throw new Exception("Error updating records: " . $stmt1->error);
-    }
-
-    // Then update neurology_consultations
-    $sql2 = "UPDATE neurology_consultations SET 
-            appointment_type = ?,
-            consultation = ?,
-            date_sched = ?,
-            status = ?,
-            complaint = ?,
-            history = ?,
-            blood_pressure = ?,
-            temperature = ?,
-            heart_rate = ?,
-            respiratory_rate = ?,
-            oxygen_saturation = ?,
-            height = ?,
-            weight = ?,
-            vs_notes = ?,
-            rx_mc = ?,
-            classification = ?,
-            diagnosis = ?,
-            medication = ?,
-            remarks = ?
-            WHERE record_id = ?";
-
-    $stmt2 = $conn->prepare($sql2);
-    if (!$stmt2) {
-        throw new Exception("Error preparing consultations update: " . $conn->error);
-    }
-
-    $stmt2->bind_param("sssssssssssssssssssi",
+    $stmt->bind_param("ssssssssssssssssssssssssssssssssssi",
+        $name, $hrn, $birthday, $age, $address, $contact, $email, $viber,
         $typeofappoint, $consultation, $date_sched, $status, $complaint,
         $history, $blood_pressure, $temperature, $heart_rate, $respiratory_rate,
         $oxygen_saturation, $height, $weight, $notes, $rx_mc, $classifications,
-        $diagnosis, $medication, $remarks, $record_id
+        $diagnosis, $medication, $remarks, $vs_start, $vs_end, $consult_start,
+        $consult_end, $educ_start, $educ_end, $doctor, $nurse, $record_id
     );
 
-    if (!$stmt2->execute()) {
-        throw new Exception("Error updating consultations: " . $stmt2->error);
+    if (!$stmt->execute()) {
+        throw new Exception("Error updating record: " . $stmt->error);
     }
 
-    // If we get here, both updates were successful
+    // If we get here, the update was successful
     $conn->commit();
-    echo json_encode([
-        'success' => true,
-        'message' => 'Record updated successfully'
-    ]);
+    $_SESSION['message'] = "Successfully Updated";
+    header("Location: ../../index.php");
+    exit;
 
 } catch (Exception $e) {
     // Rollback transaction on error
     $conn->rollback();
-    
-    echo json_encode([
-        'success' => false,
-        'message' => $e->getMessage(),
-        'sql_error' => $conn->error,
-        'sql_errno' => $conn->errno
-    ]);
+    $_SESSION['message'] = "Update unsuccessful: " . $e->getMessage();
+    header("Location: ../../index.php");
+    exit;
 }
 
-// Close statements and connection
-if (isset($stmt1)) $stmt1->close();
-if (isset($stmt2)) $stmt2->close();
+// Close statement and connection
+if (isset($stmt)) $stmt->close();
 $conn->close();
 ?> 
