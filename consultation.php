@@ -1,5 +1,10 @@
 <?php
-    require 'config/dbcon.php';
+session_start();
+if (!isset($_SESSION['auth'])) {
+    header("Location: login.php");
+    exit();
+}
+require 'config/dbcon.php';
 ?>
 
 <!DOCTYPE html>

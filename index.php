@@ -1,6 +1,20 @@
 <?php
 session_start();
 require 'config/dbcon.php';
+
+// Check if user is not logged in
+if(!isset($_SESSION['auth'])) {
+    header("Location: login.php");
+    exit();
+}
+
+// Add logout functionality
+if(isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: login.php");
+    exit();
+}
+
 // require 'includes/dateTime.php';
 ?>
 
