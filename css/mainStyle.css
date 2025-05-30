@@ -60,20 +60,42 @@ body {
   font-size: 1.8rem;
   color: var(--white-color);
 }
+
 .header-1 .navbar .btn-navbar {
+  position: relative;
   color: var(--white-color);
-  text-decoration: none;
-}
-.header-1 select:focus {
   border: none;
-  outline: none;
+  padding: 10px 20px;
+  text-decoration: none;
+  display: inline-block;
 }
+
+.header-1 .navbar .btn-navbar:hover {
+  color: var(--yellow-color);
+}
+.header-1 .navbar .btn-navbar::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: var(--yellow-color);
+  transition: width 0.3s ease, left 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.header-1 .navbar .btn-navbar:hover::after {
+  width: 100%;
+  left: 50%;
+}
+
 .menu-icon {
   display: none;
 }
 .nav-list {
   display: flex;
-  gap: 35px;
+  gap: 1rem;
 }
 
 footer {

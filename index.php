@@ -45,7 +45,6 @@ if(isset($_GET['logout'])) {
 </head>
 
 <body>
-    
     <!-- HEADER -->
     <?php include('includes/header.php'); ?>
 

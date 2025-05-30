@@ -19,6 +19,21 @@ if (isset($_SESSION['message'])) :
             </div>
         </div>
     </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const floatingAlert = document.getElementById('floatingAlert');
+        const closeButtons = document.querySelectorAll('.close-floatingAlert');
+
+        if (floatingAlert && closeButtons.length > 0) {
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    floatingAlert.style.display = 'none';
+                });
+            });
+        }
+    });
+</script>
 <?php
     unset($_SESSION['message']);
 endif;

@@ -1,6 +1,12 @@
 <?php
     session_start();
     require 'config/dbcon.php';
+
+    // Require appointment login before accessing this page
+    if (!isset($_SESSION['appointment_auth'])) {
+        header("Location: appointment_login.php");
+        exit();
+    }
 ?>
 
 <!DOCTYPE html>
@@ -16,12 +22,41 @@
     <link rel="stylesheet" href="css/modals.css">
 </head>
 <body>
+
+    <div class="header-1">
+        <div class="logo">
+            <img src="img/MMWGH_logo.png" alt="mmwgh logo">
+            <h2>MMWGH - Neurology</h2>
+        </div>
+        <div class="navbar">
+            <i class="menu-icon" id="menu-toggle">&#9776;</i>
+            <div class="nav-list">
+                <a href="online_appointment.php" class="btn-navbar">Home</a>
+                <a href="#" class="btn-navbar">History</a>
+                <a href="profile-users.php" class="btn-navbar">Profile</a>
+                <a href="#" id="logout-link" class="btn-navbar">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div id="logoutConfirmModal" class="confirmModal" style="display:none;">
+        <div class="modal-cancelContent">
+            <span class="close" id="closeLogoutModal">&times;</span>
+            <p>Are you sure you want to logout?</p>
+            <div>
+                <button id="confirmLogout" class="btn btn-red">Yes</button>
+                <button id="cancelLogout" class="btn btn-blue">No</button>
+            </div>
+        </div>
+    </div>
+
     <?php include('includes/messages/message.php'); ?>
 
     <div class="cont">
         <div class="header space-between">
             <h1>Appointment Schedule</h1>
-            <a href="" class="btn btn-grey border">Back</a>
+            <!-- <a href="" class="btn btn-grey border">Back</a> -->
         </div>
         <div class="cont-body">
             <form action="api/post/createData.php" method="post" class="appoint_form" autocomplete="off">
@@ -245,53 +280,32 @@
             showModal();
         });
 
-        // // INFORMANT DETAILS DISPLAY
-        // const inTrue = document.getElementById("informantQA-true");
-        // const informants = document.querySelectorAll(".display-informant");
+        // Logout confirmation logic
+        const logoutLink = document.getElementById('logout-link');
+        const logoutModal = document.getElementById('logoutConfirmModal');
+        const closeLogoutModal = document.getElementById('closeLogoutModal');
+        const confirmLogout = document.getElementById('confirmLogout');
+        const cancelLogout = document.getElementById('cancelLogout');
 
-        // // Function to show or hide informant details
-        // function toggleInformantDetails() {
-        //     if (inTrue.checked) {
-        //         informants.forEach((element) => {
-        //             element.style.display = "block"; // Show informant details
-        //         });
-        //     } else {
-        //         informants.forEach((element) => {
-        //             element.style.display = "none"; // Hide informant details
-        //         });
-        //     }
-        // }
-
-        // // Initial call to set the display state when the page loads
-        // toggleInformantDetails();
-
-        // // Add event listeners to both radio buttons to detect changes
-        // const radioButtons = document.querySelectorAll('input[name="informantQA"]');
-        // radioButtons.forEach((radio) => {
-        //     radio.addEventListener("change", toggleInformantDetails);
-        // });
-    </script>
-
-    <!-- <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const modal = document.getElementById("complaintModal");
-
-            // Toggle modal visibility
-            function toggleComplaintModal() {
-                modal.classList.toggle("show");
-            }
-
-            // Close modal when clicking outside content
-            window.onclick = function (event) {
-                if (event.target === modal) {
-                    modal.classList.remove("show");
-                }
-            };
-
-            // Make toggle function globally accessible
-            window.toggleComplaintModal = toggleComplaintModal;
+        logoutLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            logoutModal.style.display = 'block';
         });
-    </script> -->
 
+        closeLogoutModal.addEventListener('click', function() {
+            logoutModal.style.display = 'none';
+        });
+        cancelLogout.addEventListener('click', function() {
+            logoutModal.style.display = 'none';
+        });
+        confirmLogout.addEventListener('click', function() {
+            window.location.href = 'appointment_login.php?logout=1';
+        });
+        window.addEventListener('click', function(event) {
+            if (event.target === logoutModal) {
+                logoutModal.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
