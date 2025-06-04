@@ -103,10 +103,16 @@ function toggleInformantDetails(event) {
   if (event.target.id.includes("true")) {
     informants.forEach((element) => {
       element.style.display = "block";
+      // No need to set values here, as user will input them
     });
   } else {
     informants.forEach((element) => {
       element.style.display = "none";
+      // Clear input values when hidden
+      const inputElement = element.querySelector("input[type='text']");
+      if (inputElement) {
+        inputElement.value = "";
+      }
     });
   }
 }

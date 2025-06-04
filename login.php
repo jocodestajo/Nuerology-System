@@ -63,6 +63,26 @@ if(isset($_POST['login_btn'])) {
     <link rel="stylesheet" href="css/mainStyle.css">
     <link rel="stylesheet" href="css/general.css">
     <style>
+        .header-container-login {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            padding-left: 40%;
+            background-color: var(--primary-color);
+            border-bottom: 1px solid #eee;
+        }
+        .header-container-login img {
+            height: 50px;
+            margin-right: 15px;
+        }
+        .header-container-login h1 {
+            color: var(--white-color);
+            font-size: 1.8rem;
+        }
         .login-container {
             display: flex;
             justify-content: center;
@@ -87,29 +107,11 @@ if(isset($_POST['login_btn'])) {
         .form-group {
             margin-bottom: 1.2rem;
         }
-        /* .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-        }
+
         .form-group input {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        } */
-        /* .login-btn {
-            width: 100%;
-            padding: 0.75rem;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
+            text-align: left;
         }
-        .login-btn:hover {
-            background-color: #45a049;
-        } */
+        
         .alert {
             padding: 1rem;
             margin-bottom: 1rem;
@@ -121,6 +123,10 @@ if(isset($_POST['login_btn'])) {
     </style>
 </head>
 <body>
+    <div class="header-container-login" style="">
+        <img src="img/MMWGH_Logo.png" alt="MMWGH Logo" style="height: 50px; margin-right: 15px;">
+        <h1>Neurology Unit</h1>
+    </div>
     <div class="login-container">
         <div class="login-form">
             <h2>LOGIN</h2>

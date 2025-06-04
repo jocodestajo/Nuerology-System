@@ -53,6 +53,7 @@ if(isset($_GET['logout'])) {
         <!-- Messages -->
         <?php include('includes/messages/message.php'); ?>
         <?php include('includes/messages/cancelConfirmation.php'); ?>
+        <?php include('includes/messages/approveConfirmation.php'); ?>
         <?php include('includes/addPatientModal.php'); ?>
 
         <!-- EDIT RECORDS MODAL-->
@@ -181,12 +182,12 @@ if(isset($_GET['logout'])) {
                             <fieldset style="border: none; padding: 0; margin: 0;">
                                 <div class="radio-group">
                                     <label for="informantQA-true-1">
-                                        <input type="radio" name="informantQA" id="informantQA-true-1">
+                                        <input type="radio" name="informantQA" id="informantQA-true-1" value="yes">
                                         Yes
                                     </label>
 
                                     <label for="informantQA-false-1">
-                                        <input type="radio" name="informantQA" id="informantQA-false-1">
+                                        <input type="radio" name="informantQA" id="informantQA-false-1" value="no">
                                         No
                                     </label>
                                 </div>
@@ -337,19 +338,13 @@ if(isset($_GET['logout'])) {
                     </thead>
                     <tbody>
                         <?php
-                            // $query = "SELECT r.id, r.hrn, r.name, r.contact, 
-                            //          c.consultation, c.date_sched, c.complaint, c.status
-                            //   FROM neurology_records r
-                            //   INNER JOIN neurology_consultations c ON r.id = c.record_id
-                            //   WHERE c.status = 'pending'";
-
                             $query = "
                                 SELECT 
                                     r.id, r.hrn, r.name, r.contact,
-                                    c.consultation, c.date_sched, c.complaint, c.status,
+                                    c.id AS consult_id, c.consultation, c.date_sched, c.complaint, c.status,
                                     (SELECT COUNT(*) FROM neurology_consultations nc WHERE nc.record_id = r.id) AS consultation_count
                                 FROM neurology_records r
-                                INNER JOIN neurology_consultations c ON r.id = c.record_id
+                                LEFT JOIN neurology_consultations c ON r.id = c.record_id
                                 WHERE c.status = 'pending'
                             ";
 
@@ -362,7 +357,7 @@ if(isset($_GET['logout'])) {
                                         $is_new_client = ($records['consultation_count'] == 1);
                                         $row_class = $is_new_client ? 'new-client' : '';
                                     ?>
-                                        <tr id="patient_<?=$records['id'];?>" class="<?= $row_class ?>">
+                                        <tr id="patient_<?=$records['consult_id'];?>" class="<?= $row_class ?>">
                                             <td class="th-check border-left">
                                                 <input type="checkbox" class="checkbox custom-checkbox">
                                             </td>
@@ -373,29 +368,23 @@ if(isset($_GET['logout'])) {
                                             <td class="th-schedule"><?= $records['date_sched']; ?></td>
                                             <td class="th-complaint"><?= $records['complaint']; ?></td>
                                             <td class="th-action action border-right">
-                                                <img src="img/check-circle.png" class="action-img update-approve margin-right" alt="image here" data-id="<?=$records['id'];?>">
-                                                <img src="img/edit.png" class="action-img view-button margin-right" alt="image here" data-record-id="<?=$records['id'];?>">
-                                                <img src="img/cancel.png" class="action-img update-cancelled" alt="image here" data-id="<?=$records['id'];?>">
+                                                <img src="img/check-circle.png" class="action-img trigger-approve-modal margin-right" alt="image here" data-id="<?=$records['consult_id'];?>" data-modal-target="approveConfirmationModal">
+                                                <img src="img/edit.png" class="action-img view-button margin-right" alt="image here" data-record-id="<?=$records['consult_id'];?>">
+                                                <img src="img/cancel.png" class="action-img update-cancelled" alt="image here" data-id="<?=$records['consult_id'];?>">
                                             </td>
                                         </tr>
                                     <?php
                                 }
 
                             }
-                            // else
-                            // {
-                            //     // If no records found, display a single row with a "No Records Found" message
-                            //     echo "<tr><td colspan='7' style='text-align: center; font-size: 1.5rem; padding: 16px;'>No records found</td></tr>";
-                            // }
                         ?>
                     </tbody>
                 </table>
             </div>
 
-            <!-- TAB 3 / FACE TO FACE CHECK-UP -->
+        <!-- TAB 3 / FACE TO FACE CHECK-UP -->
             <div class="content">
                 <div class="flex">
-                    
                     <Label>Date Filter:</Label>
 
                     <select name="" class="sortData-Pending selectDate-border" id="monthFilter2">
@@ -448,28 +437,23 @@ if(isset($_GET['logout'])) {
                                         <td class="th-schedule"><?= $records['date_sched']; ?></td>
                                         <td class="th-complaint"><?= $records['complaint']; ?></td>
                                         <td class="th-action action border-right">
-                                            <img src="img/check-circle.png" class="action-img margin-right" alt="Approve" data-record-id="<?=$records['id'];?>">
+                                            <img src="img/check-circle.png" class="action-img trigger-process-modal margin-right" alt="processed" data-record-id="<?=$records['id'];?>" data-modal-target="processConfirmationModal">
                                             <img src="img/vitalSigns.png" class="action-img margin-right" alt="VitalSigns" data-record-id="<?=$records['id'];?>">
                                             <img src="img/chat.png" class=" action-img margin-right" alt="Consultation" data-record-id="<?=$records['id'];?>">
-                                            <img src="img/edit.png" class="action-img view-button margin-right" alt="View" data-record-id="<?=$records['id'];?>">
                                             <img src="img/cancel.png" class="action-img update-cancelled" alt="Cancel" data-id="<?=$records['id'];?>">
                                         </td>
                                     </tr>
                                     <?php
                                 }
                             } 
-                            // else {
-                            //     echo "<tr><td colspan='7' style='text-align: center; font-size: 2rem; padding: 32px 0 32px 0;'>No records found</td></tr>";
-                            // }
                         ?>
                     </tbody>
                 </table>
             </div>
 
-            <!-- TAB 4 / TELECONSULTATION -->
+        <!-- TAB 4 / TELECONSULTATION -->
             <div class="content">
                 <div class="flex">
-
                     <Label>Date Filter:</Label>
                     
                     <select name="" class="sortData-Pending selectDate-border" id="monthFilter3">
@@ -522,19 +506,15 @@ if(isset($_GET['logout'])) {
                                         <td class="th-schedule"><?= $records['date_sched']; ?></td>
                                         <td class="th-complaint"><?= $records['complaint']; ?></td>
                                         <td class="th-action action border-right">
-                                            <img src="img/check-circle.png" class=" action-img margin-right" alt="Approve" data-record-id="<?=$records['id'];?>">
+                                            <img src="img/check-circle.png" class="action-img trigger-process-modal margin-right" alt="processed" data-record-id="<?=$records['id'];?>" data-modal-target="processConfirmationModal">
                                             <img src="img/vitalSigns.png" class="action-img margin-right" alt="VitalSigns" data-record-id="<?=$records['id'];?>">
                                             <img src="img/chat.png" class=" action-img margin-right" alt="Consultation" data-record-id="<?=$records['id'];?>">
-                                            <img src="img/edit.png" class="action-img update-processed margin-right" alt="View" data-record-id="<?=$records['id'];?>">
                                             <img src="img/cancel.png" class="action-img update-cancelled" alt="Cancel" data-id="<?=$records['id'];?>">
                                         </td>
                                     </tr>
                                     <?php
                                 }
                             } 
-                            // else {
-                            //     echo "<tr><td colspan='7' style='text-align: center; font-size: 2rem; padding: 32px 0 32px 0;'>No records found</td></tr>";
-                            // }
                         ?>
                     </tbody>
                 </table>
@@ -583,6 +563,24 @@ if(isset($_GET['logout'])) {
                             <button class="btn btn-green" id="confirmReschedule">Confirm</button>
                             <button class="btn btn-red" id="cancelReschedule">Cancel</button>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Process Confirmation Modal -->
+            <div id="processConfirmationModal" class="modal">
+                <div class="modal-content modal-approveContent">
+                    <div class="modal-header">
+                        <span class="close-btn">&times;</span>
+                        <h2>Confirm Processing</h2>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to mark this record as processed?</p>
+                        <input type="hidden" id="processRecordId">
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-green" id="confirmProcessBtn">Confirm</button>
+                        <button class="btn btn-red" id="cancelProcessBtn">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -653,22 +651,16 @@ if(isset($_GET['logout'])) {
                                 <div class="space-between">
                                     <label for="onlinef2f">F2F: New</label>
                                     <input type="number" name="online_F2F_limit" value="<?= $records['dailyLimit_new']; ?>" class="center-text">
-                                    <!-- <select name="" id="onlinef2f">
-                                    </select> -->
                                 </div>
 
                                 <div class="space-between">
                                     <label for="">Follow Up</label>
                                     <input type="number" name="follow_up" value="<?= $records['follow_up']; ?>" class="center-text">
-                                    <!-- <select name="" id="onlinef2f">
-                                    </select> -->
                                 </div>
     
                                 <div class="space-between">
                                     <label for="referrals_limit">Referrals:</label>
                                     <input type="number" name="referral_limit" value="<?= $records['dailyLimit_referral']; ?>" class="center-text">
-                                    <!-- <select name="" id="referrals_limit">
-                                    </select> -->
                                 </div>
     
                                 <div class="center-flex">

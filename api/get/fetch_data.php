@@ -15,7 +15,7 @@ if ($conn->connect_error) {
 // Get the ID from the query string
 $id = $_GET['id'] ?? '';
 
-$stmt = $conn->prepare("SELECT hrn, CONCAT(lastname, ', ', firstname, ' ', middlename) AS name, 
+$stmt = $conn->prepare("SELECT hrn, CONCAT(firstname, ' ', middlename, ' ', lastname) AS name, 
                         currentage, birthday, contactnumber, 
                         CONCAT(houseno, ' ', barangay, ', ', municipality, ', ', province) AS address 
                         FROM patient_database WHERE id = ?");

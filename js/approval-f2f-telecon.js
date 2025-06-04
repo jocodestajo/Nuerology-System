@@ -376,11 +376,13 @@ function handleCancellation(recordIds) {
       });
   };
 
-  document.getElementById("cancelCancel").onclick = function () {
+  // Close modal when clicking the X in cancel confirmation modal
+  document.getElementById("close_confirmModal").onclick = function () {
     modal.style.display = "none";
   };
 
-  document.querySelector(".close").onclick = function () {
+  // Cancel button in cancel confirmation modal
+  document.getElementById("cancelCancel").onclick = function () {
     modal.style.display = "none";
   };
 }
@@ -615,40 +617,47 @@ document.querySelector(".close").onclick = function () {
 };
 
 // UPDATE DATA AS APPROVE ////////////////////////////////////////////////////////////////////////
-document.querySelectorAll(".update-approve").forEach(function (button) {
-  button.addEventListener("click", function () {
-    const recordId = this.getAttribute("data-id");
-    const row = document.getElementById(`patient_${recordId}`);
+// Refactored into a function to be called from modal.js
+function approveAppointment(recordId) {
+  const row = document.getElementById(`patient_${recordId}`);
 
-    fetch("api/post/updateData.php", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: "approve_record=" + encodeURIComponent(recordId),
+  fetch("api/post/updateData.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: "approve_record=" + encodeURIComponent(recordId),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        if (row) row.remove();
+        window.location.reload();
+      } else {
+        alert("Error: " + data.message);
+      }
     })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          if (row) row.remove();
-          // Instead of alert, reload the page to show the session message
-          window.location.reload();
-        } else {
-          // For errors, you might still want to use alert or implement error display
-          alert("Error: " + data.message);
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        alert("An error occurred.");
-      });
-  });
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("An error occurred.");
+    });
+}
+
+window.approveAppointment = approveAppointment;
+
+document.querySelectorAll(".update-approve").forEach(function (button) {
+  button.removeEventListener("click", approveAppointment); // Remove old listener
 });
 
-// UPDATE DATA AS PROCESSED ////////////////////////////////////////////////////////////////////////
-document.querySelectorAll(".update-processed").forEach(function (button) {
-  button.addEventListener("click", function () {
-    const recordId = this.getAttribute("data-id");
+// NEW: Process Confirmation Modal Logic ///////////////////////////////////////////////////////
+document.addEventListener("DOMContentLoaded", function () {
+  const processModal = document.getElementById("processConfirmationModal");
+  const confirmProcessBtn = document.getElementById("confirmProcessBtn");
+  const cancelProcessBtn = document.getElementById("cancelProcessBtn");
+  const processRecordIdInput = document.getElementById("processRecordId");
+
+  // Function to handle processing the record
+  function processAppointment(recordId) {
     const row = document.getElementById(`patient_${recordId}`);
 
     fetch("api/post/updateData.php", {
@@ -662,7 +671,6 @@ document.querySelectorAll(".update-processed").forEach(function (button) {
       .then((data) => {
         if (data.success) {
           if (row) row.remove();
-          // alert("Appointment Processed");
           window.location.reload();
         } else {
           alert("Error: " + data.message);
@@ -672,5 +680,72 @@ document.querySelectorAll(".update-processed").forEach(function (button) {
         console.error("Error:", error);
         alert("An error occurred.");
       });
+  }
+
+  // Get all elements that trigger the process modal
+  document.querySelectorAll(".trigger-process-modal").forEach((button) => {
+    button.addEventListener("click", function () {
+      const recordId = this.dataset.recordId;
+      processRecordIdInput.value = recordId;
+      processModal.style.display = "block";
+    });
+  });
+
+  // Close modal when cancel button is clicked
+  cancelProcessBtn.addEventListener("click", function () {
+    processModal.style.display = "none";
+  });
+
+  // Close modal when the close button (x) is clicked
+  processModal
+    .querySelector(".close-btn")
+    .addEventListener("click", function () {
+      processModal.style.display = "none";
+    });
+
+  // Close modal when clicking outside of it
+  window.addEventListener("click", function (event) {
+    if (event.target == processModal) {
+      processModal.style.display = "none";
+    }
+  });
+
+  // Handle confirm process button click
+  confirmProcessBtn.addEventListener("click", function () {
+    const recordId = processRecordIdInput.value;
+    if (recordId) {
+      processAppointment(recordId);
+    }
+    processModal.style.display = "none";
   });
 });
+
+// UPDATE DATA AS PROCESSED - OLD CODE (REMOVE OR COMMENT OUT) //////////////////////////////
+// document.querySelectorAll(".update-processed").forEach(function (button) {
+//   button.addEventListener("click", function () {
+//     const recordId = this.getAttribute("data-id");
+//     const row = document.getElementById(`patient_${recordId}`);
+
+//     fetch("api/post/updateData.php", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/x-www-form-urlencoded",
+//       },
+//       body: "processed_record=" + encodeURIComponent(recordId),
+//     })
+//       .then((response) => response.json())
+//       .then((data) => {
+//         if (data.success) {
+//           if (row) row.remove();
+//           // alert("Appointment Processed");
+//           window.location.reload();
+//         } else {
+//           alert("Error: " + data.message);
+//         }
+//       })
+//       .catch((error) => {
+//         console.error("Error:", error);
+//         alert("An error occurred.");
+//       });
+//   });
+// });

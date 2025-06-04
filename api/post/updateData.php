@@ -12,7 +12,7 @@ if (isset($_POST['approve_record'])) {
     // Update the record status to "Approved"
     $query = "UPDATE neurology_consultations c 
               SET c.status = 'approved' 
-              WHERE c.record_id = '$records_id'";
+              WHERE c.id = '$records_id'";
 
     $query_run = mysqli_query($conn, $query);
 

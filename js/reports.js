@@ -42,8 +42,8 @@ function loadPatientReports() {
                       <td>${idx + 1}</td>
                       <td>${row.hrn}</td>
                       <td>${row.name}</td>
-                      <td>${row.date_schedule}</td>
-                      <td>${row.date_processed || "-"}</td>
+                      <td>${row.date_sched}</td>
+                      <td>${row.date_process || "-"}</td>
                       <td>${row.status}</td>
                   `;
           tbody.appendChild(tr);

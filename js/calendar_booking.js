@@ -143,25 +143,37 @@ async function updateCalendar() {
         const dateStr = date.toISOString().split("T")[0];
         const counts = appointmentData[dateStr] || { new: 0, referral: 0 };
 
-        const isNewFullyBooked = counts.new >= dailyLimits.new;
-        const isReferralFullyBooked = counts.referral >= dailyLimits.referral;
+        const newLimit = dailyLimits.new;
+        const referralLimit = dailyLimits.referral;
+
+        const isNewFullyBooked = counts.new >= newLimit;
+        const isReferralFullyBooked = counts.referral >= referralLimit;
+
+        let cellText = dayCount;
+        let cellTitle = `New: ${counts.new}/${newLimit}, Referral: ${counts.referral}/${referralLimit}`;
+
+        // Append counts to cell text if there are any appointments
+        if (counts.new > 0 || counts.referral > 0) {
+          cellText += ` (N:${counts.new} R:${counts.referral})`;
+        }
+
+        cell.textContent = cellText;
+        cell.title = cellTitle;
 
         if (isNewFullyBooked && isReferralFullyBooked) {
           cell.className = "fully-booked-date";
-          cell.title = "Fully booked for new consultations and referrals";
         } else if (isNewFullyBooked) {
           cell.className = "fully-booked-new";
-          cell.title = "Fully booked for new consultations";
         } else if (isReferralFullyBooked) {
           cell.className = "fully-booked-referral";
-          cell.title = "Fully booked for referrals";
         } else if (isEnabled) {
           cell.className = "clickable-date";
+          const currentDayCount = dayCount; // Capture dayCount for the click handler
           cell.onclick = () => {
             handleDateClick(
               currentDate.getFullYear(),
               currentDate.getMonth(),
-              cell.textContent
+              currentDayCount // Pass the original dayCount
             );
           };
         } else {

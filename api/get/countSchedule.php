@@ -5,21 +5,21 @@ require '../../config/dbcon.php';
 $dailyLimitNew = 5; // Example limit for new consultations
 $dailyLimitReferral = 3; // Example limit for referrals
 
-// Fetch appointment counts grouped by date and type, including old_new and status
+// Fetch appointment counts grouped by date and type
 $query = "
     SELECT 
         date_sched, 
-        appointment_type, 
-        old_new,
-        status,
+        old_new, 
+        typeofappoint, 
         COUNT(*) as count 
     FROM 
         neurology_consultations 
+    WHERE 
+        status IN ('pending', 'approved', 'follow up') 
     GROUP BY 
         date_sched, 
-        appointment_type, 
-        old_new,
-        status
+        old_new, 
+        typeofappoint
 ";
 
 $result = mysqli_query($conn, $query);
@@ -28,21 +28,19 @@ $appointmentCounts = [];
 
 while ($row = mysqli_fetch_assoc($result)) {
     $date = $row['date_sched'];
-    $type = $row['appointment_type'];
     $oldNew = $row['old_new'];
-    $status = $row['status'];
+    $typeofappoint = $row['typeofappoint'];
     $count = (int)$row['count'];
 
     if (!isset($appointmentCounts[$date])) {
-        $appointmentCounts[$date] = [];
+        $appointmentCounts[$date] = ['new' => 0, 'referral' => 0];
     }
 
-    $appointmentCounts[$date][] = [
-        'type' => $type,
-        'old_new' => $oldNew,
-        'status' => $status,
-        'count' => $count
-    ];
+    if ($oldNew === 'New') {
+        $appointmentCounts[$date]['new'] += $count;
+    } else if ($typeofappoint === 'Referral') {
+        $appointmentCounts[$date]['referral'] += $count;
+    }
 }
 
 // Include daily limits in the response

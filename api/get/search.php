@@ -12,7 +12,7 @@ $bindings = [];
 
 foreach ($searchTermsArray as $term) {
     // Wildcard each term for a "contains" search
-    $whereClauses[] = "(lastname LIKE ? OR firstname LIKE ? OR middlename LIKE ?)";
+    $whereClauses[] = "(firstname LIKE ? OR middlename LIKE ? OR lastname LIKE ?)";
     $bindings[] = "%" . $term . "%";
     $bindings[] = "%" . $term . "%";
     $bindings[] = "%" . $term . "%";
@@ -23,7 +23,7 @@ if (count($whereClauses) > 0) {
     $whereSql = implode(' AND ', $whereClauses);
     
     // Prepare the SQL query
-    $stmt = $conn->prepare("SELECT id, hrn, CONCAT(lastname, ', ', firstname, ' ', middlename) AS name 
+    $stmt = $conn->prepare("SELECT id, hrn, CONCAT(firstname, ' ', middlename, ' ', lastname) AS name 
                             FROM patient_database 
                             WHERE " . $whereSql);
     

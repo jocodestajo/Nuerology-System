@@ -1,15 +1,15 @@
 <?php
 // Database connection
-include '../../config/dbcon.php'
+include '../../config/dbcon.php';
 
 // Get filters from AJAX (if any)
 $timeframe = $_GET['timeframe'] ?? '';
 $patientType = $_GET['patientType'] ?? '';
 
 // Build SQL query
-$sql = "SELECT r.hrn, r.name, c.date_sched, c.date_processed, c.status
+$sql = "SELECT r.hrn, r.name, c.date_sched, c.date_process, c.status
         FROM neurology_records r
-        JOIN neurology_consultations c ON r.hrn = c.hrn
+        JOIN neurology_consultations c ON r.id = c.record_id
         WHERE 1";
 
 // Timeframe filter

@@ -13,15 +13,10 @@ viewButtons.forEach((button) => {
     e.preventDefault();
     var recordId = this.getAttribute("data-record-id"); // Get the record ID
 
-    // check if working
-    // console.log(recordId);
-
     // Make an AJAX request to fetch the data for this record
     fetch("api/get/fetch_record.php?id=" + recordId)
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
-
         // Fill the modal form with the data
         document.querySelector('input[name="hrn"]').value = data.hrn;
         document.querySelector('input[name="name"]').value = data.name;
@@ -327,3 +322,47 @@ document.addEventListener("DOMContentLoaded", function () {
     return age;
   }
 });
+
+// APPROVE CONFIRMATION MODAL
+const approveConfirmationModal = document.getElementById(
+  "approveConfirmationModal"
+);
+const triggerApproveModal = document.querySelectorAll(".trigger-approve-modal");
+const confirmApproveBtn = document.getElementById("confirmApprove");
+const cancelApproveBtn = document.getElementById("cancelApprove");
+let currentRecordIdToApprove = null;
+
+triggerApproveModal.forEach((button) => {
+  button.addEventListener("click", function () {
+    currentRecordIdToApprove = this.getAttribute("data-id");
+    approveConfirmationModal.style.display = "block";
+  });
+});
+
+confirmApproveBtn.addEventListener("click", function () {
+  if (currentRecordIdToApprove) {
+    // Trigger the approval logic here, potentially from approval-f2f-telecon.js
+    // For now, let's assume we'll call a function or dispatch an event
+    // that approval-f2f-telecon.js listens to.
+    // A simpler way is to move the approval logic into a function here
+    // or make it accessible globally.
+
+    // Temporarily, I'll put a placeholder and then refactor in approval-f2f-telecon.js
+    console.log("Approving record: " + currentRecordIdToApprove);
+
+    // Call the approval function directly
+    approveAppointment(currentRecordIdToApprove);
+    approveConfirmationModal.style.display = "none";
+  }
+});
+
+cancelApproveBtn.addEventListener("click", function () {
+  approveConfirmationModal.style.display = "none";
+  currentRecordIdToApprove = null;
+});
+
+document.querySelector("#approveConfirmationModal .close-btn").onclick =
+  function () {
+    approveConfirmationModal.style.display = "none";
+    currentRecordIdToApprove = null;
+  };

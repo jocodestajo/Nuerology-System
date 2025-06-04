@@ -116,7 +116,7 @@
     <div class="filters">
         <div class="filter-group">
             <label for="patient-type">Patient Type:</label>
-            <select id="patient-type" class="width-100">
+            <select id="patient-type" name="patientType" class="width-100">
                 <option>All Patients</option>
                 <option>Pending</option>
                 <option>Face to Face</option>
@@ -128,7 +128,8 @@
 
         <div class="filter-group">
             <label for="timeframe">Timeframe:</label>
-            <select id="timeframe" class="width-100">
+            <select id="timeframe" name="timeframe" class="width-100">
+                <option>--Select Timeframe--</option>
                 <option>Last 7 days</option>
                 <option>Last 30 days</option>
                 <option>Last 90 days</option>

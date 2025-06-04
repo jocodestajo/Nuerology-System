@@ -3,8 +3,7 @@
 <!-- Confirmation Modal -->
 <div id="confirmModal" class="confirmModal">
     <div class="modal-cancelContent">
-        <span class="close">&times;</span>
-        <!-- <strong class="notice">Notice!</strong> -->
+        <span id="close_confirmModal" class="close">&times;</span>
         <p>Are you sure you want to cancel this appointment?</p>
         <div>
             <button id="confirmCancel" class="btn btn-red">Yes</button>
