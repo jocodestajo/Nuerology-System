@@ -20,15 +20,6 @@ require 'config/dbcon.php';
     <link rel="stylesheet" href="css/mediaQuery.css">
 </head>
 <style>
-    /* Diagnosis tags styling */
-    /* .input-container {
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        padding: 10px;
-        margin-bottom: 15px;
-        background-color: #f9f9f9;
-    } */
-    
     .tags-wrapper {
         display: flex;
         flex-wrap: wrap;
@@ -47,8 +38,6 @@ require 'config/dbcon.php';
         margin-right: 5px;
         margin-bottom: 5px;
         font-size: 14px;
-        /* color: var(--blue-color); */
-        /* box-shadow: 0 1px 3px var(--blue-color); */
     }
     
     .tag span {

@@ -33,9 +33,6 @@ $response = ['success' => false, 'message' => ''];
 
         $classification = mysqli_real_escape_string($conn, $_POST['classification']);
         
-        // $medication = isset($_POST['medication']) ? implode(', ', array_map(function($item) use ($conn) {
-        //     return mysqli_real_escape_string($conn, $item);
-        // }, $_POST['medication'])) : '';
 
         $medicationEntries = [];
 

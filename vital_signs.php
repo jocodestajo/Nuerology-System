@@ -171,8 +171,6 @@ require 'config/dbcon.php';
         
         <form action="api/post/updateVitalSigns.php" method="post">
             <div id="vitalSigns">
-                <!-- <h2>Vital Signs</h2> -->
-                
                 <div class="vital-signs-grid">
                     <div>
                         <label for="">Blood Pressure: mmHg</label>

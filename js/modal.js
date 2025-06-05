@@ -164,7 +164,7 @@ vitalSignsButtons.forEach((button) => {
   button.addEventListener("click", function (e) {
     e.preventDefault();
     var recordId = this.getAttribute("data-record-id");
-    window.open("vital_signs.php?id=" + recordId, "_blank");
+    window.location.href = "vital_signs.php?id=" + recordId;
   });
 });
 

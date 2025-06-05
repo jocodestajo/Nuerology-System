@@ -417,9 +417,9 @@ if(isset($_GET['logout'])) {
                     <tbody>
                         <?php
                             // calling data in db table for Face to Face Check-up
-                            $query = "SELECT r.id, r.hrn, r.name, r.contact, c.date_sched, c.complaint
+                            $query = "SELECT r.id, r.hrn, r.name, r.contact, c.id AS consult_id, c.date_sched, c.complaint
                             FROM neurology_records r
-                            INNER JOIN neurology_consultations c ON r.id = c.record_id
+                            LEFT JOIN neurology_consultations c ON r.id = c.record_id
                             WHERE c.status = 'approved' and c.consultation = 'Face to face' OR c.status = 'follow up' AND c.consultation = 'Face to face'";
 
                             // Execute query
@@ -428,8 +428,8 @@ if(isset($_GET['logout'])) {
                             if(mysqli_num_rows($query_run) > 0) {
                                 foreach($query_run as $records) {
                                     ?>
-                                    <tr id="patient_<?=$records['id'];?>">
-                                        <input type="hidden" name="patient_id" value="<?=$records['id'];?>">
+                                    <tr id="patient_<?=$records['consult_id'];?>">
+                                        <input type="hidden" name="patient_id" value="<?=$records['consult_id'];?>">
                                         <td class="th-check border-left"><input type="checkbox" class="checkbox custom-checkbox"></td>
                                         <td class="th-hrn"><?= $records['hrn']; ?></td>
                                         <td class="th-name"><?= $records['name']; ?></td>
@@ -437,10 +437,10 @@ if(isset($_GET['logout'])) {
                                         <td class="th-schedule"><?= $records['date_sched']; ?></td>
                                         <td class="th-complaint"><?= $records['complaint']; ?></td>
                                         <td class="th-action action border-right">
-                                            <img src="img/check-circle.png" class="action-img trigger-process-modal margin-right" alt="processed" data-record-id="<?=$records['id'];?>" data-modal-target="processConfirmationModal">
-                                            <img src="img/vitalSigns.png" class="action-img margin-right" alt="VitalSigns" data-record-id="<?=$records['id'];?>">
-                                            <img src="img/chat.png" class=" action-img margin-right" alt="Consultation" data-record-id="<?=$records['id'];?>">
-                                            <img src="img/cancel.png" class="action-img update-cancelled" alt="Cancel" data-id="<?=$records['id'];?>">
+                                            <img src="img/check-circle.png" class="action-img trigger-process-modal margin-right" alt="processed" data-record-id="<?=$records['consult_id'];?>" data-modal-target="processConfirmationModal">
+                                            <img src="img/vitalSigns.png" class="action-img margin-right" alt="VitalSigns" data-record-id="<?=$records['consult_id'];?>">
+                                            <img src="img/chat.png" class=" action-img margin-right" alt="Consultation" data-record-id="<?=$records['consult_id'];?>">
+                                            <img src="img/cancel.png" class="action-img update-cancelled" alt="Cancel" data-id="<?=$records['consult_id'];?>">
                                         </td>
                                     </tr>
                                     <?php
@@ -486,9 +486,9 @@ if(isset($_GET['logout'])) {
                     <tbody>
                         <?php
                             // calling data in db table for Teleconsultation
-                            $query = "SELECT r.id, r.hrn, r.name, r.contact, c.date_sched, c.complaint
+                            $query = "SELECT r.id, r.hrn, r.name, r.contact, c.id AS consult_id, c.date_sched, c.complaint
                             FROM neurology_records r
-                            INNER JOIN neurology_consultations c ON r.id = c.record_id
+                            LEFT JOIN neurology_consultations c ON r.id = c.record_id
                             WHERE c.status = 'approved' and c.consultation = 'Teleconsultation' OR c.status = 'follow up' AND c.consultation = 'Teleconsultation'";
 
                             // Execute query
@@ -497,8 +497,8 @@ if(isset($_GET['logout'])) {
                             if(mysqli_num_rows($query_run) > 0) {
                                 foreach($query_run as $records) {
                                     ?>
-                                    <tr id="patient_<?=$records['id'];?>">
-                                        <input type="hidden" name="patient_id" value="<?=$records['id'];?>">
+                                    <tr id="patient_<?=$records['consult_id'];?>">
+                                        <input type="hidden" name="patient_id" value="<?=$records['consult_id'];?>">
                                         <td class="th-check border-left"><input type="checkbox" class="checkbox custom-checkbox"></td>
                                         <td class="th-hrn"><?= $records['hrn']; ?></td>
                                         <td class="th-name"><?= $records['name']; ?></td>
@@ -506,10 +506,10 @@ if(isset($_GET['logout'])) {
                                         <td class="th-schedule"><?= $records['date_sched']; ?></td>
                                         <td class="th-complaint"><?= $records['complaint']; ?></td>
                                         <td class="th-action action border-right">
-                                            <img src="img/check-circle.png" class="action-img trigger-process-modal margin-right" alt="processed" data-record-id="<?=$records['id'];?>" data-modal-target="processConfirmationModal">
-                                            <img src="img/vitalSigns.png" class="action-img margin-right" alt="VitalSigns" data-record-id="<?=$records['id'];?>">
-                                            <img src="img/chat.png" class=" action-img margin-right" alt="Consultation" data-record-id="<?=$records['id'];?>">
-                                            <img src="img/cancel.png" class="action-img update-cancelled" alt="Cancel" data-id="<?=$records['id'];?>">
+                                            <img src="img/check-circle.png" class="action-img trigger-process-modal margin-right" alt="processed" data-record-id="<?=$records['consult_id'];?>" data-modal-target="processConfirmationModal">
+                                            <img src="img/vitalSigns.png" class="action-img margin-right" alt="VitalSigns" data-record-id="<?=$records['consult_id'];?>">
+                                            <img src="img/chat.png" class=" action-img margin-right" alt="Consultation" data-record-id="<?=$records['consult_id'];?>">
+                                            <img src="img/cancel.png" class="action-img update-cancelled" alt="Cancel" data-id="<?=$records['consult_id'];?>">
                                         </td>
                                     </tr>
                                     <?php
@@ -552,10 +552,6 @@ if(isset($_GET['logout'])) {
                                     <label for="reschedule-date">New Schedule:</label>
                                     <input type="date" id="reschedule-date" class="date" name="reschedule_date" readonly>
                                 </div>
-                                
-                                <!-- <div class="calendar-btn">
-                                    <span class="reschedule-calendar-trigger btn btn-blue">Calendar</span>
-                                </div> -->
                             </div>
                         </div>
                         
