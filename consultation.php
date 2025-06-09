@@ -190,32 +190,27 @@ require 'config/dbcon.php';
             <div class="consultants">
                 <h2 class="center-text">Consultant</h2>
                 <div class="consultsss pad-hor-20 margin-b-20 width-100">
-                    <!-- <div>     -->
                         <div class="margin-b-5 width-100">
                             <select name="consultant_1_type" id="consultant1_type" class="margin-r-5 width-100 center-text">
                                 <option value="Doctor" selected>Doctor</option>
                                 <option value="Nurse">Nurse</option>
-                                <option value="NA.">Nurse Attendant</option>
+                                <option value="Nurse Attendant">Nurse Attendant</option>
                             </select>
                         </div>
                         <div>
                             <input name="consultant_1" id="consultant1" class="width-100" placeholder="Name" require>
-                            <!-- <label for="consultant1" id="consultant1_label">Consultant I:</label> -->
                         </div>
-                    <!-- </div> -->
-                    <!-- <div> -->
+                   
                         <div class="margin-b-5 width-100">
                             <select name="consultant_2_type" id="consultant2_type" class="margin-r-5 width-100 center-text">
                                 <option value="Doctor">Doctor</option>
                                 <option value="Nurse" selected>Nurse</option>
                                 <option value="Nurse Attendant">Nurse Attendant</option>
                             </select>
-                            <!-- <label for="consultant2" id="consultant2_label">Consultant II:</label> -->
                         </div>
                         <div class="width-100">
                             <input name="consultant_2" id="consultant2" class="width-100" placeholder="Name" require>
-                        </div>
-                    <!-- </div>                         -->
+                        </div> 
                 </div>
             </div>
             
@@ -588,8 +583,7 @@ require 'config/dbcon.php';
                 updateConsultantLabel(consultant2Type, consultant2Label);
             });
         });
-    </script>
-    <script>
+
         // MEDICATION handling
         document.addEventListener('DOMContentLoaded', function() {
             const addMedicationBtn = document.getElementById('add-medication');
@@ -728,8 +722,7 @@ require 'config/dbcon.php';
                 });
             });
         });
-    </script>
-   <script>
+
         document.addEventListener('DOMContentLoaded', function() {
         const referToSelect = document.getElementById('consultReferTo');
         const otherInstituteInput = document.querySelector('.otherInstitute');

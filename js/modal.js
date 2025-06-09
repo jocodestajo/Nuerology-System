@@ -12,45 +12,44 @@ viewButtons.forEach((button) => {
   button.addEventListener("click", function (e) {
     e.preventDefault();
     var recordId = this.getAttribute("data-record-id"); // Get the record ID
+    console.log(recordId);
 
     // Make an AJAX request to fetch the data for this record
     fetch("api/get/fetch_record.php?id=" + recordId)
       .then((response) => response.json())
       .then((data) => {
+        console.log("Fetched data:", data); // Add this line to log the fetched data
         // Fill the modal form with the data
-        document.querySelector('input[name="hrn"]').value = data.hrn;
-        document.querySelector('input[name="name"]').value = data.name;
-        document.querySelector('input[name="address"]').value = data.address;
+
+        // Set the correct option in the select inputs
+        document.querySelector('select[name="view_typeofappoint"]').value =
+          data.appointment_type;
+        document.querySelector('input[name="view_referal"]').value =
+          data.refer_from;
+        document.querySelector('input[name="view_hrn"]').value = data.hrn;
+        document.querySelector('input[name="view_name"]').value = data.name;
 
         // Convert and set the birthday field
         if (data.birthday) {
-          document.querySelector('input[name="birthday"]').value =
+          document.querySelector('input[name="view_birthday"]').value =
             data.birthday;
 
           let age = calculateAge(data.birthday); // Ensure calculateAge() also expects YYYY-MM-DD
-          document.querySelector('input[name="age"]').value = age;
+          document.querySelector('input[name="view_age"]').value = age;
         }
-        // document.querySelector('input[name="birthday"]').value = data.birthday;
-        document.querySelector('input[name="email"]').value = data.email;
-        document.querySelector('input[name="contact"]').value = data.contact;
-        document.querySelector('input[name="viber"]').value = data.viber;
-        document.querySelector('input[name="informant"]').value =
-          data.informant;
-        document.querySelector('input[name="informant_relation"]').value =
-          data.informant_relation;
-        // document.querySelector('input[name="date_request"]').value =
-        //   data.date_request;
-        document.querySelector('input[name="date_sched"]').value =
-          data.date_sched;
-        document.querySelector('textarea[name="history"]').value = data.history;
-        document.querySelector('input[name="referal"]').value = data.refer_from;
 
-        // Set the correct option in the select inputs
-        document.querySelector('select[name="typeofappoint"]').value =
-          data.appointment_type;
-        document.querySelector('select[name="old_new"]').value = data.old_new;
-        document.querySelector('select[name="complaint"]').value =
-          data.complaint;
+        document.querySelector('input[name="view_address"]').value =
+          data.address;
+        document.querySelector('input[name="view_email"]').value = data.email;
+        document.querySelector('input[name="view_contact"]').value =
+          data.contact;
+        document.querySelector('input[name="view_viber"]').value = data.viber;
+        document.querySelector('input[name="view_informant"]').value =
+          data.informant;
+        document.querySelector('input[name="view_informant_relation"]').value =
+          data.informant_relation;
+        document.querySelector('select[name="view_old_new"]').value =
+          data.old_new;
 
         // Handle enabling/disabling of teleconsultation based on `old_new` value
         if (data.old_new === "New") {
@@ -60,7 +59,6 @@ viewButtons.forEach((button) => {
         } else if (data.old_new === "Old") {
           document.getElementById("teleconsultation").disabled = false;
         }
-
         // Handle consultation type selection
         if (data.consultation === "Face to face") {
           document.getElementById("faceToFace").checked = true;
@@ -68,13 +66,19 @@ viewButtons.forEach((button) => {
           document.getElementById("teleconsultation").checked = true;
         }
 
+        document.querySelector('input[name="view_date_sched"]').value =
+          data.date_sched;
+        document.querySelector('select[name="view_complaint"]').value =
+          data.complaint;
+        document.querySelector('textarea[name="view_history"]').value =
+          data.history;
+
         // Set hidden record_id field
         document.querySelector('input[name="record_id"]').value = recordId;
 
         // Set fields to disabled
         document.getElementById("view-hrn").readOnly = true;
         document.getElementById("view-name").readOnly = true;
-
         document.getElementById("view-address").readOnly = true;
         document.getElementById("view-clientSelect").readOnly = true;
 

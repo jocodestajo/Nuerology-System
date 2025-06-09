@@ -1,10 +1,10 @@
 // TABS FUNCTION (navbar-2) ////////////////////////////////////////////////////////////////////
 function showContent(index) {
-  console.log("showContent called with index:", index);
+  // console.log("showContent called with index:", index);
   let contents = document.querySelectorAll(".content");
   let tabs = document.querySelectorAll(".tab");
-  console.log("Found contents:", contents.length);
-  console.log("Found tabs:", tabs.length);
+  // console.log("Found contents:", contents.length);
+  // console.log("Found tabs:", tabs.length);
 
   contents.forEach(function (content) {
     content.classList.remove("active");
@@ -12,7 +12,7 @@ function showContent(index) {
 
   // Show the content of the clicked tab
   if (contents[index]) {
-    console.log("Activating content at index:", index);
+    // console.log("Activating content at index:", index);
     contents[index].classList.add("active");
   } else {
     console.log("No content found at index:", index);
@@ -23,7 +23,7 @@ function showContent(index) {
     tab.classList.remove("active");
   });
   if (tabs[index]) {
-    console.log("Activating tab at index:", index);
+    // console.log("Activating tab at index:", index);
     tabs[index].classList.add("active");
   } else {
     console.log("No tab found at index:", index);
