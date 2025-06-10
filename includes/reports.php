@@ -5,7 +5,7 @@
     }
 
     .tabRep {
-        padding: 10px 20px;
+        padding: 5px 20px;
         color: black;
         cursor: pointer;
         transition: all 0.3s;
@@ -95,12 +95,12 @@
         min-width: 200px;
     }
 
-    label {
+    /* label {
         display: block;
         margin-bottom: 5px;
         font-weight: bold;
         color: #2c3e50;
-    }
+    } */
 </style>
 
 <div class="tabs-Rep">

@@ -184,10 +184,21 @@ document.addEventListener("DOMContentLoaded", function () {
     complaintCheckboxes.forEach((checkbox) => {
       checkbox.addEventListener("change", updateComplaintDisplay);
     });
+
+    return updateComplaintDisplay;
   }
 
   // Setup both complaint modals
-  setupComplaintModal("complaintModal1");
-  setupComplaintModal("complaintModal2");
-  setupComplaintModal("complaintModal3");
+  const updateComplaintDisplay1 = setupComplaintModal("complaintModal1");
+  const updateComplaintDisplay2 = setupComplaintModal("complaintModal2");
+  const updateComplaintDisplay3 = setupComplaintModal("complaintModal3");
+  const updateComplaintDisplayEdit = setupComplaintModal("complaintModal_edit");
+
+  // Expose update functions globally or via a specific object if needed
+  window.updateComplaintDisplayFunctions = {
+    complaintModal1: updateComplaintDisplay1,
+    complaintModal2: updateComplaintDisplay2,
+    complaintModal3: updateComplaintDisplay3,
+    complaintModal_edit: updateComplaintDisplayEdit,
+  };
 });

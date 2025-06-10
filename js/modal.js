@@ -68,8 +68,30 @@ viewButtons.forEach((button) => {
 
         document.querySelector('input[name="view_date_sched"]').value =
           data.date_sched;
-        document.querySelector('select[name="view_complaint"]').value =
-          data.complaint;
+        // document.querySelector('select[name="view_complaint"]').value =
+        //   data.complaint;
+
+        // Handle complaints (checkboxes)
+        const complaintValues = data.complaint ? data.complaint.split(",") : [];
+        document
+          .querySelectorAll('input[name="view_complaint[]"]')
+          .forEach((checkbox) => {
+            if (complaintValues.includes(checkbox.value)) {
+              checkbox.checked = true;
+            } else {
+              checkbox.checked = false;
+            }
+          });
+
+        // After setting the checkboxes, update the button display
+        if (
+          window.updateComplaintDisplayFunctions &&
+          typeof window.updateComplaintDisplayFunctions.complaintModal_edit ===
+            "function"
+        ) {
+          window.updateComplaintDisplayFunctions.complaintModal_edit();
+        }
+
         document.querySelector('textarea[name="view_history"]').value =
           data.history;
 
@@ -370,3 +392,28 @@ document.querySelector("#approveConfirmationModal .close-btn").onclick =
     approveConfirmationModal.style.display = "none";
     currentRecordIdToApprove = null;
   };
+
+// Complaint Modal for Edit Records
+document.addEventListener("DOMContentLoaded", function () {
+  const complaintModalEdit = document.getElementById("complaintModal_edit");
+  const complaintTriggerEdit = document.querySelector(
+    'button[data-modal-target="complaintModal_edit"]'
+  );
+
+  if (complaintTriggerEdit) {
+    complaintTriggerEdit.addEventListener("click", function () {
+      complaintModalEdit.style.display = "block";
+    });
+  }
+
+  if (complaintModalEdit) {
+    complaintModalEdit.addEventListener("click", function (event) {
+      if (
+        event.target === complaintModalEdit ||
+        event.target.classList.contains("close-btn")
+      ) {
+        complaintModalEdit.style.display = "none";
+      }
+    });
+  }
+});

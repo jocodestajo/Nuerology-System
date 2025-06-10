@@ -130,33 +130,41 @@
                         </div>
                         
                         <!-- div.box Child element 14 -->
-                        <div>
-                            <h3>Complaint:</h3>
+                        <div id="complaint">
+                            <h3>Complaint</h3>
                         </div>
-                        
+
                         <!-- div.box Child element 15 -->
                         <div class="input">
-                            <label for="q1">Ano ang ipapakunsulta?</label>
-                            <select name="view_complaint" class="options">
-                                <option value="" hidden></option>
-                                <?php
-                                    $sql1 = "SELECT id, name FROM neurology_classifications WHERE archived = 0";
-                                    $result1 = $conn->query($sql1);
-                                    
-                                    if ($result1->num_rows > 0) {
-                                        while($row = $result1->fetch_assoc()) {
-                                            echo "<option value='" . $row['name'] . "'>" . htmlspecialchars($row['name']) . "</option>";
-                                        }
-                                    } else {
-                                        echo "<option disabled>No classifications found</option>";
-                                    }
-                                ?>
-                                <option value="Other">Other</option>
-                                </select>
+                            <div><label for="">Ano ang ipapakunsulta?</label></div>
+
+                            <!-- Trigger Button -->
+                            <button type="button" data-modal-target="complaintModal_edit" class="btn border width-100">--- Select Option ---</button>
+
+                            <!-- Modal Container -->
+                            <div id="complaintModal_edit" class="complaintShow">
+                                <div class="modal-content" style="width: 400px; margin: 10% auto; position: relative;">
+                                    <div class="checkbox-complaint checkbox-group">
+                                        <?php
+                                            $sql1 = "SELECT id, name FROM neurology_classifications WHERE archived = 0 ORDER BY name ASC";
+                                            $result1 = $conn->query($sql1);
+                                            
+                                            if ($result1->num_rows > 0) {
+                                                while($row = $result1->fetch_assoc()) {
+                                                    echo "<label><input type='checkbox' name='view_complaint[]' value='" . htmlspecialchars($row['name']) . "'> " . htmlspecialchars($row['name']) . "</label>";
+                                                }
+                                            } else {
+                                                echo "<label><input type='checkbox' disabled> No classifications found</label>";
+                                            }
+                                        ?>
+                                        <label><input type="checkbox" name="view_complaint[]" value="Others"> Others</label>
+                                    </div>
+                                </div>
                             </div>
-                            
-                            <!-- div.box Child element 16 -->
-                        <div class="input">
+                        </div>
+
+                         <!-- div.box Child element 16 -->
+                         <div class="input">
                             <label for="history" class="">Brief history of illness</label>
                             <textarea rows="5"  name="view_history" class="form-control"></textarea>
                         </div>
