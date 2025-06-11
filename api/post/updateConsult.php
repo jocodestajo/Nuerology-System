@@ -131,7 +131,7 @@ $response = ['success' => false, 'message' => ''];
                             c.doctor = '$consultant1',
                             c.nurse = '$consultant2',
                             c.status = '$status'
-                        WHERE r.id = '$record_id'";
+                        WHERE c.id = '$record_id'";
 
             if (!mysqli_query($conn, $query)) {
                 throw new Exception("Error updating: " . mysqli_error($conn));

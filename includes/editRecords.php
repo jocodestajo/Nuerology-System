@@ -3,7 +3,8 @@
     <!-- Modal (hidden by default) -->
     <div id="myModal" class="viewRecordsModal">
         <div class="modal-content">
-            <a href="javascript:void(0);" class="cancelBtn close-btn close-btn-desktop">Close &times;</a>
+            <!-- <a href="javascript:void(0);" class="cancelBtn close-btn close-btn-desktop">Close &times;</a> -->
+            <span class="cancelBtn close-btn close-btn-desktop">&times;</span>
 
             <div class="edit-content">
                 <div class="form-content">

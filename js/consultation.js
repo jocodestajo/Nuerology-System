@@ -25,6 +25,19 @@ if (recordId) {
         throw new Error("Empty or invalid JSON response");
       }
 
+      document.querySelector('input[name="consultStart"]').value =
+        data.consult_start || "";
+      document.querySelector('input[name="consultEnd"]').value =
+        data.consult_end || "";
+      document.querySelector('input[name="educStart"]').value =
+        data.educ_start || "";
+      document.querySelector('input[name="educEnd"]').value =
+        data.educ_end || "";
+
+      document.querySelector('input[name="consultant_1"]').value =
+        data.doctor || "";
+      document.querySelector('input[name="consultant_2"]').value =
+        data.nurse || "";
       document.querySelector('input[name="name"]').value = data.name || "";
 
       if (data.birthday) {
@@ -64,9 +77,22 @@ if (recordId) {
         document.getElementById("consultTelecon").checked = true;
       }
 
+      if (document.getElementById("consultRX") && data.rx_mc === "RX") {
+        document.getElementById("consultRX").checked = true;
+      } else if (document.getElementById("consultMC") && data.rx_mc === "MC") {
+        document.getElementById("consultMC").checked = true;
+      }
+
+      document.querySelector('select[name="classification"]').value =
+        data.classification;
+
       if (data.refer_from != "") {
-        document.querySelector('input[name="refer_from"]').value =
+        document.querySelector('select[name="refer_from"]').value =
           data.refer_from;
+      }
+
+      if (data.refer_to != "") {
+        document.querySelector('select[name="refer_to"]').value = data.refer_to;
       }
       // Set hidden record_id field
       document.querySelector('input[name="record_id"]').value = recordId;
