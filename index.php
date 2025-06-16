@@ -451,7 +451,7 @@ if(isset($_GET['logout'])) {
                 </table>
             </div>
 
-        <!-- TAB 4 / TELECONSULTATION -->
+            <!-- TAB 4 / TELECONSULTATION -->
             <div class="content">
                 <div class="flex">
                     <Label>Date Filter:</Label>

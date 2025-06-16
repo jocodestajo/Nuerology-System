@@ -182,15 +182,17 @@
                     </div>
 
                     <div class="calendar">
-                        <div class="calendar-date">
-                            <label for="dateSched2">Date Schedule:</label>
-                            <span class="calendar-flex">
-                                <span class="datePicker btn-blue" data-sched-output="dateSched3">Calendar</span>
-                                <input type="date" id="dateSched3" class="date" name="date_sched" readonly required>
-                            </span>
-                        </div>
+                        <div class="calendar-wrapper">
+                            <div class="calendar-date">
+                                <label for="dateSched2">Date Schedule:</label>
+                                <span class="calendar-flex">
+                                    <span class="appointment-calendar-trigger btn-blue datePicker" data-target="dateSched3">Calendar</span>
+                                    <input type="date" id="dateSched3" class="date" name="date_sched" data-calendar-type="appointment" readonly required>
+                                </span>
+                            </div>
 
-                        <?php include('includes/calendarTable_modal.php'); ?>
+                            <?php include('includes/appointment_calendar_modal.php'); ?>
+                        </div>
                     </div>
 
                     <div class="input margin-t-20">
@@ -251,7 +253,7 @@
 
     <script src="js/mainScript.js"></script>
     <script src="js/functions.js"></script>
-    <script src="js/calendar_booking.js"></script>
+    <script src="js/calendar_appointment.js"></script>
 
     <script>
         function showModal() {

@@ -172,9 +172,10 @@ document.addEventListener("DOMContentLoaded", function () {
       targetInput.setAttribute("data-active", "true");
 
       // Show the calendar container
-      const container = this.closest(".calendar-wrapper").querySelector(
-        ".appointment-calendar-container"
-      );
+      const calendarWrapper = this.closest(".calendar-wrapper");
+      const container = calendarWrapper
+        ? calendarWrapper.querySelector(".appointment-calendar-container")
+        : document.querySelector(".appointment-calendar-container");
 
       if (container) {
         // Hide all other calendars first
@@ -190,7 +191,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Close calendar when clicking outside
   document.addEventListener("click", function (e) {
-    if (!e.target.closest(".calendar-wrapper")) {
+    const calendarWrapper = e.target.closest(".calendar-wrapper");
+    if (!calendarWrapper) {
       document
         .querySelectorAll(".appointment-calendar-container")
         .forEach((container) => (container.style.display = "none"));
