@@ -412,7 +412,8 @@ tr .th-hrn {
 }
 
 /* CALENDAR */
-#calendarContainer {
+#calendarContainer,
+#editCalendarContainer {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -792,35 +793,94 @@ tr .th-hrn {
 .btn-div-checkbox .update-reschedule {
   margin-right: 12px;
 }
-
+/* 
 #editCalendarContainer {
-  position: absolute;
-  background: white;
-  padding: 15px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: fit-content;
+  min-width: 700px;
+  max-width: 1000px;
+  background: var(--white-color);
+  padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  z-index: 1001;
-  margin-top: 5px;
+  z-index: 1000;
+} */
+
+#editCalendarContainer .calendarMonth {
+  text-align: center;
+  margin-bottom: 10px;
+  width: 100%;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 5px;
+  background-color: var(--blue-color);
+  color: var(--white-color);
+  border-radius: 3px;
+}
+
+#editCalendarTable {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+#editCalendarTable th,
+#editCalendarTable td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid var(--grey-color);
 }
 
 #editCalendarContainer .calendar-controls {
   display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
+  justify-content: space-evenly;
+  gap: 10px;
 }
 
 #editCalendarContainer .calendar-controls button {
-  padding: 5px 15px;
+  padding: 15px;
+  height: fit-content;
   cursor: pointer;
   background-color: var(--blue-color);
-  color: white;
+  color: var(--white-color);
   border: none;
   border-radius: 3px;
 }
 
 #editCalendarContainer .calendar-controls button:hover {
-  background-color: var(--primary-color);
+  box-shadow: 0px 0px 10px var(--blue-color);
+}
+
+/* Media query for responsive design */
+@media (max-width: 768px) {
+  #editCalendarContainer {
+    position: absolute;
+    left: 90%;
+    transform: translate(-90%);
+    width: 100%;
+    background: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  #editCalendarContainer table {
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  #editCalendarTable {
+    font-size: 0.7rem;
+  }
+
+  #editCalendarTable td {
+    padding: 2px;
+  }
 }
 
 /* Update the reschedule calendar container styles */

@@ -125,7 +125,20 @@
                                         <label for="date">Date Schedule:</label>
                                         <input type="date" id="dateSched5" name="view_date_sched">
                                     </div>
-                                    <!-- <?php include('calendarTable_modal.php'); ?> -->
+                                    <div class="calendar-btn">
+                                        <span class="datePicker btn btn-blue" data-sched-output="dateSched5" data-calendar-target="editCalendarContainer">Calendar</span>
+                                    </div>
+                                    
+                                    <!-- Edit Records Calendar Modal -->
+                                    <div id="editCalendarContainer" style="display: none;">
+                                        <div class="calendar-controls">
+                                            <button type="button" onclick="changeMonth('previous', 'editCalendarContainer')">Previous</button>
+                                            <div id="editCalendarMonthTitle" class="calendarMonth"></div>
+                                            <button type="button" onclick="changeMonth('next', 'editCalendarContainer')">Next</button>
+                                        </div>
+                                        <table id="editCalendarTable">
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

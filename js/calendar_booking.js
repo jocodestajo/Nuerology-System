@@ -354,3 +354,189 @@ const calendarContainer = document.getElementById("calendarContainer");
 if (calendarContainer) {
   calendarContainer.style.display = "none";
 }
+
+// Function to handle multiple calendar instances
+function initializeCalendar(containerId, monthTitleId, tableId, outputId) {
+  const container = document.getElementById(containerId);
+  const monthTitle = document.getElementById(monthTitleId);
+  const table = document.getElementById(tableId);
+  const output = document.getElementById(outputId);
+
+  let currentDate = new Date();
+  let currentMonth = currentDate.getMonth();
+  let currentYear = currentDate.getFullYear();
+
+  function renderCalendar() {
+    const firstDay = new Date(currentYear, currentMonth, 1);
+    const lastDay = new Date(currentYear, currentMonth + 1, 0);
+    const startingDay = firstDay.getDay();
+    const totalDays = lastDay.getDate();
+
+    monthTitle.textContent = `${firstDay.toLocaleString("default", {
+      month: "long",
+    })} ${currentYear}`;
+
+    let html = `
+            <thead>
+                <tr>
+                    <th>Sun</th>
+                    <th>Mon</th>
+                    <th>Tue</th>
+                    <th>Wed</th>
+                    <th>Thu</th>
+                    <th>Fri</th>
+                    <th>Sat</th>
+                </tr>
+            </thead>
+            <tbody>
+        `;
+
+    let day = 1;
+    for (let i = 0; i < 6; i++) {
+      html += "<tr>";
+      for (let j = 0; j < 7; j++) {
+        if (i === 0 && j < startingDay) {
+          html += "<td></td>";
+        } else if (day > totalDays) {
+          html += "<td></td>";
+        } else {
+          const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(
+            2,
+            "0"
+          )}-${String(day).padStart(2, "0")}`;
+          html += `<td class="calendar-day" data-date="${dateStr}">${day}</td>`;
+          day++;
+        }
+      }
+      html += "</tr>";
+      if (day > totalDays) break;
+    }
+    html += "</tbody>";
+    table.innerHTML = html;
+
+    // Add click event listeners to days
+    const days = table.getElementsByClassName("calendar-day");
+    Array.from(days).forEach((day) => {
+      day.addEventListener("click", () => {
+        const date = day.getAttribute("data-date");
+        output.value = date;
+        container.style.display = "none";
+      });
+    });
+  }
+
+  // Initial render
+  renderCalendar();
+
+  // Return functions to change month
+  return {
+    previousMonth: () => {
+      currentMonth--;
+      if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      }
+      renderCalendar();
+    },
+    nextMonth: () => {
+      currentMonth++;
+      if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      }
+      renderCalendar();
+    },
+  };
+}
+
+// Initialize main calendar
+const mainCalendar = initializeCalendar(
+  "calendarContainer",
+  "calendarMonthTitle",
+  "calendarTable",
+  "dateSched1"
+);
+
+// Initialize edit calendar
+const editCalendar = initializeCalendar(
+  "editCalendarContainer",
+  "editCalendarMonthTitle",
+  "editCalendarTable",
+  "dateSched5"
+);
+
+// Update the changeMonth function to handle both calendars
+function changeMonth(direction, containerId) {
+  console.log("Changing month:", direction, "for container:", containerId); // Debug log
+  if (containerId === "calendarContainer") {
+    if (direction === "previous") {
+      mainCalendar.previousMonth();
+    } else if (direction === "next") {
+      mainCalendar.nextMonth();
+    }
+  } else if (containerId === "editCalendarContainer") {
+    if (direction === "previous") {
+      editCalendar.previousMonth();
+    } else if (direction === "next") {
+      editCalendar.nextMonth();
+    }
+  }
+}
+
+// Update the datePicker click handlers
+document.addEventListener("DOMContentLoaded", function () {
+  const datePickers = document.querySelectorAll(".datePicker");
+  datePickers.forEach((picker) => {
+    picker.addEventListener("click", function (e) {
+      e.preventDefault();
+      const targetId = this.getAttribute("data-calendar-target");
+      const container = document.getElementById(targetId);
+      if (container) {
+        // Hide all other calendar containers first
+        document
+          .querySelectorAll('[id$="CalendarContainer"]')
+          .forEach((cont) => {
+            if (cont.id !== targetId) {
+              cont.style.display = "none";
+            }
+          });
+        // Toggle this container
+        container.style.display =
+          container.style.display === "none" ? "block" : "none";
+      }
+    });
+  });
+
+  // Add click handlers for the month navigation buttons
+  document.querySelectorAll(".calendar-controls button").forEach((button) => {
+    button.addEventListener("click", function (e) {
+      e.preventDefault();
+      const container = this.closest('[id$="CalendarContainer"]');
+      const direction = this.textContent.toLowerCase().includes("previous")
+        ? "previous"
+        : "next";
+      changeMonth(direction, container.id);
+    });
+  });
+});
+
+// Update outside click handler
+document.addEventListener("click", function (e) {
+  const datePickers = document.querySelectorAll(".datePicker");
+  const calendarContainers = document.querySelectorAll(
+    '[id$="CalendarContainer"]'
+  );
+
+  calendarContainers.forEach((container) => {
+    const triggerBtn = container
+      .closest(".calendar")
+      .querySelector(".datePicker");
+    if (
+      !container.contains(e.target) &&
+      !triggerBtn.contains(e.target) &&
+      container.style.display === "block"
+    ) {
+      container.style.display = "none";
+    }
+  });
+});

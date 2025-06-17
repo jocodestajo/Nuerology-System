@@ -72,15 +72,13 @@ viewButtons.forEach((button) => {
         //   data.complaint;
 
         // Handle complaints (checkboxes)
-        const complaintValues = data.complaint ? data.complaint.split(",") : [];
+        const complaintValues = data.complaint
+          ? data.complaint.split(",").map((item) => item.trim())
+          : [];
         document
           .querySelectorAll('input[name="view_complaint[]"]')
           .forEach((checkbox) => {
-            if (complaintValues.includes(checkbox.value)) {
-              checkbox.checked = true;
-            } else {
-              checkbox.checked = false;
-            }
+            checkbox.checked = complaintValues.includes(checkbox.value);
           });
 
         // After setting the checkboxes, update the button display
@@ -100,9 +98,9 @@ viewButtons.forEach((button) => {
 
         // Set fields to disabled
         document.getElementById("view-hrn").readOnly = true;
-        document.getElementById("view-name").readOnly = true;
-        document.getElementById("view-address").readOnly = true;
-        document.getElementById("view-clientSelect").readOnly = true;
+        // document.getElementById("view-name").readOnly = true;
+        // document.getElementById("view-address").readOnly = true;
+        // document.getElementById("view-clientSelect").readOnly = true;
 
         // Show the modal
         modal.style.display = "block";
