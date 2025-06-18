@@ -229,24 +229,114 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Close modal when clicking X button
+  // Function to clear all form inputs in the modal
+  function clearModalForm() {
+    const form = document.getElementById("addPatientForm");
+    if (form) {
+      // Clear all text inputs, textareas, and selects
+      form
+        .querySelectorAll('input[type="text"], input[type="email"], textarea')
+        .forEach((input) => {
+          input.value = "";
+        });
+
+      // Reset all select elements to their first option
+      form.querySelectorAll("select").forEach((select) => {
+        select.selectedIndex = 0;
+      });
+
+      // Reset radio buttons
+      form.querySelectorAll('input[type="radio"]').forEach((radio) => {
+        radio.checked = false;
+      });
+
+      // Reset complaint button and checkboxes
+      const complaintBtn = document.getElementById("complaintBtn");
+      if (complaintBtn) {
+        complaintBtn.textContent = "--- Select Option ---";
+      }
+      form.querySelectorAll('input[name="complaint[]"]').forEach((checkbox) => {
+        checkbox.checked = false;
+      });
+
+      // Reset birthdate and age
+      const modalBirthday = document.getElementById("modal_birthday");
+      const modalAge = document.getElementById("modal_age");
+      if (modalBirthday) {
+        modalBirthday.value = "";
+      }
+      if (modalAge) {
+        modalAge.value = "";
+      }
+
+      // Hide and clear informant details
+      const informantDetails = document.querySelector(".informant-details");
+      if (informantDetails) {
+        informantDetails.style.display = "none";
+      }
+
+      // Hide and clear referral section
+      const referralSection = document.getElementById("modalReferral");
+      if (referralSection) {
+        referralSection.style.display = "none";
+      }
+
+      // Clear search results
+      const searchResult = document.getElementById("modal_searchResult");
+      if (searchResult) {
+        searchResult.style.display = "none";
+      }
+      const result = document.getElementById("modal_result");
+      if (result) {
+        result.innerHTML = "";
+      }
+
+      // Reset readonly states
+      const readonlyFields = [
+        "modal_hrn",
+        "modal_name",
+        "modal_age",
+        "modal_birthday",
+        "modal_address",
+        "modal_contact",
+      ];
+      readonlyFields.forEach((fieldId) => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+          field.readOnly = false;
+        }
+      });
+    }
+  }
+
+  // Update close button handler
   if (closeAddPatientModal) {
     closeAddPatientModal.addEventListener("click", function () {
-      addPatientModal.style.display = "none";
+      const modal = document.getElementById("addPatientModal");
+      if (modal) {
+        modal.style.display = "none";
+        clearModalForm();
+      }
     });
   }
 
-  // Close modal when clicking Cancel button
+  // Update cancel button handler
   if (cancelAddPatient) {
     cancelAddPatient.addEventListener("click", function () {
-      addPatientModal.style.display = "none";
+      const modal = document.getElementById("addPatientModal");
+      if (modal) {
+        modal.style.display = "none";
+        clearModalForm();
+      }
     });
   }
 
-  // Close modal when clicking outside the modal
+  // Add click outside modal handler
   window.addEventListener("click", function (event) {
-    if (event.target === addPatientModal) {
-      addPatientModal.style.display = "none";
+    const modal = document.getElementById("addPatientModal");
+    if (event.target === modal) {
+      modal.style.display = "none";
+      clearModalForm();
     }
   });
 
@@ -276,49 +366,123 @@ document.addEventListener("DOMContentLoaded", function () {
   const modalSearchResult = document.getElementById("modal_searchResult");
   const modalResult = document.getElementById("modal_result");
 
+  let debounceTimeout;
+
+  function closeModalSearch() {
+    modalResult.innerHTML = "";
+    modalSearchResult.style.display = "none";
+  }
+
   if (modalName) {
-    modalName.addEventListener("input", function () {
-      const searchQuery = this.value;
+    modalName.addEventListener("keyup", function () {
+      clearTimeout(debounceTimeout);
 
-      if (searchQuery.length >= 3) {
-        // Fetch matching patient data
-        fetch(
-          `api/get/searchPatient.php?query=${encodeURIComponent(searchQuery)}`
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            modalResult.innerHTML = "";
-            modalSearchResult.style.display = "block";
+      debounceTimeout = setTimeout(function () {
+        let inquery = modalName.value.trim(); // Trim whitespace
+        if (inquery !== "") {
+          modalSearchResult.style.display = "block";
 
-            if (data.length > 0) {
-              data.forEach((patient) => {
-                const item = document.createElement("div");
-                item.classList.add("search-item");
-                item.textContent = patient.name;
-                item.addEventListener("click", function () {
-                  modalName.value = patient.name;
-                  modalHrn.value = patient.hrn;
-                  modalAddress.value = patient.address;
-                  modalBirthday.value = patient.birthday;
-                  modalAge.value = calculateAge(patient.birthday);
-                  modalContact.value = patient.contact;
-                  modalSearchResult.style.display = "none";
-                });
-                modalResult.appendChild(item);
-              });
-            } else {
-              const item = document.createElement("div");
-              item.classList.add("search-item");
-              item.textContent = "No matching patients found";
-              modalResult.appendChild(item);
+          // AJAX request for search suggestions
+          let xhr = new XMLHttpRequest();
+          xhr.open(
+            "GET",
+            "api/get/searchPatient.php?query=" + encodeURIComponent(inquery),
+            true
+          );
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+              if (xhr.responseText.trim() !== "") {
+                const patients = JSON.parse(xhr.responseText);
+                modalResult.innerHTML = "";
+
+                if (patients.length > 0) {
+                  patients.forEach((patient) => {
+                    const item = document.createElement("p");
+                    item.classList.add("result-item");
+                    item.setAttribute("data-id", patient.id);
+                    item.setAttribute("data-name", patient.name);
+                    item.textContent = patient.name;
+                    modalResult.appendChild(item);
+                  });
+                } else {
+                  modalResult.innerHTML = "<p>No results found</p>";
+                }
+              } else {
+                modalResult.innerHTML = "<p>No results found</p>";
+              }
+            } else if (xhr.readyState === 4) {
+              console.error("Error with request:", xhr.status);
             }
-          })
-          .catch((error) => console.error("Error:", error));
-      } else {
-        modalSearchResult.style.display = "none";
-      }
+          };
+          xhr.send();
+        } else {
+          closeModalSearch();
+        }
+      }, 300);
     });
   }
+
+  // Close modal on outside click
+  document.addEventListener("click", function (event) {
+    const resultItem = event.target.closest(".result-item");
+
+    // If clicking on modalName or a result item, avoid closing and handle accordingly
+    if (event.target === modalName || resultItem) {
+      if (resultItem) {
+        let name = resultItem.getAttribute("data-name");
+        let id = resultItem.getAttribute("data-id");
+
+        // Fetch full details for the selected item
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", "api/get/fetch_data.php?id=" + id, true);
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            let data = JSON.parse(xhr.responseText);
+
+            modalHrn.value = data.hrn;
+            modalName.value = data.name;
+
+            // Convert and set birthday
+            if (data.birthday) {
+              let formattedDate = formatDate(data.birthday);
+              modalBirthday.value = formattedDate;
+
+              // Calculate and set age
+              let age = calculateAge(formattedDate);
+              modalAge.value = age;
+            }
+
+            modalContact.value = data.contactnumber;
+            modalAddress.value = data.address;
+
+            // Set fields to readonly
+            modalHrn.readOnly = true;
+            modalName.readOnly = true;
+            modalAge.readOnly = true;
+            modalBirthday.readOnly = true;
+            modalAddress.readOnly = true;
+
+            if (modalContact.value !== "") {
+              modalContact.readOnly = true;
+            }
+
+            closeModalSearch();
+          }
+        };
+        xhr.send();
+      }
+      return;
+    }
+
+    // Close the modal if clicking outside the modal, results, or input
+    if (
+      !modalSearchResult.contains(event.target) &&
+      !modalResult.contains(event.target) &&
+      !modalName.contains(event.target)
+    ) {
+      closeModalSearch();
+    }
+  });
 
   // Calculate age function for modal
   if (modalBirthday) {
@@ -414,4 +578,27 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+});
+
+// Handle informant question in modal
+const modalInformantQA = document.querySelectorAll('input[name="informantQA"]');
+const modalInformantDetails = document.querySelector(".informant-details");
+
+modalInformantQA.forEach((radio) => {
+  radio.addEventListener("change", function () {
+    if (this.value === "yes") {
+      modalInformantDetails.style.display = "block";
+      // Make fields required when shown
+      modalInformantDetails.querySelectorAll("input").forEach((input) => {
+        input.required = true;
+      });
+    } else {
+      modalInformantDetails.style.display = "none";
+      // Remove required and clear values when hidden
+      modalInformantDetails.querySelectorAll("input").forEach((input) => {
+        input.required = false;
+        input.value = "";
+      });
+    }
+  });
 });
