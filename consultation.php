@@ -626,12 +626,11 @@ require 'config/dbcon.php';
                                         const medicineItem = document.createElement('div');
                                         medicineItem.className = 'medicine-item';
                                         
-                                        // Create medicine display with generic name, brand name, and strength
-                                        const displayText = `${medicine.generic_name} ${medicine.brand_name ? `(${medicine.brand_name})` : ''} ${medicine.strength} ${medicine.strength_description || ''}`;
+                                        // Create medicine display with generic name, strength, and strength_description only (no brand_name)
+                                        const displayText = `${medicine.generic_name} ${medicine.strength} ${medicine.strength_description || ''}`;
                                         
                                         medicineItem.innerHTML = `
                                             <div class="generic-name">${medicine.generic_name}</div>
-                                            <div class="brand-name">${medicine.brand_name || ''}</div>
                                             <div class="strength">${medicine.strength} ${medicine.strength_description || ''}</div>
                                         `;
                                         
@@ -643,7 +642,7 @@ require 'config/dbcon.php';
                                             // Store the medicine ID in a hidden input
                                             const medicineIdInput = inputElement.parentNode.querySelector('input[name="medicine_id[]"]');
                                             if (medicineIdInput) {
-                                                medicineIdInput.value = medicine.id;
+                                                medicineIdInput.value = medicine.medicine_id;
                                             }
                                         });
                                         

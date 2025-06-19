@@ -86,12 +86,9 @@ $response = ['success' => false, 'message' => ''];
         $status = isset($_POST['follow_up']) ? 'follow up' : 'processed';
 
         // date_sched is only updated if the status is follow up
+        $date_sched_sql = '';
         if ($status == 'follow up') {
-            $date_sched_sql = "NOW()";
-        } else {
-            // Keep the previously saved value from the database
-            $date_sched = mysqli_real_escape_string($conn, $_POST['date_sched']);
-            $date_sched_sql = "'$date_sched'";
+            $date_sched_sql = 'c.date_sched = NOW(),';
         }
 
         // Automatically set appointment_type to 'Follow Up' if status is 'follow up'
@@ -122,7 +119,7 @@ $response = ['success' => false, 'message' => ''];
                             c.refer_to = '$referTo',
                             c.appointment_type = '$appointment_type',
                             c.remarks = '$remarks',
-                            c.date_sched = $date_sched_sql,
+                            {$date_sched_sql}
                             c.date_process = NOW(),
                             c.consult_start = '$consultStart',
                             c.consult_end = '$consultEnd',

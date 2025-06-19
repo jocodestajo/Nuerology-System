@@ -197,7 +197,7 @@ consultationButtons.forEach((button) => {
   button.addEventListener("click", function (e) {
     e.preventDefault();
     var recordId = this.getAttribute("data-record-id");
-    window.open("consultation.php?id=" + recordId, "_blank");
+    window.location.href = "consultation.php?id=" + recordId;
   });
 });
 

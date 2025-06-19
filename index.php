@@ -141,7 +141,6 @@ if(isset($_GET['logout'])) {
                         <!-- div.box Child element 5 / BDATE -->
                         <div class="input">
                             <label for="" class="b_day">Birthdate: <i class="asterisk">*</i></label>
-                            <!-- <input type="date" id="birthday" name="birthday" class="b_day" require> -->
                             <input type="date" name="birthday" id="birthday" class="birthdayInput" data-age-output="age1" require>
                         </div>
                         
