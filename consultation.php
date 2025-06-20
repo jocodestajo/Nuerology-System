@@ -463,6 +463,8 @@ require 'config/dbcon.php';
                                         <span class="calendar-flex">
                                             <span class="datePicker btn-blue" data-sched-output="dateSched4">Calendar</span>
                                             <input type="date" id="dateSched4" class="date center-text" name="date_sched" readonly>
+                                            <!-- date na kukunin if hindi follow up ang status -->
+                                            <input type="hidden" name="date_sched_def">
                                         </span>
                                     </label>
 
@@ -478,6 +480,7 @@ require 'config/dbcon.php';
                         </div>
                     </div>
 
+                    <input type="hidden" name="appointment_type" >
                     <input type="hidden" name="record_id" >
         
                     <div id="div-consultSubmit">

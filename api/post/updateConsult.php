@@ -53,7 +53,7 @@ $response = ['success' => false, 'message' => ''];
         // Final medication string like "12 ALBENDAZOLE, 10 AMIKACIN"
         $medication = implode(', ', $medicationEntries);
         
-        $refer_from = mysqli_real_escape_string($conn, $_POST['refer_from']);
+        $refer_from = isset($_POST['refer_from']) && $_POST['refer_from'] !== '' ? mysqli_real_escape_string($conn, $_POST['refer_from']) : '';
         $otherInstitute = mysqli_real_escape_string($conn, $_POST['otherInstitute']);
         $refer_to = mysqli_real_escape_string($conn, $_POST['refer_to']);
         if ($refer_to === "Other") {
@@ -73,26 +73,24 @@ $response = ['success' => false, 'message' => ''];
         $educEnd = $currentDate . ' ' . mysqli_real_escape_string($conn, $_POST['educEnd']) . ':00';
 
         $type1 = mysqli_real_escape_string($conn, $_POST['consultant_1_type']);
-        $doctorName = mysqli_real_escape_string($conn, $_POST['consultant_1']);
+        $consultant_1 = mysqli_real_escape_string($conn, $_POST['consultant_1']);
 
         $type2 = mysqli_real_escape_string($conn, $_POST['consultant_2_type']);
-        $nurseName = mysqli_real_escape_string($conn, $_POST['consultant_2']);
-
-        // Combine type and name
-        $consultant1 = $type1 . ' ' . $doctorName;
-        $consultant2 = $type2 . ' ' . $nurseName;
+        $consultant_2 = mysqli_real_escape_string($conn, $_POST['consultant_2']);
 
         // Check if follow-up checkbox is checked
         $status = isset($_POST['follow_up']) ? 'follow up' : 'processed';
 
         // date_sched is only updated if the status is follow up
-        $date_sched_sql = '';
+        $date_sched_sql = mysqli_real_escape_string($conn, $_POST['date_sched_def']);
         if ($status == 'follow up') {
             $date_sched_sql = 'c.date_sched = NOW(),';
         }
 
         // Automatically set appointment_type to 'Follow Up' if status is 'follow up'
-        $appointment_type = ($status === 'follow up') ? 'Follow Up' : mysqli_real_escape_string($conn, $_POST['appointment_type']);
+        $appointment_type = ($status === 'follow up') 
+            ? 'Follow Up' 
+            : (isset($_POST['appointment_type']) ? mysqli_real_escape_string($conn, $_POST['appointment_type']) : '');
 
         // Start transaction
         mysqli_begin_transaction($conn);
@@ -125,8 +123,10 @@ $response = ['success' => false, 'message' => ''];
                             c.consult_end = '$consultEnd',
                             c.educ_start = '$educStart',
                             c.educ_end = '$educEnd',
-                            c.doctor = '$consultant1',
-                            c.nurse = '$consultant2',
+                            c.c1_type = '$type1',
+                            c.consultant_1 = '$consultant_1',
+                            c.c2_type = '$type2',
+                            c.consultant_2 = '$consultant_2',
                             c.status = '$status'
                         WHERE c.id = '$record_id'";
 

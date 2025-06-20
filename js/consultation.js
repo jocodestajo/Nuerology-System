@@ -34,10 +34,14 @@ if (recordId) {
       document.querySelector('input[name="educEnd"]').value =
         data.educ_end || "";
 
+      document.querySelector('select[name="consultant_1_type"]').value =
+        data.c1_type;
       document.querySelector('input[name="consultant_1"]').value =
-        data.doctor || "";
+        data.consultant_1 || "";
+      document.querySelector('select[name="consultant_2_type"]').value =
+        data.c2_type;
       document.querySelector('input[name="consultant_2"]').value =
-        data.nurse || "";
+        data.consultant_2 || "";
       document.querySelector('input[name="name"]').value = data.name || "";
 
       if (data.birthday) {
@@ -209,6 +213,11 @@ if (recordId) {
           }
         });
       }
+
+      document.querySelector('input[name="date_sched_def"]').value =
+        data.date_sched;
+      document.querySelector('input[name="appointment_type"]').value =
+        data.appointment_type;
 
       // Set hidden record_id field
       document.querySelector('input[name="record_id"]').value = recordId;
