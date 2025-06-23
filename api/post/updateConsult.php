@@ -53,7 +53,7 @@ $response = ['success' => false, 'message' => ''];
         // Final medication string like "12 ALBENDAZOLE, 10 AMIKACIN"
         $medication = implode(', ', $medicationEntries);
         
-        $refer_from = isset($_POST['refer_from']) && $_POST['refer_from'] !== '' ? mysqli_real_escape_string($conn, $_POST['refer_from']) : '';
+        $refer_from = mysqli_real_escape_string($conn, $_POST['refer_from']);
         $otherInstitute = mysqli_real_escape_string($conn, $_POST['otherInstitute']);
         $refer_to = mysqli_real_escape_string($conn, $_POST['refer_to']);
         if ($refer_to === "Other") {

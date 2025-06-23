@@ -424,7 +424,7 @@ require 'config/dbcon.php';
                                     <label for="consultReferFrom" class="rfl">
                                         Referred fro:
                                         <select name="refer_from" id="consultReferFrom" class="width-100 center-text">
-                                            <option value="N/A" hidden disabled selected>N/A</option>
+                                            <option value="N/A" hidden selected>N/A</option>
                                             <?php foreach ($departments as $dept): ?>
                                                 <option value="<?= $dept['deptid']; ?>"><?= htmlspecialchars($dept['deptname']); ?></option>
                                             <?php endforeach; ?>
@@ -437,7 +437,7 @@ require 'config/dbcon.php';
                                     <label for="consultReferTo" class="rfl">
                                         Refer to:
                                         <select name="refer_to" id="consultReferTo" class="width-100 center-text">
-                                            <option value="N/A" hidden disabled selected>N/A</option>
+                                            <option value="N/A" hidden selected>N/A</option>
                                             <?php foreach ($departments as $dept): ?>
                                                 <option value="<?= $dept['deptname']; ?>"><?= htmlspecialchars($dept['deptname']); ?></option>
                                             <?php endforeach; ?>
