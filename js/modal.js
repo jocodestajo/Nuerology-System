@@ -153,16 +153,16 @@ document.querySelector("#setSchedule .close-btn").onclick = function () {
 };
 
 // DISPLAY REFERRAL WHEN Type of Appointment value is Referral
-const typeOfAppointment = document.getElementById("typeOfAppointment");
-const referralContent = document.getElementById("referralContent");
+// const typeOfAppointment = document.getElementById("typeOfAppointment");
+// const referralContent = document.getElementById("referralContent");
 
-typeOfAppointment.addEventListener("change", function () {
-  if (this.value === "Referral") {
-    referralContent.style.display = "block";
-  } else if (this.value !== "Referral") {
-    referralContent.style.display = "none";
-  }
-});
+// typeOfAppointment.addEventListener("change", function () {
+//   if (this.value === "Referral") {
+//     referralContent.style.display = "block";
+//   } else if (this.value !== "Referral") {
+//     referralContent.style.display = "none";
+//   }
+// });
 
 const view_appointment = document.getElementById("view_appointment");
 const viewReferalContent = document.getElementById("viewReferalContent");

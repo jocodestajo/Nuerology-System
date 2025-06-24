@@ -232,9 +232,9 @@ footer {
 }
 
 /* box child element 2 / Type of appointment */
-.box #referralContent {
+/* .box #referralContent {
   display: none;
-}
+} */
 #referralContent input {
   width: 100%;
 }

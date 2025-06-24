@@ -344,7 +344,7 @@ if(isset($_GET['logout'])) {
                                     (SELECT COUNT(*) FROM neurology_consultations nc WHERE nc.record_id = r.id) AS consultation_count
                                 FROM neurology_records r
                                 LEFT JOIN neurology_consultations c ON r.id = c.record_id
-                                WHERE c.status = 'pending'
+                                WHERE c.status = 'pending' ORDER BY c.date_sched
                             ";
 
                             $query_run = mysqli_query($conn, $query);
@@ -419,7 +419,7 @@ if(isset($_GET['logout'])) {
                             $query = "SELECT r.id, r.hrn, r.name, r.contact, c.id AS consult_id, c.date_sched, c.complaint
                             FROM neurology_records r
                             LEFT JOIN neurology_consultations c ON r.id = c.record_id
-                            WHERE c.status = 'approved' and c.consultation = 'Face to face' OR c.status = 'follow up' AND c.consultation = 'Face to face'";
+                            WHERE ((c.status = 'approved' and c.consultation = 'Face to face') OR c.status = 'follow up' AND c.consultation = 'Face to face') ORDER BY c.date_sched";
 
                             // Execute query
                             $query_run = mysqli_query($conn, $query);
@@ -488,7 +488,7 @@ if(isset($_GET['logout'])) {
                             $query = "SELECT r.id, r.hrn, r.name, r.contact, c.id AS consult_id, c.date_sched, c.complaint
                             FROM neurology_records r
                             LEFT JOIN neurology_consultations c ON r.id = c.record_id
-                            WHERE c.status = 'approved' and c.consultation = 'Teleconsultation' OR c.status = 'follow up' AND c.consultation = 'Teleconsultation'";
+                            WHERE ((c.status = 'approved' and c.consultation = 'Teleconsultation') OR c.status = 'follow up' AND c.consultation = 'Teleconsultation') ORDER BY c.date_sched";
 
                             // Execute query
                             $query_run = mysqli_query($conn, $query);

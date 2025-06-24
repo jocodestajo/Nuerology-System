@@ -83,9 +83,9 @@ $response = ['success' => false, 'message' => ''];
 
         // date_sched is only updated if the status is follow up
         $date_sched_sql = mysqli_real_escape_string($conn, $_POST['date_sched_def']);
-        if ($status == 'follow up') {
-            $date_sched_sql = 'c.date_sched = NOW(),';
-        }
+        // if ($status == 'follow up') {
+        //     $date_sched_sql = 'c.date_sched = NOW(),';
+        // }
 
         // Automatically set appointment_type to 'Follow Up' if status is 'follow up'
         $appointment_type = ($status === 'follow up') 
@@ -115,9 +115,7 @@ $response = ['success' => false, 'message' => ''];
                             c.medication = '$medication',             
                             c.refer_from = '$refer_from',
                             c.refer_to = '$referTo',
-                            c.appointment_type = '$appointment_type',
                             c.remarks = '$remarks',
-                            {$date_sched_sql}
                             c.date_process = NOW(),
                             c.consult_start = '$consultStart',
                             c.consult_end = '$consultEnd',
@@ -126,12 +124,37 @@ $response = ['success' => false, 'message' => ''];
                             c.c1_type = '$type1',
                             c.consultant_1 = '$consultant_1',
                             c.c2_type = '$type2',
-                            c.consultant_2 = '$consultant_2',
-                            c.status = '$status'
+                            c.consultant_2 = '$consultant_2'
                         WHERE c.id = '$record_id'";
 
             if (!mysqli_query($conn, $query)) {
                 throw new Exception("Error updating: " . mysqli_error($conn));
+            }
+
+            // If follow up, create a new appointment for the same patient
+            if ($status == 'follow up') {
+                // Fetch complaint, history, remarks from the current consultation
+                $fetch_query = "SELECT * FROM neurology_consultations  WHERE id = '$record_id' LIMIT 1";
+                $fetch_result = mysqli_query($conn, $fetch_query);
+                if (!$fetch_result) {
+                    throw new Exception("Error fetching consultation data: " . mysqli_error($conn));
+                }
+                $consult_data = mysqli_fetch_assoc($fetch_result);
+
+                $rID = mysqli_real_escape_string($conn, $consult_data['record_id']);
+                $complaint = mysqli_real_escape_string($conn, $consult_data['complaint']);
+                $history = mysqli_real_escape_string($conn, $consult_data['history']);
+                // $remarks_followup = isset($consult_data['remarks']) ? mysqli_real_escape_string($conn, $consult_data['remarks']) : '';
+
+                $date_sched = mysqli_real_escape_string($conn, $_POST['date_sched_def']);
+                // $date_request = date('Y-m-d');
+
+                // Insert new follow up appointment
+                $insert_query = "INSERT INTO neurology_consultations (record_id, old_new, consultation, appointment_type, complaint, history, date_request, date_sched, status, followUp_id)
+                    VALUES ('$rID', '$old_new', '$consultation', 'Follow Up', '$complaint', '$history', NOW(), '$date_sched', 'approved', '$record_id')";
+                if (!mysqli_query($conn, $insert_query)) {
+                    throw new Exception('Error creating follow up appointment: ' . mysqli_error($conn));
+                }
             }
 
             // Commit transaction if both queries succeed
