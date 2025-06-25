@@ -98,10 +98,10 @@ if(isset($_GET['logout'])) {
                         <!-- div.box Child element 2 -->
                         <div class="input referal" id="inquiryReferral">
                             <div id="referralContent">
-                                <label for="" class="">Referral Source:</label>
+                                <label for="" class="">Referral Source: <i>(if any)</i></label>
                                 <!-- <input type="text" name="referal"> -->
                                 <select name="refer_from" class="width-100 center-text">
-                                    <option value="N/A" hidden disabled selected>--- Select Option ---</option>
+                                    <option value="N/A" selected>--- N/A ---</option>
                                     
                                     <?php
                                         $sql = "SELECT deptid, deptname FROM departments WHERE deptlocation = 'Medical Service' AND deptstat = 0";
@@ -787,7 +787,7 @@ if(isset($_GET['logout'])) {
             </div>
         </div>
 
-        <footer id="footer">&copy; 2025 - MMWGH (IMISU)</footer>
+        <footer id="footer">&copy; 2025 - MMWGH</footer>
     </div>
 
     <script>

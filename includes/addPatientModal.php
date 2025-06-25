@@ -189,7 +189,6 @@
                                         echo "<label><input type='checkbox' disabled> No classifications found</label>";
                                     }
                                 ?>
-                                <label><input type="checkbox" name="complaint[]" value="Others"> Others</label>
                             </div>
                         </div>
                     </div>
