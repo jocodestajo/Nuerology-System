@@ -94,23 +94,16 @@
         flex: 1;
         min-width: 200px;
     }
-
-    /* label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-        color: #2c3e50;
-    } */
 </style>
 
 <div class="tabs-Rep">
-    <div class="tabRep active" onclick="openTab('patient-reports')">Patient Reports</div>
-    <div class="tabRep" onclick="openTab('medication-consumption')">Medication Consumption</div>
+    <div class="tabRep" onclick="openTab('patient-reports')">Patient Reports</div>
+    <div class="tabRep active" onclick="openTab('medication-consumption')">Medication Consumption</div>
     <div class="tabRep" onclick="openTab('case-load')">Case Load</div>
 </div>
 
 <!-- Patient Reports Tab -->
-<div id="patient-reports" class="tab-content active">
+<div id="patient-reports" class="tab-content">
     <!-- <h2 class="border-b">Patient Reports</h2> -->
     
     <div class="filters">
@@ -186,8 +179,8 @@
 </div>
 
 <!-- Medication Consumption Tab -->
-<div id="medication-consumption" class="tab-content">
-    <h2 class="border-b">Medication Consumption</h2>
+<div id="medication-consumption" class="tab-content active">
+    <!-- <h2 class="border-b">Medication Consumption</h2> -->
     
     <div class="filters">
         <div class="filter-group">
@@ -229,14 +222,14 @@
     <div class="summary-cards">
         <div class="card">
             <h3>Total Medications</h3>
-            <div class="value">87</div>
-            <div>Different medications used</div>
+            <div class="value" id="total-medications-value">0</div>
+            <div>Different medications</div>
         </div>
         
         <div class="card">
             <h3>Most Prescribed</h3>
-            <div class="value">Paracetamol</div>
-            <div>1,245 doses</div>
+            <div class="value" id="most-prescribed-name">N/A</div>
+            <div id="most-prescribed-doses">0 doses</div>
         </div>
         
         <div class="card">
@@ -260,57 +253,13 @@
                 <th>Name</th>
                 <th>Category</th>
                 <th>Quantity Used</th>
-                <th>Average Daily Use</th>
+                <th>Total Users</th>
                 <th>Stock Level</th>
                 <th>Reorder Needed</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>MED-5001</td>
-                <td>Paracetamol 500mg</td>
-                <td>Analgesic</td>
-                <td>1,245</td>
-                <td>13.8</td>
-                <td>2,100</td>
-                <td>No</td>
-            </tr>
-            <tr>
-                <td>MED-5002</td>
-                <td>Amoxicillin 250mg</td>
-                <td>Antibiotic</td>
-                <td>876</td>
-                <td>9.7</td>
-                <td>1,200</td>
-                <td>No</td>
-            </tr>
-            <tr>
-                <td>MED-5003</td>
-                <td>Lisinopril 10mg</td>
-                <td>Antihypertensive</td>
-                <td>654</td>
-                <td>7.3</td>
-                <td>800</td>
-                <td>Yes</td>
-            </tr>
-            <tr>
-                <td>MED-5004</td>
-                <td>Diazepam 5mg</td>
-                <td>Psychotropic</td>
-                <td>321</td>
-                <td>3.6</td>
-                <td>450</td>
-                <td>Yes</td>
-            </tr>
-            <tr>
-                <td>MED-5005</td>
-                <td>Ibuprofen 400mg</td>
-                <td>Analgesic</td>
-                <td>1,098</td>
-                <td>12.2</td>
-                <td>1,800</td>
-                <td>No</td>
-            </tr>
+            <!-- Data will be populated by JavaScript -->
         </tbody>
     </table>
 </div>
@@ -447,4 +396,92 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    function openTab(tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tabRep");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        event.currentTarget.className += " active";
+
+        if (tabName === 'medication-consumption') {
+            fetchMedicationData();
+        }
+    }
+
+    function fetchMedicationData() {
+        fetch('api/get/fetch-reports.php?reportType=medication')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.querySelector('#medication-consumption tbody');
+                tableBody.innerHTML = ''; // Clear existing data
+
+                // Update summary card for total medications
+                const totalMedicationsValue = document.getElementById('total-medications-value');
+                if (totalMedicationsValue) {
+                    totalMedicationsValue.textContent = data.length;
+                }
+
+                // Find and display most prescribed medication
+                const mostPrescribedNameEl = document.getElementById('most-prescribed-name');
+                const mostPrescribedDosesEl = document.getElementById('most-prescribed-doses');
+
+                if (data.length > 0) {
+                    const mostPrescribed = data.reduce((max, med) => parseInt(max.quantity_used) > parseInt(med.quantity_used) ? max : med);
+                    
+                    if (mostPrescribedNameEl) {
+                        mostPrescribedNameEl.textContent = mostPrescribed.name;
+                    }
+                    if (mostPrescribedDosesEl) {
+                        mostPrescribedDosesEl.textContent = `${mostPrescribed.quantity_used} doses`;
+                    }
+                } else {
+                    if (mostPrescribedNameEl) {
+                        mostPrescribedNameEl.textContent = 'N/A';
+                    }
+                    if (mostPrescribedDosesEl) {
+                        mostPrescribedDosesEl.textContent = '0 doses';
+                    }
+                }
+
+                if (data.length > 0) {
+                    data.forEach(medicine => {
+                        const row = `
+                            <tr>
+                                <td>N/A</td>
+                                <td>${medicine.name}</td>
+                                <td>N/A</td>
+                                <td>${medicine.quantity_used}</td>
+                                <td>${medicine.total_users}</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                            </tr>
+                        `;
+                        tableBody.innerHTML += row;
+                    });
+                } else {
+                    tableBody.innerHTML = '<tr><td colspan="7">No medication data found.</td></tr>';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching medication data:', error);
+                const tableBody = document.querySelector('#medication-consumption tbody');
+                tableBody.innerHTML = '<tr><td colspan="7">Error loading data.</td></tr>';
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load data for the default active tab if it is medication-consumption
+        if (document.getElementById('medication-consumption').classList.contains('active')) {
+            fetchMedicationData();
+        }
+    });
+</script>
 
