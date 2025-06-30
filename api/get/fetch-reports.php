@@ -80,21 +80,23 @@ if ($reportType === 'patient') {
             'total_users' => count(array_unique($info['users']))
         ];
     }
-} elseif ($reportType === 'case-load') {
-    $sql = "SELECT cl.name as classification_name, COUNT(c.id) as case_count
-            FROM neurology_consultations c
-            LEFT JOIN neurology_classifications cl ON c.classification = cl.id
-            WHERE c.classification IS NOT NULL AND c.classification != ''
-            GROUP BY cl.name
-            ORDER BY case_count DESC";
+} 
 
-    $result = $conn->query($sql);
-    if ($result) {
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
-        }
-    }
-}
+// elseif ($reportType === 'case-load') {
+//     $sql = "SELECT cl.name as classification_name, COUNT(c.id) as case_count
+//             FROM neurology_classifications cl 
+//             LEFT JOIN neurology_consultations c ON cl.id = c.classification
+//             WHERE c.classification IS NOT NULL AND c.classification != ''
+//             GROUP BY cl.name
+//             ORDER BY case_count DESC";
+
+//     $result = $conn->query($sql);
+//     if ($result) {
+//         while ($row = $result->fetch_assoc()) {
+//             $data[] = $row;
+//         }
+//     }
+// }
 
 
 echo json_encode($data);

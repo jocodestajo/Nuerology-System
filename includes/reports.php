@@ -279,12 +279,47 @@
             </tr>
         </thead>
         <tbody>
+            <?php
+                $query = "
+                    SELECT cl.name as classification_name,
+                        COUNT(c.id) as case_count
+                    FROM neurology_classifications cl 
+                    LEFT JOIN neurology_consultations c ON cl.id = c.classification
+                    WHERE c.classification IS NOT NULL AND c.classification != ''
+                    GROUP BY cl.name
+                    ORDER BY case_count DESC
+                ";
+
+                $query_run = mysqli_query($conn, $query);
+
+                $total_cases = 0;
+                if(mysqli_num_rows($query_run) > 0)
+                {
+                    $index = 0;
+                    foreach($query_run as $records)
+                        {
+                            $is_new_client = ($records['case_count'] == 1);
+                            $row_class = $is_new_client ? 'new-client' : '';
+                            $index++;
+                            $total_cases += (int)$records['case_count'];
+                        ?>
+                            <tr id="case_<?=$records['classification_name'];?>" class="<?= $row_class ?>">
+                                <td><?= $index; ?></td>
+                                <td><?= $records['classification_name']; ?></td>
+                                <td><?= $records['case_count']; ?></td>
+                            </tr>
+                        <?php
+                    }
+
+                }
+            ?>
+            
             <!-- Data will be populated by JavaScript -->
         </tbody>
         <tfoot>
             <tr>
                 <th colspan="2" style="text-align: right;">Total:</th>
-                <th id="case-load-total">0</th>
+                <th id="case-load-total"><?php echo $total_cases; ?></th>
             </tr>
         </tfoot>
     </table>
@@ -406,48 +441,11 @@
         }
     }
 
-    function fetchCaseLoadData() {
-        fetch('api/get/fetch-reports.php?reportType=case-load')
-            .then(response => response.json())
-            .then(data => {
-                const tableBody = document.querySelector('#case-load tbody');
-                const totalCell = document.getElementById('case-load-total');
-                tableBody.innerHTML = '';
-                let totalCases = 0;
-
-                if (data.length > 0) {
-                    data.forEach((item, index) => {
-                        const row = `
-                            <tr>
-                                <td>${index + 1}</td>
-                                <td>${item.classification_name || 'Unclassified'}</td>
-                                <td>${item.case_count}</td>
-                            </tr>
-                        `;
-                        tableBody.innerHTML += row;
-                        totalCases += parseInt(item.case_count);
-                    });
-                } else {
-                    tableBody.innerHTML = '<tr><td colspan="3">No case data found.</td></tr>';
-                }
-                totalCell.textContent = totalCases;
-            })
-            .catch(error => {
-                console.error('Error fetching case load data:', error);
-                const tableBody = document.querySelector('#case-load tbody');
-                tableBody.innerHTML = '<tr><td colspan="3">Error loading data.</td></tr>';
-            });
-    }
-
     document.addEventListener('DOMContentLoaded', function() {
         fetchMedicationData(); // Show all data by default
         document.getElementById('apply-med-filters').addEventListener('click', applyMedicationFilters);
         document.getElementById('clear-med-filters').addEventListener('click', clearMedicationFilters);
         document.getElementById('med-sort').addEventListener('change', applySortingAndRender);
-
-        if (document.querySelector('#case-load.tab-content.active')) {
-             fetchCaseLoadData();
-        }
     });
 </script>
 
