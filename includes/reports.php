@@ -184,24 +184,21 @@
     
     <div class="filters">
         <div class="filter-group">
-            <label for="med-timeframe">Timeframe:</label>
-            <select id="med-timeframe">
-                <option>Last 7 days</option>
-                <option>Last 30 days</option>
-                <option selected>Last 90 days</option>
-                <option>Last year</option>
-            </select>
-        </div>
-        
-        <div class="filter-group">
-            <label for="med-category">Medication Category:</label>
-            <select id="med-category">
-                <option>All Categories</option>
-                <option>Analgesics</option>
-                <option>Antibiotics</option>
-                <option>Antihypertensives</option>
-                <option>Psychotropics</option>
-                <option>Other</option>
+            <label for="med-month-filter">Month:</label>
+            <select id="med-month-filter">
+                <option value="">All Months</option>
+                <option value="0">January</option>
+                <option value="1">February</option>
+                <option value="2">March</option>
+                <option value="3">April</option>
+                <option value="4">May</option>
+                <option value="5">June</option>
+                <option value="6">July</option>
+                <option value="7">August</option>
+                <option value="8">September</option>
+                <option value="9">October</option>
+                <option value="10">November</option>
+                <option value="11">December</option>
             </select>
         </div>
         
@@ -214,8 +211,9 @@
             </select>
         </div>
         
-        <div class="filter-group" style="align-self: flex-end;">
-            <button>Apply Filters</button>
+        <div class="filter-group" style="align-self: flex-end; display: flex; gap: 10px;">
+            <button id="apply-med-filters" class="btn-blue">Apply Filters</button>
+            <button id="clear-med-filters" type="button" class="btn-red">Clear Filters</button>
         </div>
     </div>
     
@@ -231,31 +229,15 @@
             <div class="value" id="most-prescribed-name">N/A</div>
             <div id="most-prescribed-doses">0 doses</div>
         </div>
-        
-        <div class="card">
-            <h3>Average Daily Use</h3>
-            <div class="value">428</div>
-            <div>Doses per day</div>
-        </div>
-        
-        <div class="card">
-            <h3>Controlled Substances</h3>
-            <div class="value">12%</div>
-            <div>Of total medications</div>
-        </div>
     </div>
-    
     
     <table>
         <thead>
             <tr>
-                <th>Medication ID</th>
+                <th>#</th>
                 <th>Name</th>
-                <th>Category</th>
                 <th>Quantity Used</th>
                 <th>Total Users</th>
-                <th>Stock Level</th>
-                <th>Reorder Needed</th>
             </tr>
         </thead>
         <tbody>
@@ -266,8 +248,6 @@
 
 <!-- Case Load Tab -->
 <div id="case-load" class="tab-content">
-    <h2 class="border-b">Case Load Distribution</h2>
-    
     <div class="filters">
         <div class="filter-group">
             <label for="case-timeframe">Timeframe:</label>
@@ -278,17 +258,6 @@
                 <option selected>Last 90 days</option>
             </select>
         </div>
-        
-        <div class="filter-group">
-            <label for="staff-role">Staff Role:</label>
-            <select id="staff-role">
-                <option>All Staff</option>
-                <option>Doctors</option>
-                <option>Nurses</option>
-                <option>Specialists</option>
-            </select>
-        </div>
-        
         <div class="filter-group">
             <label for="case-sort">Sort By:</label>
             <select id="case-sort">
@@ -297,107 +266,33 @@
                 <option>Alphabetical</option>
             </select>
         </div>
-        
         <div class="filter-group" style="align-self: flex-end;">
             <button>Apply Filters</button>
         </div>
     </div>
-    
-    <div class="summary-cards">
-        <div class="card">
-            <h3>Total Staff</h3>
-            <div class="value">48</div>
-            <div>Active medical staff</div>
-        </div>
-        
-        <div class="card">
-            <h3>Average Case Load</h3>
-            <div class="value">26</div>
-            <div>Cases per staff</div>
-        </div>
-        
-        <div class="card">
-            <h3>Highest Case Load</h3>
-            <div class="value">Dr. Johnson</div>
-            <div>42 cases</div>
-        </div>
-        
-        <div class="card">
-            <h3>Staff Satisfaction</h3>
-            <div class="value">4.2/5</div>
-            <div>Workload rating</div>
-        </div>
-    </div>
-    
     <table>
         <thead>
             <tr>
-                <th>Staff ID</th>
-                <th>Name</th>
-                <th>Role</th>
-                <th>Department</th>
-                <th>Active Cases</th>
-                <th>Completed Cases</th>
-                <th>Total Cases</th>
-                <th>Workload</th>
+                <th>#</th>
+                <th>Case / Classification</th>
+                <th>Number of Cases</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>ST-2001</td>
-                <td>Dr. Johnson</td>
-                <td>Cardiologist</td>
-                <td>Cardiology</td>
-                <td>18</td>
-                <td>24</td>
-                <td>42</td>
-                <td>High</td>
-            </tr>
-            <tr>
-                <td>ST-2002</td>
-                <td>Dr. Williams</td>
-                <td>Neurologist</td>
-                <td>Neurology</td>
-                <td>12</td>
-                <td>22</td>
-                <td>34</td>
-                <td>Medium</td>
-            </tr>
-            <tr>
-                <td>ST-2003</td>
-                <td>Nurse Peterson</td>
-                <td>RN</td>
-                <td>General Medicine</td>
-                <td>8</td>
-                <td>28</td>
-                <td>36</td>
-                <td>Medium</td>
-            </tr>
-            <tr>
-                <td>ST-2004</td>
-                <td>Dr. Lee</td>
-                <td>Pediatrician</td>
-                <td>Pediatrics</td>
-                <td>15</td>
-                <td>15</td>
-                <td>30</td>
-                <td>Medium</td>
-            </tr>
-            <tr>
-                <td>ST-2005</td>
-                <td>Nurse Garcia</td>
-                <td>RN</td>
-                <td>Oncology</td>
-                <td>5</td>
-                <td>20</td>
-                <td>25</td>
-                <td>Low</td>
-            </tr>
+            <!-- Data will be populated by JavaScript -->
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="2" style="text-align: right;">Total:</th>
+                <th id="case-load-total">0</th>
+            </tr>
+        </tfoot>
     </table>
 </div>
 
 <script>
+    let medicationDataCache = [];
+
     function openTab(tabName) {
         var i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tab-content");
@@ -411,76 +306,147 @@
         document.getElementById(tabName).style.display = "block";
         event.currentTarget.className += " active";
 
-        if (tabName === 'medication-consumption') {
-            fetchMedicationData();
+        if (tabName === 'case-load') {
+            fetchCaseLoadData();
         }
     }
 
-    function fetchMedicationData() {
-        fetch('api/get/fetch-reports.php?reportType=medication')
+    function fetchMedicationData(month = '') {
+        let url = `api/get/fetch-reports.php?reportType=medication`;
+        if (month !== '') {
+            url += `&month=${month}`;
+        }
+
+        fetch(url)
             .then(response => response.json())
             .then(data => {
-                const tableBody = document.querySelector('#medication-consumption tbody');
-                tableBody.innerHTML = ''; // Clear existing data
-
-                // Update summary card for total medications
-                const totalMedicationsValue = document.getElementById('total-medications-value');
-                if (totalMedicationsValue) {
-                    totalMedicationsValue.textContent = data.length;
-                }
-
-                // Find and display most prescribed medication
-                const mostPrescribedNameEl = document.getElementById('most-prescribed-name');
-                const mostPrescribedDosesEl = document.getElementById('most-prescribed-doses');
-
-                if (data.length > 0) {
-                    const mostPrescribed = data.reduce((max, med) => parseInt(max.quantity_used) > parseInt(med.quantity_used) ? max : med);
-                    
-                    if (mostPrescribedNameEl) {
-                        mostPrescribedNameEl.textContent = mostPrescribed.name;
-                    }
-                    if (mostPrescribedDosesEl) {
-                        mostPrescribedDosesEl.textContent = `${mostPrescribed.quantity_used} doses`;
-                    }
-                } else {
-                    if (mostPrescribedNameEl) {
-                        mostPrescribedNameEl.textContent = 'N/A';
-                    }
-                    if (mostPrescribedDosesEl) {
-                        mostPrescribedDosesEl.textContent = '0 doses';
-                    }
-                }
-
-                if (data.length > 0) {
-                    data.forEach(medicine => {
-                        const row = `
-                            <tr>
-                                <td>N/A</td>
-                                <td>${medicine.name}</td>
-                                <td>N/A</td>
-                                <td>${medicine.quantity_used}</td>
-                                <td>${medicine.total_users}</td>
-                                <td>N/A</td>
-                                <td>N/A</td>
-                            </tr>
-                        `;
-                        tableBody.innerHTML += row;
-                    });
-                } else {
-                    tableBody.innerHTML = '<tr><td colspan="7">No medication data found.</td></tr>';
-                }
+                medicationDataCache = data;
+                applySortingAndRender();
             })
             .catch(error => {
                 console.error('Error fetching medication data:', error);
                 const tableBody = document.querySelector('#medication-consumption tbody');
-                tableBody.innerHTML = '<tr><td colspan="7">Error loading data.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="4">Error loading data.</td></tr>';
+            });
+    }
+
+    function applyMedicationFilters() {
+        const selectedMonth = document.getElementById('med-month-filter').value;
+        fetchMedicationData(selectedMonth);
+    }
+
+    function clearMedicationFilters() {
+        document.getElementById('med-month-filter').value = '';
+        document.getElementById('med-sort').selectedIndex = 0;
+        fetchMedicationData();
+    }
+
+    function applySortingAndRender() {
+        let data = [...medicationDataCache];
+        const sortBy = document.getElementById('med-sort').value;
+
+        // Sort
+        if (sortBy === 'Highest Consumption') {
+            data.sort((a, b) => parseInt(b.quantity_used) - parseInt(a.quantity_used));
+        } else if (sortBy === 'Lowest Consumption') {
+            data.sort((a, b) => parseInt(a.quantity_used) - parseInt(b.quantity_used));
+        } else if (sortBy === 'Alphabetical') {
+            data.sort((a, b) => a.name.localeCompare(b.name));
+        }
+
+        renderMedicationTable(data);
+    }
+
+    function renderMedicationTable(data) {
+        const tableBody = document.querySelector('#medication-consumption tbody');
+        tableBody.innerHTML = '';
+
+        // Update summary card for total medications
+        const totalMedicationsValue = document.getElementById('total-medications-value');
+        if (totalMedicationsValue) {
+            totalMedicationsValue.textContent = data.length;
+        }
+
+        // Find and display most prescribed medication
+        const mostPrescribedNameEl = document.getElementById('most-prescribed-name');
+        const mostPrescribedDosesEl = document.getElementById('most-prescribed-doses');
+
+        if (data.length > 0) {
+            // Recalculate most prescribed based on potentially sorted data
+            const mostPrescribed = [...data].sort((a, b) => parseInt(b.quantity_used) - parseInt(a.quantity_used))[0];
+            if (mostPrescribedNameEl) {
+                mostPrescribedNameEl.textContent = mostPrescribed.name;
+            }
+            if (mostPrescribedDosesEl) {
+                mostPrescribedDosesEl.textContent = `${mostPrescribed.quantity_used} doses`;
+            }
+        } else {
+            if (mostPrescribedNameEl) {
+                mostPrescribedNameEl.textContent = 'N/A';
+            }
+            if (mostPrescribedDosesEl) {
+                mostPrescribedDosesEl.textContent = '0 doses';
+            }
+        }
+
+        if (data.length > 0) {
+            data.forEach((medicine, index) => {
+                const row = `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${medicine.name}</td>
+                        <td>${medicine.quantity_used}</td>
+                        <td>${medicine.total_users}</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        } else {
+            tableBody.innerHTML = '<tr><td colspan="4">No medication data found.</td></tr>';
+        }
+    }
+
+    function fetchCaseLoadData() {
+        fetch('api/get/fetch-reports.php?reportType=case-load')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.querySelector('#case-load tbody');
+                const totalCell = document.getElementById('case-load-total');
+                tableBody.innerHTML = '';
+                let totalCases = 0;
+
+                if (data.length > 0) {
+                    data.forEach((item, index) => {
+                        const row = `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${item.classification_name || 'Unclassified'}</td>
+                                <td>${item.case_count}</td>
+                            </tr>
+                        `;
+                        tableBody.innerHTML += row;
+                        totalCases += parseInt(item.case_count);
+                    });
+                } else {
+                    tableBody.innerHTML = '<tr><td colspan="3">No case data found.</td></tr>';
+                }
+                totalCell.textContent = totalCases;
+            })
+            .catch(error => {
+                console.error('Error fetching case load data:', error);
+                const tableBody = document.querySelector('#case-load tbody');
+                tableBody.innerHTML = '<tr><td colspan="3">Error loading data.</td></tr>';
             });
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        // Load data for the default active tab if it is medication-consumption
-        if (document.getElementById('medication-consumption').classList.contains('active')) {
-            fetchMedicationData();
+        fetchMedicationData(); // Show all data by default
+        document.getElementById('apply-med-filters').addEventListener('click', applyMedicationFilters);
+        document.getElementById('clear-med-filters').addEventListener('click', clearMedicationFilters);
+        document.getElementById('med-sort').addEventListener('change', applySortingAndRender);
+
+        if (document.querySelector('#case-load.tab-content.active')) {
+             fetchCaseLoadData();
         }
     });
 </script>

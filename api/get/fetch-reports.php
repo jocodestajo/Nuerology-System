@@ -3,7 +3,6 @@
 include '../../config/dbcon.php';
 
 // Get filters from AJAX (if any)
-$timeframe = $_GET['timeframe'] ?? '';
 $patientType = $_GET['patientType'] ?? '';
 $reportType = $_GET['reportType'] ?? 'patient'; // Default to 'patient'
 
@@ -15,17 +14,6 @@ if ($reportType === 'patient') {
             FROM neurology_records r
             JOIN neurology_consultations c ON r.id = c.record_id
             WHERE 1";
-
-    // Timeframe filter
-    if ($timeframe == "Last 7 days") {
-        $sql .= " AND c.date_sched >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
-    } else if ($timeframe == "Last 30 days") {
-        $sql .= " AND c.date_sched >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)";
-    } else if ($timeframe == "Last 90 days") {
-        $sql .= " AND c.date_sched >= DATE_SUB(CURDATE(), INTERVAL 90 DAY)";
-    } else if ($timeframe == "Last year") {
-        $sql .= " AND c.date_sched >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)";
-    }
 
     // Patient type filter
     if ($patientType && $patientType != "All Patients") {
@@ -42,10 +30,17 @@ if ($reportType === 'patient') {
         }
     }
 } elseif ($reportType === 'medication') {
-    $sql = "SELECT c.medication, r.hrn
+    $month = $_GET['month'] ?? '';
+
+    $sql = "SELECT c.medication, r.hrn, c.date_process
             FROM neurology_consultations c
             JOIN neurology_records r ON c.record_id = r.id
             WHERE c.medication IS NOT NULL AND c.medication != ''";
+
+    if ($month !== '' && is_numeric($month) && $month >= 0 && $month <= 11) {
+        $sql_month = (int)$month + 1; // JS month is 0-11, SQL is 1-12
+        $sql .= " AND MONTH(c.date_process) = {$sql_month}";
+    }
 
     $result = $conn->query($sql);
     
@@ -84,6 +79,20 @@ if ($reportType === 'patient') {
             'quantity_used' => $info['quantity_used'],
             'total_users' => count(array_unique($info['users']))
         ];
+    }
+} elseif ($reportType === 'case-load') {
+    $sql = "SELECT cl.name as classification_name, COUNT(c.id) as case_count
+            FROM neurology_consultations c
+            LEFT JOIN neurology_classifications cl ON c.classification = cl.id
+            WHERE c.classification IS NOT NULL AND c.classification != ''
+            GROUP BY cl.name
+            ORDER BY case_count DESC";
+
+    $result = $conn->query($sql);
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
     }
 }
 
