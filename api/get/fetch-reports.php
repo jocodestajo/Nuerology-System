@@ -17,7 +17,24 @@ if ($reportType === 'patient') {
 
     // Patient type filter
     if ($patientType && $patientType != "All Patients") {
-        $sql .= " AND c.status = '" . $conn->real_escape_string($patientType) . "'";
+        $pendingProcessedCancelled = ['Pending', 'Processed', 'Cancelled'];
+        $faceToFaceTele = ['Face to Face', 'Teleconsultion'];
+        if (in_array($patientType, $pendingProcessedCancelled)) {
+            $sql .= " AND c.status = '" . $conn->real_escape_string($patientType) . "'";
+        } elseif (in_array($patientType, $faceToFaceTele)) {
+            $sql .= " AND c.consultation = '" . $conn->real_escape_string($patientType) . "'";
+        }
+    }
+
+    // Date range filter
+    $dateFrom = $_GET['dateFrom'] ?? '';
+    $dateTo = $_GET['dateTo'] ?? '';
+    if ($dateFrom && $dateTo) {
+        $sql .= " AND c.date_sched BETWEEN '" . $conn->real_escape_string($dateFrom) . "' AND '" . $conn->real_escape_string($dateTo) . "'";
+    } elseif ($dateFrom) {
+        $sql .= " AND c.date_sched >= '" . $conn->real_escape_string($dateFrom) . "'";
+    } elseif ($dateTo) {
+        $sql .= " AND c.date_sched <= '" . $conn->real_escape_string($dateTo) . "'";
     }
 
     $sql .= " ORDER BY c.date_sched DESC";

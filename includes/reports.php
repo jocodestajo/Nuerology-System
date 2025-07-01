@@ -104,6 +104,9 @@
 
 <!-- Patient Reports Tab -->
 <div id="patient-reports" class="tab-content">
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+        <button class="btn btn-green" onclick="printReport('patient-reports')">Print Report</button>
+    </div>
     <!-- <h2 class="border-b">Patient Reports</h2> -->
     
     <div class="filters">
@@ -120,22 +123,19 @@
         </div>
 
         <div class="filter-group">
-            <label for="timeframe">Timeframe:</label>
-            <select id="timeframe" name="timeframe" class="width-100">
-                <option>--Select Timeframe--</option>
-                <option>Last 7 days</option>
-                <option>Last 30 days</option>
-                <option>Last 90 days</option>
-                <option>Last year</option>
-                <option>Custom range</option>
-            </select>
+            <label for="date-from">From:</label>
+            <input type="date" id="date-from" name="dateFrom" class="width-100" />
+        </div>
+        <div class="filter-group">
+            <label for="date-to">To:</label>
+            <input type="date" id="date-to" name="dateTo" class="width-100" />
         </div>
         
         <div class="filter-group" style="align-self: flex-end;">
             <button class="btn btn-blue">Apply Filters</button>
         </div>
     </div>
-    
+
     <table>
         <thead>
             <tr>
@@ -154,6 +154,9 @@
 
 <!-- Medication Consumption Tab -->
 <div id="medication-consumption" class="tab-content active">
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+        <button class="btn btn-green" onclick="printReport('medication-consumption')">Print Report</button>
+    </div>
     <!-- <h2 class="border-b">Medication Consumption</h2> -->
     
     <div class="filters">
@@ -222,6 +225,9 @@
 
 <!-- Case Load Tab -->
 <div id="case-load" class="tab-content">
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+        <button class="btn btn-green" onclick="printReport('case-load')">Print Report</button>
+    </div>
     <div class="filters">
         <div class="filter-group">
             <label for="case-month-filter">Month:</label>
@@ -490,6 +496,120 @@
         document.getElementById('case-load-total').textContent = totalCases;
     }
 
+    function printReport(tabId) {
+        const tabContent = document.getElementById(tabId);
+        if (!tabContent) return;
+        // Clone tab content to manipulate for printing
+        const clone = tabContent.cloneNode(true);
+        // Remove filter section
+        const filterDiv = clone.querySelector('.filters');
+        if (filterDiv) filterDiv.remove();
+        // Create header based on filters
+        let headerText = '';
+        if (tabId === 'patient-reports') {
+            const patientType = document.getElementById('patient-type').value || document.getElementById('patient-type').options[document.getElementById('patient-type').selectedIndex].text;
+            const dateFrom = document.getElementById('date-from').value;
+            const dateTo = document.getElementById('date-to').value;
+            let dateRangeText = '';
+            if (dateFrom && dateTo) {
+                dateRangeText = `Date Range: ${dateFrom} to ${dateTo}`;
+            } else if (dateFrom) {
+                dateRangeText = `From: ${dateFrom}`;
+            } else if (dateTo) {
+                dateRangeText = `To: ${dateTo}`;
+            } else {
+                dateRangeText = 'Date Range: All Dates';
+            }
+            headerText = `Patient Reports - Patient Type: ${patientType}, ${dateRangeText}`;
+        } else if (tabId === 'medication-consumption') {
+            const month = document.getElementById('med-month-filter').value;
+            const monthText = month === '' ? 'All Months' : document.getElementById('med-month-filter').options[parseInt(month) + 1].text;
+            const sort = document.getElementById('med-sort').value;
+            headerText = `Medication Consumption - Month: ${monthText}, Sort By: ${sort}`;
+        } else if (tabId === 'case-load') {
+            const month = document.getElementById('case-month-filter').value;
+            const monthText = month === '' ? 'All Months' : document.getElementById('case-month-filter').options[parseInt(month)].text;
+            const sort = document.getElementById('case-sort').value;
+            headerText = `Case Load - Month: ${monthText}, Sort By: ${sort}`;
+        }
+        // Insert header
+        const header = document.createElement('h2');
+        header.textContent = headerText;
+        header.style.fontSize = '1.5rem';
+        header.style.fontWeight = 'bold';
+        header.style.marginBottom = '20px';
+        clone.insertBefore(header, clone.firstChild);
+        // Remove print button from clone
+        const printBtn = clone.querySelector('button.btn-green');
+        if (printBtn) printBtn.remove();
+        // Print
+        const printWindow = window.open('', '', 'height=700,width=900');
+        printWindow.document.write('<html><head><title>Print Report</title>');
+        // Copy styles
+        const styles = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'));
+        styles.forEach(style => {
+            printWindow.document.write(style.outerHTML);
+        });
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(clone.innerHTML);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.focus();
+        setTimeout(() => {
+            printWindow.print();
+            printWindow.close();
+        }, 500);
+    }
+
+    function fetchPatientData() {
+        const patientType = document.getElementById('patient-type').value;
+        const dateFrom = document.getElementById('date-from').value;
+        const dateTo = document.getElementById('date-to').value;
+        let url = `api/get/fetch-reports.php?reportType=patient&patientType=${encodeURIComponent(patientType)}`;
+        if (dateFrom) url += `&dateFrom=${encodeURIComponent(dateFrom)}`;
+        if (dateTo) url += `&dateTo=${encodeURIComponent(dateTo)}`;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                renderPatientTable(data);
+            })
+            .catch(error => {
+                console.error('Error fetching patient data:', error);
+                const tableBody = document.querySelector('#patient-reports tbody');
+                tableBody.innerHTML = '<tr><td colspan="6">Error loading data.</td></tr>';
+            });
+    }
+
+    function renderPatientTable(data) {
+        const tableBody = document.querySelector('#patient-reports tbody');
+        tableBody.innerHTML = '';
+        const totalPatientsValue = document.getElementById('total-patients-value');
+        if (totalPatientsValue) {
+            totalPatientsValue.textContent = data.length;
+        }
+        if (data.length > 0) {
+            data.forEach((patient, index) => {
+                const row = `
+                    <tr>
+                        <td class="th-check">${index + 1}</td>
+                        <td>${patient.hrn}</td>
+                        <td>${patient.name}</td>
+                        <td>${patient.date_sched}</td>
+                        <td>${patient.date_process}</td>
+                        <td>${patient.status}</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        } else {
+            tableBody.innerHTML = '<tr><td colspan="6">No patient data found.</td></tr>';
+        }
+    }
+
+    function applyPatientFilters() {
+        fetchPatientData();
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         fetchMedicationData(); // Show all data by default
         document.getElementById('apply-med-filters').addEventListener('click', applyMedicationFilters);
@@ -500,6 +620,9 @@
         document.getElementById('apply-case-filters').addEventListener('click', applyCaseLoadFilters);
         document.getElementById('clear-case-filters').addEventListener('click', clearCaseLoadFilters);
         document.getElementById('case-sort').addEventListener('change', applyCaseLoadSortingAndRender);
+
+        document.querySelector('#patient-reports .btn-blue').addEventListener('click', applyPatientFilters);
+        fetchPatientData(); // Load initial data
     });
 </script>
 
