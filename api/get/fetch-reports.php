@@ -82,22 +82,24 @@ if ($reportType === 'patient') {
     }
 } 
 
-// elseif ($reportType === 'case-load') {
-//     $sql = "SELECT cl.name as classification_name, COUNT(c.id) as case_count
-//             FROM neurology_classifications cl 
-//             LEFT JOIN neurology_consultations c ON cl.id = c.classification
-//             WHERE c.classification IS NOT NULL AND c.classification != ''
-//             GROUP BY cl.name
-//             ORDER BY case_count DESC";
-
-//     $result = $conn->query($sql);
-//     if ($result) {
-//         while ($row = $result->fetch_assoc()) {
-//             $data[] = $row;
-//         }
-//     }
-// }
-
+// Add this block for case-load with monthly filter
+elseif ($reportType === 'case-load') {
+    $month = $_GET['month'] ?? '';
+    $sql = "SELECT cl.name as classification_name, COUNT(c.id) as case_count
+            FROM neurology_classifications cl 
+            LEFT JOIN neurology_consultations c ON cl.id = c.classification
+            WHERE c.classification IS NOT NULL AND c.classification != ''";
+    if ($month !== '' && is_numeric($month) && $month >= 1 && $month <= 12) {
+        $sql .= " AND MONTH(c.date_process) = " . intval($month);
+    }
+    $sql .= " GROUP BY cl.name ORDER BY case_count DESC";
+    $result = $conn->query($sql);
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+    }
+}
 
 echo json_encode($data);
 $conn->close();

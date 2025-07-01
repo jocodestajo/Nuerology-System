@@ -136,36 +136,10 @@
         </div>
     </div>
     
-    <!-- <div class="summary-cards">
-        <div class="card">
-            <h3>Total Patients</h3>
-            <div class="value">1,248</div>
-            <div>+12% from last period</div>
-        </div>
-        
-        <div class="card">
-            <h3>Average Stay</h3>
-            <div class="value">3.2 days</div>
-            <div>-0.5 days from last period</div>
-        </div>
-        
-        <div class="card">
-            <h3>Readmission Rate</h3>
-            <div class="value">8.5%</div>
-            <div>-1.2% from last period</div>
-        </div>
-        
-        <div class="card">
-            <h3>Satisfaction Score</h3>
-            <div class="value">4.6/5</div>
-            <div>+0.2 from last period</div>
-        </div>
-    </div> -->
-    
     <table>
         <thead>
             <tr>
-                <th>#</th>
+                <th class="th-check">#</th>
                 <th>HRN</th>
                 <th>Name</th>
                 <th>Date Schedule</th>
@@ -234,7 +208,7 @@
     <table>
         <thead>
             <tr>
-                <th>#</th>
+                <th class="th-check">#</th>
                 <th>Name</th>
                 <th>Quantity Used</th>
                 <th>Total Users</th>
@@ -250,12 +224,21 @@
 <div id="case-load" class="tab-content">
     <div class="filters">
         <div class="filter-group">
-            <label for="case-timeframe">Timeframe:</label>
-            <select id="case-timeframe">
-                <option>Current</option>
-                <option>Last 7 days</option>
-                <option>Last 30 days</option>
-                <option selected>Last 90 days</option>
+            <label for="case-month-filter">Month:</label>
+            <select id="case-month-filter">
+                <option value="">All Months</option>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
             </select>
         </div>
         <div class="filter-group">
@@ -267,14 +250,15 @@
             </select>
         </div>
         <div class="filter-group" style="align-self: flex-end;">
-            <button>Apply Filters</button>
+            <button id="apply-case-filters" class="btn-blue">Apply Filters</button>
+            <button id="clear-case-filters" type="button" class="btn-red">Clear Filters</button>
         </div>
     </div>
     <table>
         <thead>
             <tr>
-                <th>#</th>
-                <th>Case / Classification</th>
+                <th class="th-check">#</th>
+                <th>Case Load / Classification</th>
                 <th>Number of Cases</th>
             </tr>
         </thead>
@@ -303,7 +287,7 @@
                             $index++;
                             $total_cases += (int)$records['case_count'];
                         ?>
-                            <tr id="case_<?=$records['classification_name'];?>" class="<?= $row_class ?>">
+                            <tr id="case_<?=$records['classification_name'];?>" class="<?= $row_class ?> th-check">
                                 <td><?= $index; ?></td>
                                 <td><?= $records['classification_name']; ?></td>
                                 <td><?= $records['case_count']; ?></td>
@@ -327,6 +311,7 @@
 
 <script>
     let medicationDataCache = [];
+    let caseLoadDataCache = [];
 
     function openTab(tabName) {
         var i, tabcontent, tablinks;
@@ -428,7 +413,7 @@
             data.forEach((medicine, index) => {
                 const row = `
                     <tr>
-                        <td>${index + 1}</td>
+                        <td class="th-check">${index + 1}</td>
                         <td>${medicine.name}</td>
                         <td>${medicine.quantity_used}</td>
                         <td>${medicine.total_users}</td>
@@ -441,11 +426,80 @@
         }
     }
 
+    function fetchCaseLoadData(month = '') {
+        let url = `api/get/fetch-reports.php?reportType=case-load`;
+        if (month !== '') {
+            url += `&month=${month}`;
+        }
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                caseLoadDataCache = data;
+                applyCaseLoadSortingAndRender();
+            })
+            .catch(error => {
+                console.error('Error fetching case load data:', error);
+                const tableBody = document.querySelector('#case-load tbody');
+                tableBody.innerHTML = '<tr><td colspan="3">Error loading data.</td></tr>';
+            });
+    }
+
+    function applyCaseLoadFilters() {
+        const selectedMonth = document.getElementById('case-month-filter').value;
+        fetchCaseLoadData(selectedMonth);
+    }
+
+    function clearCaseLoadFilters() {
+        document.getElementById('case-month-filter').value = '';
+        document.getElementById('case-sort').selectedIndex = 0;
+        fetchCaseLoadData();
+    }
+
+    function applyCaseLoadSortingAndRender() {
+        let data = [...caseLoadDataCache];
+        const sortBy = document.getElementById('case-sort').value;
+        if (sortBy === 'Highest Case Load') {
+            data.sort((a, b) => parseInt(b.case_count) - parseInt(a.case_count));
+        } else if (sortBy === 'Lowest Case Load') {
+            data.sort((a, b) => parseInt(a.case_count) - parseInt(b.case_count));
+        } else if (sortBy === 'Alphabetical') {
+            data.sort((a, b) => a.classification_name.localeCompare(b.classification_name));
+        }
+        renderCaseLoadTable(data);
+    }
+
+    function renderCaseLoadTable(data) {
+        const tableBody = document.querySelector('#case-load tbody');
+        tableBody.innerHTML = '';
+        let totalCases = 0;
+        if (data.length > 0) {
+            data.forEach((item, index) => {
+                totalCases += parseInt(item.case_count);
+                const row = `
+                    <tr>
+                        <td class="th-check">${index + 1}</td>
+                        <td>${item.classification_name}</td>
+                        <td>${item.case_count}</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        } else {
+            tableBody.innerHTML = '<tr><td colspan="3">No case load data found.</td></tr>';
+        }
+        document.getElementById('case-load-total').textContent = totalCases;
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         fetchMedicationData(); // Show all data by default
         document.getElementById('apply-med-filters').addEventListener('click', applyMedicationFilters);
         document.getElementById('clear-med-filters').addEventListener('click', clearMedicationFilters);
         document.getElementById('med-sort').addEventListener('change', applySortingAndRender);
+
+        // Case Load event listeners
+        document.getElementById('apply-case-filters').addEventListener('click', applyCaseLoadFilters);
+        document.getElementById('clear-case-filters').addEventListener('click', clearCaseLoadFilters);
+        document.getElementById('case-sort').addEventListener('change', applyCaseLoadSortingAndRender);
     });
 </script>
 
