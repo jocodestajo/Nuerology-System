@@ -13,11 +13,9 @@
     font-size: 0.9rem;
     text-align: start;
     width: 100%;
-
-    /* padding: 4px 4px 4px 4px; */
   }
 }
-@media (max-width: 1366px) {
+@media (max-width: 1024px) {
   /* Make the table container scrollable horizontally on small screens */
   .content {
     -webkit-overflow-scrolling: touch;
@@ -30,6 +28,7 @@
     /* set the limit for scrolable */
     min-width: 1024px;
   }
+
   /* tr .th-check,
   tr .th-check {
     width: 2%;
@@ -40,9 +39,11 @@
     /* width: 7%; */
     /* display: none; */
   }
+
   tr .th-action {
     width: 12%;
   }
+
   /* tr .th-contact,
   tr .th-schedule {
     width: 8%;
@@ -54,6 +55,7 @@
   tr .th-name {
     padding-left: 24px;
   } */
+
   tr .th-complaint,
   td .th-complaint {
     /* width: 27%; */
