@@ -12,19 +12,19 @@ viewButtons.forEach((button) => {
   button.addEventListener("click", function (e) {
     e.preventDefault();
     var recordId = this.getAttribute("data-record-id"); // Get the record ID
-    console.log(recordId);
+    // console.log(recordId);
 
     // Make an AJAX request to fetch the data for this record
     fetch("api/get/fetch_record.php?id=" + recordId)
       .then((response) => response.json())
       .then((data) => {
-        console.log("Fetched data:", data); // Add this line to log the fetched data
+        // console.log("Fetched data:", data); // Add this line to log the fetched data
         // Fill the modal form with the data
 
         // Set the correct option in the select inputs
         document.querySelector('select[name="view_typeofappoint"]').value =
           data.appointment_type;
-        document.querySelector('input[name="view_referal"]').value =
+        document.querySelector('select[name="view_referal"]').value =
           data.refer_from;
         document.querySelector('input[name="view_hrn"]').value = data.hrn;
         document.querySelector('input[name="view_name"]').value = data.name;
@@ -68,8 +68,6 @@ viewButtons.forEach((button) => {
 
         document.querySelector('input[name="view_date_sched"]').value =
           data.date_sched;
-        // document.querySelector('select[name="view_complaint"]').value =
-        //   data.complaint;
 
         // Handle complaints (checkboxes)
         const complaintValues = data.complaint
@@ -98,9 +96,6 @@ viewButtons.forEach((button) => {
 
         // Set fields to disabled
         document.getElementById("view-hrn").readOnly = true;
-        // document.getElementById("view-name").readOnly = true;
-        // document.getElementById("view-address").readOnly = true;
-        // document.getElementById("view-clientSelect").readOnly = true;
 
         // Show the modal
         modal.style.display = "block";
@@ -153,26 +148,35 @@ document.querySelector("#setSchedule .close-btn").onclick = function () {
 };
 
 // DISPLAY REFERRAL WHEN Type of Appointment value is Referral
-// const typeOfAppointment = document.getElementById("typeOfAppointment");
-// const referralContent = document.getElementById("referralContent");
+const typeOfAppointment = document.getElementById("typeOfAppointment");
+const referralContent = document.getElementById("referralContent");
 
-// typeOfAppointment.addEventListener("change", function () {
-//   if (this.value === "Referral") {
-//     referralContent.style.display = "block";
-//   } else if (this.value !== "Referral") {
-//     referralContent.style.display = "none";
-//   }
-// });
+typeOfAppointment.addEventListener("change", function () {
+  if (this.value === "Referral") {
+    referralContent.disabled = false;
+  } else if (this.value !== "Referral") {
+    referralContent.disabled = true;
+  }
+});
 
 const view_appointment = document.getElementById("view_appointment");
 const viewReferalContent = document.getElementById("viewReferalContent");
 
-view_appointment.addEventListener("change", function () {
-  if (this.value === "Referral") {
-    viewReferalContent.style.display = "block";
-  } else if (this.value !== "Referral") {
-    viewReferalContent.style.display = "none";
+document.addEventListener("DOMContentLoaded", function () {
+  function updateReferralState() {
+    if (view_appointment.value === "Referral") {
+      viewReferalContent.disabled = false;
+    } else {
+      viewReferalContent.disabled = true;
+      viewReferalContent.value = "N/A"; // Reset to N/A when not Referral
+    }
   }
+
+  // Run on page load
+  updateReferralState();
+
+  // Run on change
+  view_appointment.addEventListener("change", updateReferralState);
 });
 
 // FOR VITAL SIGNS AND CONSULTATION BUTTONS
@@ -529,12 +533,6 @@ triggerApproveModal.forEach((button) => {
 
 confirmApproveBtn.addEventListener("click", function () {
   if (currentRecordIdToApprove) {
-    // Trigger the approval logic here, potentially from approval-f2f-telecon.js
-    // For now, let's assume we'll call a function or dispatch an event
-    // that approval-f2f-telecon.js listens to.
-    // A simpler way is to move the approval logic into a function here
-    // or make it accessible globally.
-
     // Temporarily, I'll put a placeholder and then refactor in approval-f2f-telecon.js
     console.log("Approving record: " + currentRecordIdToApprove);
 

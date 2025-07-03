@@ -95,7 +95,7 @@
         min-width: 200px;
     }
 </style>
-
+<!-- REPORTS TABS -->
 <div class="tabs-Rep">
     <div class="tabRep" onclick="openTab('patient-reports')">Patient Reports</div>
     <div class="tabRep active" onclick="openTab('medication-consumption')">Medication Consumption</div>

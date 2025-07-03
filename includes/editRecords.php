@@ -26,9 +26,24 @@
 
                         <!-- div.box Child element 2 -->
                         <div class="input referal" id="viewReferal">
-                            <div id="viewReferalContent">
-                                <label for="referal" >Referral Source:</label>
-                                <input type="text"  name="view_referal">
+                            <div>
+                                <label for="" class="">Referral Source: <i>(if any)</i></label>
+                                <select id="viewReferalContent" name="view_referal" class="width-100 center-text" disabled>
+                                    <option value="N/A" selected>--- N/A ---</option>
+                                    
+                                    <?php
+                                        $sql = "SELECT deptid, deptname FROM departments WHERE deptlocation = 'Medical Service' AND deptstat = 0";
+                                        $result = $conn->query($sql);
+
+                                        if ($result->num_rows > 0) {
+                                            while($row = $result->fetch_assoc()) {
+                                                echo "<option value='" . $row['deptname'] . "'>" . htmlspecialchars($row['deptname']) . "</option>";
+                                            }
+                                        } else {
+                                            echo "<option disabled>No data found</option>";
+                                        }
+                                    ?>
+                                </select>
                             </div>
                         </div>
 
@@ -47,7 +62,7 @@
                         <!-- div.box Child element 5 -->
                         <div class="input">
                             <label for="birthday" class="b_day">Birthdate:</label>
-                            <input type="date"  name="view_birthday" class="birthday birthdayInput" data-age-output="ageOuput3">
+                            <input type="date"  name="view_birthday" class="birthday birthdayInput width-100" data-age-output="ageOuput3">
                         </div>
                         
                         <!-- div.box Child element 6 -->

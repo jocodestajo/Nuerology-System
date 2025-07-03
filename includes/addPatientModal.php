@@ -161,8 +161,8 @@
                 <div class="calendar">
                     <label for="modal_dateSched">Date Schedule:</label>
                     <div class="calendar-date flex" style="margin-top: 0;">
-                        <button class="datePicker btn btn-blue width-100" data-sched-output="modal_dateSched">Calendar</button>
-                        <input type="date" id="modal_dateSched" class="date width-100" name="date_sched" readonly>
+                        <!-- <button class="datePicker btn btn-blue width-100" data-sched-output="modal_dateSched">Calendar</button> -->
+                        <input type="date" id="modal_dateSched" class="date width-100" name="date_sched">
                     </div>
                 </div>
             

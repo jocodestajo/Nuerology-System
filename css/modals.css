@@ -108,13 +108,6 @@
   padding: 12px 24px;
 }
 
-#viewReferalContent {
-  display: none;
-}
-#viewReferalContent input {
-  width: 100%;
-}
-
 /* SEARCH QUERY */
 #result {
   display: none;

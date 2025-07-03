@@ -31,7 +31,7 @@ if (isset($_POST['save_btn']))
             $complaint = implode(', ', $complaintArray);
         }
     $history = mysqli_real_escape_string($conn, $_POST['history']);
-    $referal = mysqli_real_escape_string($conn, $_POST['referal']);
+    $referal = isset($_POST['referal']) ? mysqli_real_escape_string($conn, $_POST['referal']) : 'N/A';
     $appointment_type = mysqli_real_escape_string($conn, $_POST['typeofappoint']);
 
     $birthday = mysqli_real_escape_string($conn, $_POST['birthday']);

@@ -97,10 +97,10 @@ if(isset($_GET['logout'])) {
                         
                         <!-- div.box Child element 2 -->
                         <div class="input referal" id="inquiryReferral">
-                            <div id="referralContent">
+                            <div>
                                 <label for="" class="">Referral Source: <i>(if any)</i></label>
                                 <!-- <input type="text" name="referal"> -->
-                                <select name="refer_from" class="width-100 center-text">
+                                <select id="referralContent" name="refer_from" class="width-100 center-text" disabled>
                                     <option value="N/A" selected>--- N/A ---</option>
                                     
                                     <?php
@@ -141,7 +141,7 @@ if(isset($_GET['logout'])) {
                         <!-- div.box Child element 5 / BDATE -->
                         <div class="input">
                             <label for="" class="b_day">Birthdate: <i class="asterisk">*</i></label>
-                            <input type="date" name="birthday" id="birthday" class="birthdayInput" data-age-output="age1" require>
+                            <input type="date" name="birthday" id="birthday" class="birthdayInput width-100" data-age-output="age1" require>
                         </div>
                         
                         <!-- div.box Child element 6 / ADDRESS -->
