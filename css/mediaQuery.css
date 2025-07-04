@@ -16,110 +16,85 @@
   }
 }
 @media (max-width: 1024px) {
-  /* Make the table container scrollable horizontally on small screens */
+  body {
+    font-size: 12px;
+  }
+
   .content {
     -webkit-overflow-scrolling: touch;
     width: 100%;
-    overflow: auto;
+    overflow-x: auto;
+    padding: 0 8px;
   }
 
   table {
     width: 100%;
-    /* set the limit for scrolable */
-    min-width: 1024px;
-  }
-
-  /* tr .th-check,
-  tr .th-check {
-    width: 2%;
-  } */
-
-  tr .th-hrn,
-  td .th-hrn {
-    /* width: 7%; */
-    /* display: none; */
+    min-width: 700px; /* Reduced for tablets */
   }
 
   tr .th-action {
-    width: 12%;
+    width: 14%;
   }
 
-  /* tr .th-contact,
-  tr .th-schedule {
-    width: 8%;
-  }
-  tr .th-name {
-    text-align: left;
-    width: 28%;
-  }
-  tr .th-name {
-    padding-left: 24px;
-  } */
-
-  tr .th-complaint,
-  td .th-complaint {
-    /* width: 27%; */
-    /* display: none; */
-  }
-  /* tr .th-consultation {
-    width: 10%;
-  } */
   .header-1 {
     position: relative;
     width: 100%;
     height: auto;
-    padding: 10px 20px 10px 20px;
+    padding: 10px 10px;
     background-color: var(--primary-color);
-    color: #ffffff;
+    color: #fff;
     font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
   }
   .header-1 img {
-    width: 16%;
+    max-width: 80px;
+    width: 20vw;
+    height: auto;
   }
   .header-1 h2 {
-    font-size: 1.35rem;
+    font-size: 1.2rem;
+    margin: 0;
   }
-
   .header-1 .btn-navbar {
     display: flex;
-    flex-direction: strecth;
     align-items: center;
     justify-content: center;
-
     padding: 8px;
     border-bottom: 1px solid #1e8e83;
   }
 
-  .container-1 {
+  .container-1,
+  .container-2 {
     margin: 0;
+    padding: 0;
+    width: 100%;
   }
   .container-2 {
     display: flex;
     flex-wrap: wrap;
-    padding: 0;
-    /* height: 100vh; */
   }
 
-  /* NAVBAR-2 */
   .navbar-2 {
     padding: 0;
+    width: 100%;
   }
   .tab {
-    display: inline-flex;
+    display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     width: 100%;
-    padding: 8px 2% 8px 2%;
-  }
-
-  .content {
-    margin-bottom: 0;
+    padding: 8px 2%;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
   .box {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     width: 100%;
     padding: 24px;
     padding-bottom: 45px;
@@ -127,8 +102,7 @@
   }
 
   /* Adjust grid columns for smaller screens */
-  .box div:nth-child(2),
-  .box div:nth-child(3),
+
   .box div:nth-child(5),
   .box div:nth-child(6),
   .box div:nth-child(7),
@@ -137,9 +111,14 @@
   .box div:nth-child(10),
   .box div:nth-child(11),
   .box div:nth-child(12) {
-    grid-column: span 1;
+    grid-column: span 3;
   }
   .box div:nth-child(1),
+  .box div:nth-child(2),
+  .box div:nth-child(3) {
+    grid-column: span 2;
+  }
+
   .box div:nth-child(4),
   .box div:nth-child(13),
   .box div:nth-child(14),
@@ -148,16 +127,11 @@
   .box div:nth-child(17),
   .box div:nth-child(18),
   .box div:nth-child(19) {
-    grid-column: span 2;
+    grid-column: span 6;
   }
 
-  .box div:nth-child(14) {
-    grid-row: span 2;
-  }
-
-  /* all input fields in .box */
   .box .input select,
-  .box .input input[type-text],
+  .box .input input[type="text"],
   .box .input textarea {
     width: 100%;
   }
@@ -166,22 +140,17 @@
     display: none !important;
   }
 
-  /*box child element 2 / Type of appointment */
-  .box .input .appointment {
-    width: 100%;
-  }
-
+  .box .input .appointment,
   .box .input .old_new {
     width: 100%;
   }
 
-  /* Make the submit button take full width */
   .div-btn-submit {
-    display: inline-flex;
+    display: flex;
     justify-content: center;
+    width: 100%;
   }
 
-  /* EDIT RECORDS FORM */
   .modal-content {
     margin: 0;
   }
@@ -191,18 +160,16 @@
   }
   .form-content {
     display: flex;
+    flex-direction: column;
     justify-content: unset;
   }
   .modal-content .close-btn {
     margin: 0;
   }
   .close-btn-desktop {
-    /* display: block; */
-    /* float: right; */
-
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 10px;
+    right: 10px;
     z-index: 1;
   }
   .date-of-request-div {
@@ -210,10 +177,10 @@
   }
 
   #calendarContainer {
-    position: absolute;
-    /* top: 50%; */
-    left: 90%;
-    transform: translate(-90%);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 100%;
     background: white;
     padding: 20px;
@@ -225,16 +192,14 @@
     min-width: 100%;
   }
 
-  /* Make the calendar container responsive */
   .content:has(#calendarTable_schedule) {
     padding: 10px;
-    overflow-x: hidden;
+    overflow-x: auto;
   }
 
-  /* CONSULTATION */
   .container-3 {
-    margin: 20px;
-    padding: 10px 0px;
+    margin: 10px;
+    padding: 10px 0;
   }
 }
 
@@ -302,10 +267,6 @@
     width: 100%;
   }
 
-  /* .consultants {
-    width: 100%;
-  } */
-
   /* Calendar table adjustments */
   .calendar-button {
     margin-top: 80px;
@@ -362,7 +323,7 @@
   .box div:nth-child(10),
   .box div:nth-child(11),
   .box div:nth-child(12) {
-    grid-column: span 2;
+    grid-column: span 6;
   }
   .box div:nth-child(4),
   .box div:nth-child(13),
@@ -371,7 +332,7 @@
   .box div:nth-child(16),
   .box div:nth-child(17),
   .box div:nth-child(18) {
-    grid-column: span 2;
+    grid-column: span 6;
   }
 
   .box div:nth-child(14) {
