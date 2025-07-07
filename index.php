@@ -141,7 +141,7 @@ if(isset($_GET['logout'])) {
                         <!-- div.box Child element 5 / BDATE -->
                         <div class="input">
                             <label for="" class="b_day">Birthdate: <i class="asterisk">*</i></label>
-                            <input type="date" name="birthday" id="birthday" class="birthdayInput width-100" data-age-output="age1" require>
+                            <input type="date" name="birthday" id="birthday" class="birthdayInput width-100" data-age-output="age1" required>
                         </div>
                         
                         <!-- div.box Child element 6 / ADDRESS -->
@@ -436,9 +436,9 @@ if(isset($_GET['logout'])) {
                                         <td class="th-schedule"><?= $records['date_sched']; ?></td>
                                         <td class="th-complaint"><?= $records['complaint']; ?></td>
                                         <td class="th-action action border-right">
-                                            <img src="img/check-circle.png" class="action-img trigger-process-modal margin-right" alt="processed" data-record-id="<?=$records['consult_id'];?>" data-modal-target="processConfirmationModal">
                                             <img src="img/vitalSigns.png" class="action-img margin-right" alt="VitalSigns" data-record-id="<?=$records['consult_id'];?>">
                                             <img src="img/chat.png" class=" action-img margin-right" alt="Consultation" data-record-id="<?=$records['consult_id'];?>">
+                                            <img src="img/check-circle.png" class="action-img trigger-process-modal margin-right" alt="processed" data-record-id="<?=$records['consult_id'];?>" data-modal-target="processConfirmationModal">
                                             <img src="img/cancel.png" class="action-img update-cancelled" alt="Cancel" data-id="<?=$records['consult_id'];?>">
                                         </td>
                                     </tr>
@@ -505,9 +505,9 @@ if(isset($_GET['logout'])) {
                                         <td class="th-schedule"><?= $records['date_sched']; ?></td>
                                         <td class="th-complaint"><?= $records['complaint']; ?></td>
                                         <td class="th-action action border-right">
-                                            <img src="img/check-circle.png" class="action-img trigger-process-modal margin-right" alt="processed" data-record-id="<?=$records['consult_id'];?>" data-modal-target="processConfirmationModal">
                                             <img src="img/vitalSigns.png" class="action-img margin-right" alt="VitalSigns" data-record-id="<?=$records['consult_id'];?>">
                                             <img src="img/chat.png" class=" action-img margin-right" alt="Consultation" data-record-id="<?=$records['consult_id'];?>">
+                                            <img src="img/check-circle.png" class="action-img trigger-process-modal margin-right" alt="processed" data-record-id="<?=$records['consult_id'];?>" data-modal-target="processConfirmationModal">
                                             <img src="img/cancel.png" class="action-img update-cancelled" alt="Cancel" data-id="<?=$records['consult_id'];?>">
                                         </td>
                                     </tr>

@@ -130,13 +130,13 @@ if (isset($_POST['save_btn']))
                 $insert_birthday = (!empty($patient_data_from_db['birthday'])) ? $patient_data_from_db['birthday'] : $formattedDate;
 
                 // These are the columns to be conditionally inserted as per user request
-                $insert_age = !empty($age) ? $age : (isset($patient_data_from_db['age']) ? $patient_data_from_db['age'] : null);
+                $insert_age = !empty($age) ? $age : (isset($patient_data_from_db['age']) ? $patient_data_from_db['age'] : '');
                 $insert_contact = !empty($contact) ? $contact : (isset($patient_data_from_db['contact']) ? $patient_data_from_db['contact'] : null);
-                $insert_address = !empty($address) ? $address : (isset($patient_data_from_db['address']) ? $patient_data_from_db['address'] : null);
-                $insert_email = !empty($email) ? $email : (isset($patient_data_from_db['email']) ? $patient_data_from_db['email'] : null);
-                $insert_viber = !empty($viber) ? $viber : (isset($patient_data_from_db['viber']) ? $patient_data_from_db['viber'] : null);
-                $insert_informant = !empty($informant) ? $informant : (isset($patient_data_from_db['informant']) ? $patient_data_from_db['informant'] : null);
-                $insert_informant_relation = !empty($informant_relation) ? $informant_relation : (isset($patient_data_from_db['informant_relation']) ? $patient_data_from_db['informant_relation'] : null);
+                $insert_address = !empty($address) ? $address : (isset($patient_data_from_db['address']) ? $patient_data_from_db['address'] : '');
+                $insert_email = !empty($email) ? $email : (isset($patient_data_from_db['email']) ? $patient_data_from_db['email'] : '');
+                $insert_viber = !empty($viber) ? $viber : (isset($patient_data_from_db['viber']) ? $patient_data_from_db['viber'] : '');
+                $insert_informant = !empty($informant) ? $informant : (isset($patient_data_from_db['informant']) ? $patient_data_from_db['informant'] : '');
+                $insert_informant_relation = !empty($informant_relation) ? $informant_relation : (isset($patient_data_from_db['informant_relation']) ? $patient_data_from_db['informant_relation'] : '');
 
                 $query1 = "INSERT INTO neurology_records
                     (hrn, name, age, birthday, contact, address, email, viber, informant, informant_relation)
