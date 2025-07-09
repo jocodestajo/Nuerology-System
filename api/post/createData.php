@@ -38,24 +38,24 @@ if (isset($_POST['save_btn']))
     $date = new DateTime($birthday);
     $formattedDate = $date->format('Y-m-d');
     
-    if ($old_new == "" && $appointment_type == "") {
-        $_SESSION['message'] = "Please select 'Old' or 'New' for the client status.";
-        header("Location: ../../index.php");
-        exit(0);
-    }
+    // if ($old_new == "" && $appointment_type == "") {
+    //     $_SESSION['message'] = "Please select 'Old' or 'New' for the client status.";
+    //     header("Location: ../../index.php");
+    //     exit(0);
+    // }
 
-    // Check for existing pending or approved appointments
-    $check_existing_appointment_query = "SELECT nc.id FROM neurology_consultations nc JOIN neurology_records nr ON nc.record_id = nr.id WHERE (nr.hrn = ? OR (nr.name = ? AND nr.birthday = ?)) AND nc.status IN ('pending', 'approved')";
-    $stmt_check_existing = mysqli_prepare($conn, $check_existing_appointment_query);
-    mysqli_stmt_bind_param($stmt_check_existing, "sss", $hrn, $name, $formattedDate);
-    mysqli_stmt_execute($stmt_check_existing);
-    $result_check_existing = mysqli_stmt_get_result($stmt_check_existing);
+    // // Check for existing pending or approved appointments
+    // $check_existing_appointment_query = "SELECT nc.id FROM neurology_consultations nc JOIN neurology_records nr ON nc.record_id = nr.id WHERE (nr.hrn = ? OR (nr.name = ? AND nr.birthday = ?)) AND nc.status IN ('pending', 'approved')";
+    // $stmt_check_existing = mysqli_prepare($conn, $check_existing_appointment_query);
+    // mysqli_stmt_bind_param($stmt_check_existing, "sss", $hrn, $name, $formattedDate);
+    // mysqli_stmt_execute($stmt_check_existing);
+    // $result_check_existing = mysqli_stmt_get_result($stmt_check_existing);
 
-    if (mysqli_num_rows($result_check_existing) > 0) {
-        $_SESSION['message'] = "FAILED: Patient already has a scheduled appointment.";
-        header("Location: ../../index.php"); // Redirect to a suitable page, e.g., index or patient dashboard
-        exit(0);
-    }
+    // if (mysqli_num_rows($result_check_existing) > 0) {
+    //     $_SESSION['message'] = "FAILED: Patient already has a scheduled appointment.";
+    //     header("Location: ../../index.php"); // Redirect to a suitable page, e.g., index or patient dashboard
+    //     exit(0);
+    // }
 
     // Start transaction
     mysqli_begin_transaction($conn);

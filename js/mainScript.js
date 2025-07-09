@@ -83,7 +83,7 @@ function closeModal() {
 
 if (nameInput) {
   nameInput.addEventListener("keyup", function () {
-    console.log("Keyup", nameInput.value);
+    // console.log("Keyup", nameInput.value);
     clearTimeout(debounceTimeout);
 
     debounceTimeout = setTimeout(function () {
@@ -101,8 +101,8 @@ if (nameInput) {
         );
         xhr.onreadystatechange = function () {
           if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log("AJAX response status: ", xhr.status);
-            console.log("AJAX response: ", xhr.responseText);
+            // console.log("AJAX response status: ", xhr.status);
+            // console.log("AJAX response: ", xhr.responseText);
             if (xhr.responseText.trim() !== "") {
               searchResult.innerHTML = xhr.responseText;
             } else {
@@ -280,3 +280,54 @@ if (document.querySelector(".checkbox-group")) {
       event.stopPropagation();
     });
 }
+
+// INQUIRY CHECKING DATABASE IF ALREADY HAVE RECORDS AND SCHEDULES
+document.addEventListener("DOMContentLoaded", function () {
+  const checkBtn = document.getElementById("checkBtn");
+  const saveBtn = document.getElementById("saveBtn");
+
+  if (checkBtn) {
+    checkBtn.addEventListener("click", function () {
+      // Get form values
+      const hrn = document.getElementById("hrn").value.trim();
+      const name = document.getElementById("name").value.trim();
+      const birthday = document.getElementById("birthday").value.trim();
+
+      if (!name || !birthday) {
+        alert("Please enter both name and birthday.");
+        return;
+      }
+
+      fetch(
+        `api/get/check_existing_schedule.php?hrn=${encodeURIComponent(
+          hrn
+        )}&name=${encodeURIComponent(name)}&birthday=${encodeURIComponent(
+          birthday
+        )}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (!data.success) {
+            let msg = data.message || "Patient already has a schedule.";
+            if (data.date_sched) {
+              msg += `\n\nName: ${data.name}`;
+              msg += `\nScheduled date: ${data.date_sched}`;
+              msg += `\nConsultation: ${data.consultation}`;
+            }
+            alert(msg);
+          } else {
+            // No existing schedule, allow form submission
+            checkBtn.style.display = "none";
+            saveBtn.style.display = "inline-block";
+            alert(
+              "No existing schedule found. You can now save the appointment."
+            );
+          }
+        })
+        .catch((err) => {
+          alert("Error checking existing schedule. Please try again.");
+          console.error(err);
+        });
+    });
+  }
+});

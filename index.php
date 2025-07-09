@@ -79,7 +79,7 @@ if(isset($_GET['logout'])) {
             <!-- TAB 1 / INQUIRY -->
             <div class="content active">
                 <div class="form-content">
-                    <form action="api/post/createData.php" method="post" class="box" autocomplete="off"> 
+                    <form action="api/post/createData.php" method="post" class="box save-appointment" autocomplete="off"> 
 
                         <!-- div.box Child element 1 -->
                         <div class="input appointment-type">
@@ -296,7 +296,8 @@ if(isset($_GET['logout'])) {
                             <a href="index.php">
                                 <button type="button" name="clear_data_btn" class="btn btn-clearData">Clear Data</button>
                             </a>
-                            <button type="submit" name="save_btn" class="btn btn-green">Save</button>
+                            <button type="button" id="checkBtn" class="btn btn-blue">Check Schedule</button>
+                            <button type="submit" id="saveBtn" name="save_btn" class="btn btn-green" style="display:none;">Save</button>
                         </div>
                     </form>
                 </div>
