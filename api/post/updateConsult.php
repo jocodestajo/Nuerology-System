@@ -21,7 +21,17 @@ $response = ['success' => false, 'message' => ''];
         $informant_relation = mysqli_real_escape_string($conn, $_POST['informant_relation']);
         $old_new = isset($_POST['old_new']) ? mysqli_real_escape_string($conn, $_POST['old_new']) : '';
         $consultation = isset($_POST['consultation']) ? mysqli_real_escape_string($conn, $_POST['consultation']) : '';
-        $consultPurpose = isset($_POST['consultPurpose']) ? mysqli_real_escape_string($conn, $_POST['consultPurpose']) : '';
+        $consultPurpose = '';
+        if (isset($_POST['consultPurpose'])) {
+            if (is_array($_POST['consultPurpose'])) {
+                $consultPurposeArray = array_map(function($purpose) use ($conn) {
+                    return mysqli_real_escape_string($conn, $purpose);
+                }, $_POST['consultPurpose']);
+                $consultPurpose = implode(', ', $consultPurposeArray);
+            } else {
+                $consultPurpose = mysqli_real_escape_string($conn, $_POST['consultPurpose']);
+            }
+        }
         
         $diagnosis = '';
         if (isset($_POST['diagnosis']) && is_array($_POST['diagnosis'])) {
@@ -31,7 +41,17 @@ $response = ['success' => false, 'message' => ''];
             $diagnosis = implode(', ', $diagnosisArray);
         }
 
-        $classification = mysqli_real_escape_string($conn, $_POST['classification']);
+        $classification = '';
+        if (isset($_POST['classification'])) {
+            if (is_array($_POST['classification'])) {
+                $classificationArray = array_map(function($class) use ($conn) {
+                    return mysqli_real_escape_string($conn, $class);
+                }, $_POST['classification']);
+                $classification = implode(', ', $classificationArray);
+            } else {
+                $classification = mysqli_real_escape_string($conn, $_POST['classification']);
+            }
+        }
         
 
         $medicationEntries = [];

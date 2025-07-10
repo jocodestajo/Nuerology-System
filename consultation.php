@@ -337,14 +337,14 @@ require 'config/dbcon.php';
                             <div class="border-left width-100 padding-20">
                                 <div class="">
                                     <label for="consultRX">
-                                        <input type="radio" value="RX" id="consultRX" name="consultPurpose">
+                                        <input type="checkbox" value="RX" id="consultRX" name="consultPurpose[]">
                                         RX
                                     </label>
                                 </div>
 
                                 <div class="">
                                     <label for="consultMC">
-                                        <input type="radio" value="MC" id="consultMC" name="consultPurpose">
+                                        <input type="checkbox" value="MC" id="consultMC" name="consultPurpose[]">
                                         MC
                                     </label>
                                 </div>
@@ -362,24 +362,30 @@ require 'config/dbcon.php';
                         <div class="space-evenly">
                             <div class="classification">
                                 <h3>Classification</h3>
-                                <select name="classification" id="consultClassification" class="padding-20 center-text">
-                                    <option value="" hidden disabled selected>--- Select Option ---</option>
-                                    
-                                    <?php
-                                        $sql1 = "SELECT id, name FROM neurology_classifications WHERE archived = 0";
-                                        $result1 = $conn->query($sql1);
-                                        
-                                        if ($result1->num_rows > 0) {
-                                            while($row = $result1->fetch_assoc()) {
-                                                echo "<option value='" . $row['id'] . "'>" . htmlspecialchars($row['name']) . "</option>";
-                                            }
-                                        } else {
-                                            echo "<option disabled>No classifications found</option>";
-                                        }
-                                    ?>
-                                    <option value="Other">Other</option>
-
-                                </select>
+                                <!-- Modal Trigger Button -->
+                                <button type="button" data-modal-target="classificationModal1" id="classificationSelectBtn" class="btn border width-100">--- Select Option ---</button>
+                                <!-- Modal Container -->
+                                <div id="classificationModal1" class="classificationShow" style="display:none;">
+                                    <div class="modal-content" style="width: 400px; margin: 10% auto; position: relative;">
+                                        <div class="checkbox-classification checkbox-group">
+                                            <?php
+                                                $sql1 = "SELECT id, name FROM neurology_classifications WHERE archived = 0";
+                                                $result1 = $conn->query($sql1);
+                                                if ($result1->num_rows > 0) {
+                                                    while($row = $result1->fetch_assoc()) {
+                                                        echo "<label><input type='checkbox' name='classification[]' value='" . htmlspecialchars($row['name']) . "'> " . htmlspecialchars($row['name']) . "</label>";
+                                                    }
+                                                } else {
+                                                    echo "<label><input type='checkbox' disabled> No classifications found</label>";
+                                                }
+                                            ?>
+                                            <!-- <label><input type="checkbox" name="classification[]" value="Other"> Other</label> -->
+                                        </div>
+                                        <div style="text-align:right; margin-top:10px;">
+                                            <button type="button" id="closeClassificationModal" class="btn btn-blue">Done</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
 
@@ -742,6 +748,37 @@ require 'config/dbcon.php';
 
         referToSelect.addEventListener('change', toggleOtherInstitute);
     });
+
+        // Classification Modal Logic
+        document.addEventListener('DOMContentLoaded', function() {
+            const classificationBtn = document.getElementById('classificationSelectBtn');
+            const classificationModal = document.getElementById('classificationModal1');
+            const closeClassificationModal = document.getElementById('closeClassificationModal');
+            const classificationCheckboxes = classificationModal.querySelectorAll('input[type="checkbox"][name="classification[]"]');
+
+            // Open modal
+            classificationBtn.addEventListener('click', function() {
+                classificationModal.style.display = 'block';
+            });
+            // Close modal
+            closeClassificationModal.addEventListener('click', function() {
+                classificationModal.style.display = 'none';
+                updateClassificationBtnText();
+            });
+            // Update button text based on selected checkboxes
+            function updateClassificationBtnText() {
+                const checked = Array.from(classificationModal.querySelectorAll('input[type="checkbox"][name="classification[]"]:checked'));
+                if (checked.length === 0) {
+                    classificationBtn.textContent = '--- Select Option ---';
+                } else {
+                    classificationBtn.textContent = checked.map(cb => cb.value).join(', ');
+                }
+            }
+            // Update on change
+            classificationCheckboxes.forEach(cb => {
+                cb.addEventListener('change', updateClassificationBtnText);
+            });
+        });
    </script>
     <?php
         $conn->close();
