@@ -213,8 +213,8 @@
             <tr>
                 <th class="th-check">#</th>
                 <th>Name</th>
-                <th>Quantity Used</th>
-                <th>Total Users</th>
+                <th>Qty Prescribed</th>
+                <th>Total Patients</th>
             </tr>
         </thead>
         <tbody>
