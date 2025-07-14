@@ -366,7 +366,7 @@ require 'config/dbcon.php';
                                 <button type="button" data-modal-target="classificationModal1" id="classificationSelectBtn" class="btn border width-100">--- Select Option ---</button>
                                 <!-- Modal Container -->
                                 <div id="classificationModal1" class="classificationShow" style="display:none;">
-                                    <div class="modal-content" style="width: 400px; margin: 10% auto; position: relative;">
+                                    <div class="modal-content" style="width: 400px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
                                         <div class="checkbox-classification checkbox-group">
                                             <?php
                                                 $sql1 = "SELECT id, name FROM neurology_classifications WHERE archived = 0";
@@ -379,25 +379,26 @@ require 'config/dbcon.php';
                                                     echo "<label><input type='checkbox' disabled> No classifications found</label>";
                                                 }
                                             ?>
-                                            <!-- <label><input type="checkbox" name="classification[]" value="Other"> Other</label> -->
-                                        </div>
-                                        <div style="text-align:right; margin-top:10px;">
-                                            <button type="button" id="closeClassificationModal" class="btn btn-blue">Done</button>
+                                            <div style="text-align:right; margin-top:10px;">
+                                                <button type="button" id="closeClassificationModal" class="btn btn-blue">Done</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
 
                             <div class="consultMed flex-row">
                                 <div class="width-100">
                                     <h3 class="margin-b-10">Medication</h3>
                                     <div id="medication-container">
                                         <div class="medication-entry flex-row padding-inline-10 ">
-                                            <div class="width-80">
+                                            <div class="width-60">
                                                 <input type="text" name="medication[]" class="width-100 center-text" placeholder="Enter Medication">
                                             </div>
                                             <div class="width-20">
+                                                <input type="text" name="medicationDosage[]" class="width-100 center-text" placeholder="Dosage">
+                                            </div>
+                                            <div class="width-10">
                                                 <input type="number" name="medQty[]" class="width-100 center-text" placeholder="Qty">
                                             </div>
                                             <button type="button" id="add-medication" class="btn btn-blue">
@@ -691,20 +692,25 @@ require 'config/dbcon.php';
             addMedicationBtn.addEventListener('click', function() {
                 const medicationEntry = document.createElement('div');
                 medicationEntry.className = 'medication-entry flex-row padding-inline-10';
-                
+
                 const medicationInput = document.createElement('div');
-                medicationInput.className = 'width-80';
+                medicationInput.className = 'width-60';
                 medicationInput.innerHTML = `
                     <input type="text" name="medication[]" class="width-100 center-text" placeholder="Enter medication">
-                    <input type="hidden" name="medicine_id[]">
                 `;
-                
+
+                const dosageInput = document.createElement('div');
+                dosageInput.className = 'width-20';
+                dosageInput.innerHTML = `
+                    <input type="text" name="medicationDosage[]" class="width-100 center-text" placeholder="Dosage">
+                `;
+
                 const qtyInput = document.createElement('div');
-                qtyInput.className = 'width-20';
+                qtyInput.className = 'width-10';
                 qtyInput.innerHTML = `
                     <input type="number" name="medQty[]" class="width-100 center-text" placeholder="Qty">
                 `;
-                
+
                 const removeBtn = document.createElement('div');
                 removeBtn.className = 'width-10';
                 removeBtn.innerHTML = `
@@ -712,17 +718,18 @@ require 'config/dbcon.php';
                         &#45;
                     </button>
                 `;
-                
+
                 medicationEntry.appendChild(medicationInput);
+                medicationEntry.appendChild(dosageInput);
                 medicationEntry.appendChild(qtyInput);
                 medicationEntry.appendChild(removeBtn);
-                
+
                 medicationContainer.appendChild(medicationEntry);
-                
+
                 // Setup search for the new medication input
                 const newMedicationInput = medicationInput.querySelector('input[name="medication[]"]');
                 setupMedicineSearch(newMedicationInput);
-                
+
                 // Add event listener to the new remove button
                 const newRemoveBtn = medicationEntry.querySelector('.remove-medication');
                 newRemoveBtn.addEventListener('click', function() {

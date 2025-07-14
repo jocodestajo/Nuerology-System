@@ -56,16 +56,22 @@ $response = ['success' => false, 'message' => ''];
 
         $medicationEntries = [];
 
-        if (isset($_POST['medication'], $_POST['medQty']) && is_array($_POST['medication']) && is_array($_POST['medQty'])) {
+        if (isset($_POST['medication'], $_POST['medQty'], $_POST['medicationDosage']) && is_array($_POST['medication']) && is_array($_POST['medQty']) && is_array($_POST['medicationDosage'])) {
             for ($i = 0; $i < count($_POST['medication']); $i++) {
                 $med = trim($_POST['medication'][$i]);
                 $qty = trim($_POST['medQty'][$i]);
+                $dosage = isset($_POST['medicationDosage'][$i]) ? trim($_POST['medicationDosage'][$i]) : '';
 
                 // Only include non-empty values
                 if ($med !== '' && $qty !== '') {
                     $medSanitized = mysqli_real_escape_string($conn, $med);
                     $qtySanitized = (int)$qty;
-                    $medicationEntries[] = $qtySanitized . ' ' . $medSanitized;
+                    $dosageSanitized = mysqli_real_escape_string($conn, $dosage);
+                    $entry = $qtySanitized . ' ' . $medSanitized;
+                    if ($dosageSanitized !== '') {
+                        $entry .= ' ' . $dosageSanitized;
+                    }
+                    $medicationEntries[] = $entry;
                 }
             }
         }
