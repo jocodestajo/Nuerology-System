@@ -43,41 +43,41 @@ $response = ['success' => false, 'message' => ''];
 
         $classification = '';
         if (isset($_POST['classification'])) {
-            if (is_array($_POST['classification'])) {
+            if (is_array($_POST['classification']) && count($_POST['classification']) > 0) {
                 $classificationArray = array_map(function($class) use ($conn) {
                     return mysqli_real_escape_string($conn, $class);
                 }, $_POST['classification']);
-                $classification = implode(', ', $classificationArray);
-            } else {
+                $classification = implode(',', $classificationArray); // No space after comma
+            } elseif (!is_array($_POST['classification'])) {
                 $classification = mysqli_real_escape_string($conn, $_POST['classification']);
             }
         }
         
 
-        $medicationEntries = [];
+        // $medicationEntries = [];
+        
+        // if (isset($_POST['medication'], $_POST['medQty'], $_POST['medicationDosage']) && is_array($_POST['medication']) && is_array($_POST['medQty']) && is_array($_POST['medicationDosage'])) {
+        //     for ($i = 0; $i < count($_POST['medication']); $i++) {
+        //         $med = trim($_POST['medication'][$i]);
+        //         $qty = trim($_POST['medQty'][$i]);
+        //         $dosage = isset($_POST['medicationDosage'][$i]) ? trim($_POST['medicationDosage'][$i]) : '';
 
-        if (isset($_POST['medication'], $_POST['medQty'], $_POST['medicationDosage']) && is_array($_POST['medication']) && is_array($_POST['medQty']) && is_array($_POST['medicationDosage'])) {
-            for ($i = 0; $i < count($_POST['medication']); $i++) {
-                $med = trim($_POST['medication'][$i]);
-                $qty = trim($_POST['medQty'][$i]);
-                $dosage = isset($_POST['medicationDosage'][$i]) ? trim($_POST['medicationDosage'][$i]) : '';
+        //         // Only include non-empty values
+        //         if ($med !== '' && $qty !== '') {
+        //             $medSanitized = mysqli_real_escape_string($conn, $med);
+        //             $qtySanitized = (int)$qty;
+        //             $dosageSanitized = mysqli_real_escape_string($conn, $dosage);
+        //             $entry = $qtySanitized . ' ' . $medSanitized;
+        //             if ($dosageSanitized !== '') {
+        //                 $entry .= ' ' . $dosageSanitized;
+        //             }
+        //             $medicationEntries[] = $entry;
+        //         }
+        //     }
+        // }
 
-                // Only include non-empty values
-                if ($med !== '' && $qty !== '') {
-                    $medSanitized = mysqli_real_escape_string($conn, $med);
-                    $qtySanitized = (int)$qty;
-                    $dosageSanitized = mysqli_real_escape_string($conn, $dosage);
-                    $entry = $qtySanitized . ' ' . $medSanitized;
-                    if ($dosageSanitized !== '') {
-                        $entry .= ' ' . $dosageSanitized;
-                    }
-                    $medicationEntries[] = $entry;
-                }
-            }
-        }
-
-        // Final medication string like "12 ALBENDAZOLE, 10 AMIKACIN"
-        $medication = implode(', ', $medicationEntries);
+        // // Final medication string like "12 ALBENDAZOLE, 10 AMIKACIN"
+        // $medication = implode(', ', $medicationEntries);
         
         $refer_from = mysqli_real_escape_string($conn, $_POST['refer_from']);
         $otherInstitute = mysqli_real_escape_string($conn, $_POST['otherInstitute']);
@@ -98,10 +98,10 @@ $response = ['success' => false, 'message' => ''];
         $educStart = $currentDate . ' ' . mysqli_real_escape_string($conn, $_POST['educStart']) . ':00';
         $educEnd = $currentDate . ' ' . mysqli_real_escape_string($conn, $_POST['educEnd']) . ':00';
 
-        $type1 = mysqli_real_escape_string($conn, $_POST['consultant_1_type']);
+        // $type1 = mysqli_real_escape_string($conn, $_POST['consultant_1_type']);
         $consultant_1 = mysqli_real_escape_string($conn, $_POST['consultant_1']);
 
-        $type2 = mysqli_real_escape_string($conn, $_POST['consultant_2_type']);
+        // $type2 = mysqli_real_escape_string($conn, $_POST['consultant_2_type']);
         $consultant_2 = mysqli_real_escape_string($conn, $_POST['consultant_2']);
 
         // Check if follow-up checkbox is checked
@@ -137,8 +137,7 @@ $response = ['success' => false, 'message' => ''];
                             c.consultation = '$consultation',
                             c.rx_mc = '$consultPurpose',
                             c.diagnosis = '$diagnosis',
-                            c.classification = '$classification',
-                            c.medication = '$medication',             
+                            c.classification = '$classification',            
                             c.refer_from = '$refer_from',
                             c.refer_to = '$referTo',
                             c.remarks = '$remarks',
@@ -147,15 +146,40 @@ $response = ['success' => false, 'message' => ''];
                             c.consult_end = '$consultEnd',
                             c.educ_start = '$educStart',
                             c.educ_end = '$educEnd',
-                            c.c1_type = '$type1',
                             c.consultant_1 = '$consultant_1',
-                            c.c2_type = '$type2',
                             c.consultant_2 = '$consultant_2'
                         WHERE c.id = '$record_id'";
 
             if (!mysqli_query($conn, $query)) {
                 throw new Exception("Error updating: " . mysqli_error($conn));
             }
+
+            // --- NEW: Update neurology_medication table ---
+            // First, delete existing medications for this consultation
+            // $deleteMedQuery = "DELETE FROM neurology_medication WHERE patient_id = '$record_id'";
+            // if (!mysqli_query($conn, $deleteMedQuery)) {
+            //     throw new Exception("Error deleting old medications: " . mysqli_error($conn));
+            // }
+
+            // Insert each medication as a new row
+            if (isset($_POST['medication'], $_POST['medQty'], $_POST['medicationDosage']) && is_array($_POST['medication']) && is_array($_POST['medQty']) && is_array($_POST['medicationDosage'])) {
+                for ($i = 0; $i < count($_POST['medication']); $i++) {
+                    $med = trim($_POST['medication'][$i]);
+                    $qty = trim($_POST['medQty'][$i]);
+                    $dosage = isset($_POST['medicationDosage'][$i]) ? trim($_POST['medicationDosage'][$i]) : '';
+
+                    if ($med !== '' && $qty !== '') {
+                        $medSanitized = mysqli_real_escape_string($conn, $med);
+                        $qtySanitized = (int)$qty;
+                        $dosageSanitized = mysqli_real_escape_string($conn, $dosage);
+                        $insertMedQuery = "INSERT INTO neurology_medication (patient_id, medName, medDosage, medQty) VALUES ('$record_id', '$medSanitized', '$dosageSanitized', '$qtySanitized')";
+                        if (!mysqli_query($conn, $insertMedQuery)) {
+                            throw new Exception('Error inserting medication: ' . mysqli_error($conn));
+                        }
+                    }
+                }
+            }
+            // --- END NEW ---
 
             // If follow up, create a new appointment for the same patient
             if ($status == 'follow up') {

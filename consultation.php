@@ -170,18 +170,18 @@ require 'config/dbcon.php';
                         
                         <div>
                             <label for="">End Time</label>
-                            <input type="time" name="consultEnd" step="1" required>
+                            <input type="time" name="consultEnd" step="1" >
                         </div>
                     </div>
                     <div class="nurseFinal">
                         <div>
                             <label for="">Start Time</label>
-                            <input type="time" name="educStart" step="1" required>
+                            <input type="time" name="educStart" step="1" >
                         </div>
                         
                         <div>
                             <label for="">End Time</label>
-                            <input type="time" name="educEnd" step="1" required>
+                            <input type="time" name="educEnd" step="1" >
                         </div>
                     </div>
                 </div>
@@ -190,26 +190,26 @@ require 'config/dbcon.php';
             <div class="consultants">
                 <h2 class="center-text">Consultant</h2>
                 <div class="consultsss pad-hor-20 margin-b-20 width-100">
-                        <div class="margin-b-5 width-100">
+                        <!-- <div class="margin-b-5 width-100">
                             <select name="consultant_1_type" id="consultant1_type" class="margin-r-5 width-100 center-text">
                                 <option value="Doctor" selected>Doctor</option>
                                 <option value="Nurse">Nurse</option>
                                 <option value="Nurse Attendant">Nurse Attendant</option>
                             </select>
-                        </div>
+                        </div> -->
                         <div>
-                            <input name="consultant_1" id="consultant1" class="width-100" placeholder="Name" require>
+                            <input name="consultant_1" id="consultant1" class="width-100" placeholder="Doctor" require>
                         </div>
                    
-                        <div class="margin-b-5 width-100">
+                        <!-- <div class="margin-b-5 width-100">
                             <select name="consultant_2_type" id="consultant2_type" class="margin-r-5 width-100 center-text">
                                 <option value="Doctor">Doctor</option>
                                 <option value="Nurse" selected>Nurse</option>
                                 <option value="Nurse Attendant">Nurse Attendant</option>
                             </select>
-                        </div>
+                        </div> -->
                         <div class="width-100">
-                            <input name="consultant_2" id="consultant2" class="width-100" placeholder="Name" require>
+                            <input name="consultant_2" id="consultant2" class="width-100" placeholder="Nurse" require>
                         </div> 
                 </div>
             </div>
@@ -373,7 +373,7 @@ require 'config/dbcon.php';
                                                 $result1 = $conn->query($sql1);
                                                 if ($result1->num_rows > 0) {
                                                     while($row = $result1->fetch_assoc()) {
-                                                        echo "<label><input type='checkbox' name='classification[]' value='" . htmlspecialchars($row['name']) . "'> " . htmlspecialchars($row['name']) . "</label>";
+                                                        echo "<label><input type='checkbox' name='classification[]' value='" . htmlspecialchars($row['id']) . "'> " . htmlspecialchars($row['name']) . "</label>";
                                                     }
                                                 } else {
                                                     echo "<label><input type='checkbox' disabled> No classifications found</label>";
@@ -393,7 +393,7 @@ require 'config/dbcon.php';
                                     <div id="medication-container">
                                         <div class="medication-entry flex-row padding-inline-10 ">
                                             <div class="width-60">
-                                                <input type="text" name="medication[]" class="width-100 center-text" placeholder="Enter Medication">
+                                                <input type="text" name="medication[]" class="width-100 center-text" placeholder="Medication">
                                             </div>
                                             <div class="width-20">
                                                 <input type="text" name="medicationDosage[]" class="width-100 center-text" placeholder="Dosage">
@@ -568,31 +568,31 @@ require 'config/dbcon.php';
         });
 
         
-        // Consultant type selection functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const consultant1Type = document.getElementById('consultant1_type');
-            const consultant2Type = document.getElementById('consultant2_type');
-            const consultant1Label = document.getElementById('consultant1_label');
-            const consultant2Label = document.getElementById('consultant2_label');
+        // // Consultant type selection functionality
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const consultant1Type = document.getElementById('consultant1_type');
+        //     const consultant2Type = document.getElementById('consultant2_type');
+        //     const consultant1Label = document.getElementById('consultant1_label');
+        //     const consultant2Label = document.getElementById('consultant2_label');
             
-            // Update label based on selection
-            function updateConsultantLabel(select, label) {
-                label.textContent = select.value + ':';
-            }
+        //     // Update label based on selection
+        //     function updateConsultantLabel(select, label) {
+        //         label.textContent = select.value + ':';
+        //     }
             
-            // Set initial labels
-            updateConsultantLabel(consultant1Type, consultant1Label);
-            updateConsultantLabel(consultant2Type, consultant2Label);
+        //     // Set initial labels
+        //     updateConsultantLabel(consultant1Type, consultant1Label);
+        //     updateConsultantLabel(consultant2Type, consultant2Label);
             
-            // Update labels when selection changes
-            consultant1Type.addEventListener('change', function() {
-                updateConsultantLabel(consultant1Type, consultant1Label);
-            });
+        //     // Update labels when selection changes
+        //     consultant1Type.addEventListener('change', function() {
+        //         updateConsultantLabel(consultant1Type, consultant1Label);
+        //     });
             
-            consultant2Type.addEventListener('change', function() {
-                updateConsultantLabel(consultant2Type, consultant2Label);
-            });
-        });
+        //     consultant2Type.addEventListener('change', function() {
+        //         updateConsultantLabel(consultant2Type, consultant2Label);
+        //     });
+        // });
 
         // MEDICATION handling
         document.addEventListener('DOMContentLoaded', function() {
@@ -778,7 +778,8 @@ require 'config/dbcon.php';
                 if (checked.length === 0) {
                     classificationBtn.textContent = '--- Select Option ---';
                 } else {
-                    classificationBtn.textContent = checked.map(cb => cb.value).join(', ');
+                    // Show the label text (name) instead of the id
+                    classificationBtn.textContent = checked.map(cb => cb.parentNode.textContent.trim()).join(', ');
                 }
             }
             // Update on change

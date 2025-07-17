@@ -15,7 +15,7 @@ if (recordId) {
       return response.text(); // Get raw response
     })
     .then((text) => {
-      console.log("Raw response:", text); // Debugging output
+      // console.log("Raw response:", text); // Debugging output
       return text ? JSON.parse(text) : {}; // Only parse if there's data
     })
     .then((data) => {
@@ -34,12 +34,12 @@ if (recordId) {
       document.querySelector('input[name="educEnd"]').value =
         data.educ_end || "";
 
-      document.querySelector('select[name="consultant_1_type"]').value =
-        data.c1_type;
+      // document.querySelector('select[name="consultant_1_type"]').value =
+      //   data.c1_type;
       document.querySelector('input[name="consultant_1"]').value =
         data.consultant_1 || "";
-      document.querySelector('select[name="consultant_2_type"]').value =
-        data.c2_type;
+      // document.querySelector('select[name="consultant_2_type"]').value =
+      //   data.c2_type;
       document.querySelector('input[name="consultant_2"]').value =
         data.consultant_2 || "";
       document.querySelector('input[name="name"]').value = data.name || "";
@@ -119,8 +119,15 @@ if (recordId) {
         document.getElementById("consultMC").checked = true;
       }
 
-      document.querySelector('select[name="classification"]').value =
-        data.classification;
+      // Set checked checkboxes for classification by id
+      if (data.classification && Array.isArray(data.classification)) {
+        data.classification.forEach((id) => {
+          const checkbox = document.querySelector(
+            `input[type="checkbox"][name="classification[]"][value="${id}"]`
+          );
+          if (checkbox) checkbox.checked = true;
+        });
+      }
 
       if (data.refer_from != "") {
         document.querySelector('select[name="refer_from"]').value =
