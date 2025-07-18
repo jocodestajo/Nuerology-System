@@ -167,7 +167,7 @@ if (recordId) {
       const medicationContainer = document.getElementById(
         "medication-container"
       );
-      if (medicationContainer && data.medication) {
+      if (medicationContainer && Array.isArray(data.medications)) {
         // Remove all but the first medication-entry
         const entries =
           medicationContainer.querySelectorAll(".medication-entry");
@@ -178,32 +178,21 @@ if (recordId) {
         const firstMedInput = medicationContainer.querySelector(
           'input[name="medication[]"]'
         );
+        const firstDosageInput = medicationContainer.querySelector(
+          'input[name="medicationDosage[]"]'
+        );
         const firstQtyInput = medicationContainer.querySelector(
           'input[name="medQty[]"]'
         );
         if (firstMedInput) firstMedInput.value = "";
+        if (firstDosageInput) firstDosageInput.value = "";
         if (firstQtyInput) firstQtyInput.value = "";
 
-        // Split medication string only on commas followed by a space and a number
-        const meds = data.medication
-          .split(/, (?=\d)/)
-          .map((m) => m.trim())
-          .filter(Boolean);
-        meds.forEach((med, idx) => {
-          // Find the first space (between qty and medicine)
-          const match = med.match(/^(\d+)\s+(.+)$/);
-          let qty = "",
-            medName = "";
-          if (match) {
-            qty = match[1];
-            medName = match[2];
-          } else {
-            // fallback: treat all as name
-            medName = med;
-          }
+        data.medications.forEach((med, idx) => {
           if (idx === 0) {
-            if (firstMedInput) firstMedInput.value = medName;
-            if (firstQtyInput) firstQtyInput.value = qty;
+            if (firstMedInput) firstMedInput.value = med.medName || "";
+            if (firstDosageInput) firstDosageInput.value = med.medDosage || "";
+            if (firstQtyInput) firstQtyInput.value = med.medQty || "";
           } else {
             // Simulate add-medication button click to add new row
             const addBtn = document.getElementById("add-medication");
@@ -212,11 +201,16 @@ if (recordId) {
             const allMedInputs = medicationContainer.querySelectorAll(
               'input[name="medication[]"]'
             );
+            const allDosageInputs = medicationContainer.querySelectorAll(
+              'input[name="medicationDosage[]"]'
+            );
             const allQtyInputs = medicationContainer.querySelectorAll(
               'input[name="medQty[]"]'
             );
-            if (allMedInputs[idx]) allMedInputs[idx].value = medName;
-            if (allQtyInputs[idx]) allQtyInputs[idx].value = qty;
+            if (allMedInputs[idx]) allMedInputs[idx].value = med.medName || "";
+            if (allDosageInputs[idx])
+              allDosageInputs[idx].value = med.medDosage || "";
+            if (allQtyInputs[idx]) allQtyInputs[idx].value = med.medQty || "";
           }
         });
       }
