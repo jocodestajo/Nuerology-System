@@ -567,33 +567,6 @@ require 'config/dbcon.php';
             });
         });
 
-        
-        // // Consultant type selection functionality
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     const consultant1Type = document.getElementById('consultant1_type');
-        //     const consultant2Type = document.getElementById('consultant2_type');
-        //     const consultant1Label = document.getElementById('consultant1_label');
-        //     const consultant2Label = document.getElementById('consultant2_label');
-            
-        //     // Update label based on selection
-        //     function updateConsultantLabel(select, label) {
-        //         label.textContent = select.value + ':';
-        //     }
-            
-        //     // Set initial labels
-        //     updateConsultantLabel(consultant1Type, consultant1Label);
-        //     updateConsultantLabel(consultant2Type, consultant2Label);
-            
-        //     // Update labels when selection changes
-        //     consultant1Type.addEventListener('change', function() {
-        //         updateConsultantLabel(consultant1Type, consultant1Label);
-        //     });
-            
-        //     consultant2Type.addEventListener('change', function() {
-        //         updateConsultantLabel(consultant2Type, consultant2Label);
-        //     });
-        // });
-
         // MEDICATION handling
         document.addEventListener('DOMContentLoaded', function() {
             const addMedicationBtn = document.getElementById('add-medication');
