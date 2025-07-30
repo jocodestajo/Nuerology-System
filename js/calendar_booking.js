@@ -63,16 +63,17 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // --- Calendar modal logic ---
-  window.changeMonth = function (action) {
-    if (action === "previous") {
-      currentDate.setMonth(currentDate.getMonth() - 1);
-    } else if (action === "next") {
-      currentDate.setMonth(currentDate.getMonth() + 1);
-    } else {
-      currentDate = new Date();
-    }
-    updateCalendar();
-  };
+  let currentDateInputId = null;
+  const calendarContainer = document.getElementById("calendarContainer");
+
+  document.querySelectorAll(".datePicker[data-sched-output]").forEach((btn) => {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      currentDateInputId = btn.getAttribute("data-sched-output");
+      calendarContainer.style.display = "block";
+      updateCalendar();
+    });
+  });
 
   function updateCalendar() {
     const table = document.getElementById("calendarTable");
@@ -150,28 +151,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Show/hide calendar modal and handle date selection
-  const calendarBtn = document.querySelector(
-    '.datePicker[data-sched-output="dateSched1"]'
-  );
-  const calendarContainer = document.getElementById("calendarContainer");
-  if (calendarBtn && calendarContainer) {
-    calendarBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      calendarContainer.style.display =
-        calendarContainer.style.display === "none" ? "block" : "none";
-      if (calendarContainer.style.display === "block") {
-        updateCalendar();
-      }
-    });
-  }
-
   function handleDateClick(year, month, dayCount) {
     const selectedDate = new Date(year, month, parseInt(dayCount), 12, 0, 0);
     const formattedDate = selectedDate.toISOString().split("T")[0];
-    const dateInput = document.getElementById("dateSched1");
-    if (dateInput) {
-      dateInput.value = formattedDate;
+    if (currentDateInputId) {
+      const dateInput = document.getElementById(currentDateInputId);
+      if (dateInput) {
+        dateInput.value = formattedDate;
+      }
     }
     if (calendarContainer) {
       calendarContainer.style.display = "none";
@@ -184,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
       calendarContainer &&
       calendarContainer.style.display === "block" &&
       !calendarContainer.contains(e.target) &&
-      (!calendarBtn || !calendarBtn.contains(e.target))
+      !e.target.classList.contains("datePicker")
     ) {
       calendarContainer.style.display = "none";
     }
