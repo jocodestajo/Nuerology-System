@@ -178,6 +178,10 @@
                 <option value="11">December</option>
             </select>
         </div>
+        <div class="filter-group">
+            <label for="med-year-filter">Year:</label>
+            <select id="med-year-filter"></select>
+        </div>
         
         <div class="filter-group">
             <label for="med-sort">Sort By:</label>
@@ -213,6 +217,7 @@
             <tr>
                 <th class="th-check">#</th>
                 <th>Name</th>
+                <th>Dosage</th>
                 <th>Qty Prescribed</th>
                 <th>Total Patients</th>
             </tr>
@@ -246,6 +251,10 @@
                 <option value="11">November</option>
                 <option value="12">December</option>
             </select>
+        </div>
+        <div class="filter-group">
+            <label for="case-year-filter">Year:</label>
+            <select id="case-year-filter"></select>
         </div>
         <div class="filter-group">
             <label for="case-sort">Sort By:</label>
@@ -300,10 +309,9 @@
                             </tr>
                         <?php
                     }
-
                 }
             ?>
-            
+
             <!-- Data will be populated by JavaScript -->
         </tbody>
         <tfoot>
@@ -337,12 +345,14 @@
         }
     }
 
-    function fetchMedicationData(month = '') {
+    function fetchMedicationData(month = '', year = '') {
         let url = `api/get/fetch-reports.php?reportType=medication`;
         if (month !== '') {
             url += `&month=${month}`;
         }
-
+        if (year !== '') {
+            url += `&year=${year}`;
+        }
         fetch(url)
             .then(response => response.json())
             .then(data => {
@@ -352,17 +362,19 @@
             .catch(error => {
                 console.error('Error fetching medication data:', error);
                 const tableBody = document.querySelector('#medication-consumption tbody');
-                tableBody.innerHTML = '<tr><td colspan="4">Error loading data.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="5">Error loading data.</td></tr>';
             });
     }
 
     function applyMedicationFilters() {
         const selectedMonth = document.getElementById('med-month-filter').value;
-        fetchMedicationData(selectedMonth);
+        const selectedYear = document.getElementById('med-year-filter').value;
+        fetchMedicationData(selectedMonth, selectedYear);
     }
 
     function clearMedicationFilters() {
         document.getElementById('med-month-filter').value = '';
+        document.getElementById('med-year-filter').value = '';
         document.getElementById('med-sort').selectedIndex = 0;
         fetchMedicationData();
     }
@@ -421,6 +433,7 @@
                     <tr>
                         <td class="th-check">${index + 1}</td>
                         <td>${medicine.name}</td>
+                        <td>${medicine.dosage || ''}</td>
                         <td>${medicine.quantity_used}</td>
                         <td>${medicine.total_users}</td>
                     </tr>
@@ -428,14 +441,17 @@
                 tableBody.innerHTML += row;
             });
         } else {
-            tableBody.innerHTML = '<tr><td colspan="4">No medication data found.</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="5">No medication data found.</td></tr>';
         }
     }
 
-    function fetchCaseLoadData(month = '') {
+    function fetchCaseLoadData(month = '', year = '') {
         let url = `api/get/fetch-reports.php?reportType=case-load`;
         if (month !== '') {
             url += `&month=${month}`;
+        }
+        if (year !== '') {
+            url += `&year=${year}`;
         }
         fetch(url)
             .then(response => response.json())
@@ -452,11 +468,13 @@
 
     function applyCaseLoadFilters() {
         const selectedMonth = document.getElementById('case-month-filter').value;
-        fetchCaseLoadData(selectedMonth);
+        const selectedYear = document.getElementById('case-year-filter').value;
+        fetchCaseLoadData(selectedMonth, selectedYear);
     }
 
     function clearCaseLoadFilters() {
         document.getElementById('case-month-filter').value = '';
+        document.getElementById('case-year-filter').value = '';
         document.getElementById('case-sort').selectedIndex = 0;
         fetchCaseLoadData();
     }
@@ -523,14 +541,18 @@
             headerText = `Patient Reports - Patient Type: ${patientType}, ${dateRangeText}`;
         } else if (tabId === 'medication-consumption') {
             const month = document.getElementById('med-month-filter').value;
+            const year = document.getElementById('med-year-filter').value;
             const monthText = month === '' ? 'All Months' : document.getElementById('med-month-filter').options[parseInt(month) + 1].text;
+            const yearText = year === '' ? 'All Years' : year;
             const sort = document.getElementById('med-sort').value;
-            headerText = `Medication Consumption - Month: ${monthText}, Sort By: ${sort}`;
+            headerText = `Medication Consumption - Month: ${monthText}, Year: ${yearText}, Sort By: ${sort}`;
         } else if (tabId === 'case-load') {
             const month = document.getElementById('case-month-filter').value;
+            const year = document.getElementById('case-year-filter').value;
             const monthText = month === '' ? 'All Months' : document.getElementById('case-month-filter').options[parseInt(month)].text;
+            const yearText = year === '' ? 'All Years' : year;
             const sort = document.getElementById('case-sort').value;
-            headerText = `Case Load - Month: ${monthText}, Sort By: ${sort}`;
+            headerText = `Case Load - Month: ${monthText}, Year: ${yearText}, Sort By: ${sort}`;
         }
         // Insert header
         const header = document.createElement('h2');
@@ -611,7 +633,19 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        fetchMedicationData(); // Show all data by default
+        // Populate year filters dynamically (last 10 years)
+        function populateYearFilter(selectId) {
+            const select = document.getElementById(selectId);
+            const currentYear = new Date().getFullYear();
+            select.innerHTML = '';
+            for (let y = currentYear; y >= currentYear - 10; y--) {
+                select.innerHTML += `<option value="${y}">${y}</option>`;
+            }
+            select.value = currentYear;
+        }
+        populateYearFilter('med-year-filter');
+        populateYearFilter('case-year-filter');
+        fetchMedicationData(document.getElementById('med-month-filter').value, new Date().getFullYear()); // Show all data by default
         document.getElementById('apply-med-filters').addEventListener('click', applyMedicationFilters);
         document.getElementById('clear-med-filters').addEventListener('click', clearMedicationFilters);
         document.getElementById('med-sort').addEventListener('change', applySortingAndRender);
