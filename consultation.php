@@ -189,27 +189,35 @@ require 'config/dbcon.php';
 
             <div class="consultants">
                 <h2 class="center-text">Consultant</h2>
+
+                <?php
+
+                ?>
                 <div class="consultsss pad-hor-20 margin-b-20 width-100">
-                        <!-- <div class="margin-b-5 width-100">
+                        <div class="margin-b-5 width-100">
                             <select name="consultant_1_type" id="consultant1_type" class="margin-r-5 width-100 center-text">
                                 <option value="Doctor" selected>Doctor</option>
                                 <option value="Nurse">Nurse</option>
                                 <option value="Nurse Attendant">Nurse Attendant</option>
                             </select>
-                        </div> -->
+                        </div>
                         <div>
-                            <input name="consultant_1" id="consultant1" class="width-100" placeholder="Doctor" require>
+                            <select name="consultant_1" id="consultant1" class="width-100" required>
+                                <option value="">Select Doctor</option>
+                            </select>
                         </div>
                    
-                        <!-- <div class="margin-b-5 width-100">
+                        <div class="margin-b-5 width-100">
                             <select name="consultant_2_type" id="consultant2_type" class="margin-r-5 width-100 center-text">
                                 <option value="Doctor">Doctor</option>
                                 <option value="Nurse" selected>Nurse</option>
                                 <option value="Nurse Attendant">Nurse Attendant</option>
                             </select>
-                        </div> -->
+                        </div>
                         <div class="width-100">
-                            <input name="consultant_2" id="consultant2" class="width-100" placeholder="Nurse" require>
+                            <select name="consultant_2" id="consultant2" class="width-100" required>
+                                <option value="">Select Nurse</option>
+                            </select>
                         </div> 
                 </div>
             </div>
@@ -500,10 +508,54 @@ require 'config/dbcon.php';
     </div>
 
     <!-- <script src="js/mainScript.js"></script> -->
-    <script src="js/consultation.js"></script>
-    <script src="js/functions.js"></script>
-    <script src="js/calendar_booking.js"></script>
-    <script src="js/vital_signs.js"></script>
+<script src="js/consultation.js"></script>
+<script src="js/functions.js"></script>
+<script src="js/calendar_booking.js"></script>
+<script src="js/vital_signs.js"></script>
+
+<script>
+// Load neurology department users for consultant dropdowns
+document.addEventListener('DOMContentLoaded', function() {
+    loadNeurologyUsers();
+});
+
+function loadNeurologyUsers() {
+    fetch('api/get/getNeurologyUsers.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                populateConsultantDropdowns(data.data);
+            } else {
+                console.error('Error loading neurology users:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching neurology users:', error);
+        });
+}
+
+function populateConsultantDropdowns(users) {
+    const consultant1Select = document.getElementById('consultant1');
+    const consultant2Select = document.getElementById('consultant2');
+    
+    // Clear existing options except the first one
+    consultant1Select.innerHTML = '<option value="">Select Doctor</option>';
+    consultant2Select.innerHTML = '<option value="">Select Nurse</option>';
+    
+    // Add users to both dropdowns
+    users.forEach(user => {
+        const option1 = document.createElement('option');
+        option1.value = user.userid;
+        option1.textContent = user.fullname;
+        consultant1Select.appendChild(option1);
+        
+        const option2 = document.createElement('option');
+        option2.value = user.userid;
+        option2.textContent = user.fullname;
+        consultant2Select.appendChild(option2);
+    });
+}
+</script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
