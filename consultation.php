@@ -190,9 +190,6 @@ require 'config/dbcon.php';
             <div class="consultants">
                 <h2 class="center-text">Consultant</h2>
 
-                <?php
-
-                ?>
                 <div class="consultsss pad-hor-20 margin-b-20 width-100">
                         <div class="margin-b-5 width-100">
                             <select name="consultant_1_type" id="consultant1_type" class="margin-r-5 width-100 center-text">
@@ -203,7 +200,26 @@ require 'config/dbcon.php';
                         </div>
                         <div>
                             <select name="consultant_1" id="consultant1" class="width-100" required>
-                                <option value="">Select Doctor</option>
+                                <option disabled selected hidden>Select Doctor</option>
+                                <?php
+                                // Get users from neurology department (deptid = 63)
+                                $query = "SELECT u.userid, u.fname, u.lname, u.nameinit, u.username 
+                                FROM users u 
+                                LEFT JOIN departments d ON u.deptid = d.deptid 
+                                WHERE d.deptname = 'Neurology' AND u.userstatus = 0
+                                ORDER BY u.lname, u.fname";
+
+                                $result = mysqli_query($conn, $query);
+
+                                if(mysqli_num_rows($result) > 0) {
+                                    while($row = mysqli_fetch_assoc($result)) {
+                                        $fullname = $row['lname'] . ', ' . $row['fname'] . ' ' . $row['nameinit'];
+                                ?>
+                                        <option value="<?= $row['userid']; ?>"><?= $fullname; ?></option>
+                                <?php
+                                    }
+                                }
+                                ?>
                             </select>
                         </div>
                    
@@ -216,7 +232,26 @@ require 'config/dbcon.php';
                         </div>
                         <div class="width-100">
                             <select name="consultant_2" id="consultant2" class="width-100" required>
-                                <option value="">Select Nurse</option>
+                                <option disabled selected hidden>Select Nurse</option>
+                                <?php
+                                // Get users from neurology department (deptid = 63)
+                                $query = "SELECT u.userid, u.fname, u.lname, u.nameinit, u.username 
+                                FROM users u 
+                                LEFT JOIN departments d ON u.deptid = d.deptid 
+                                WHERE d.deptname = 'Neurology' AND u.userstatus = 0
+                                ORDER BY u.lname, u.fname";
+
+                                $resultsss = mysqli_query($conn, $query);
+
+                                if(mysqli_num_rows($resultsss) > 0) {
+                                    while($row = mysqli_fetch_assoc($resultsss)) {
+                                        $fullname = $row['lname'] . ', ' . $row['fname'] . ' ' . $row['nameinit'];
+                                ?>
+                                        <option value="<?= $row['userid']; ?>"><?= $fullname; ?></option>
+                                <?php
+                                    }
+                                }
+                                ?>
                             </select>
                         </div> 
                 </div>
