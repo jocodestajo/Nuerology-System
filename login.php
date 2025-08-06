@@ -1,4 +1,6 @@
 <?php
+$activpage = "index";
+
 session_start();
 require 'config/dbcon.php';
 
@@ -50,7 +52,6 @@ if(isset($_POST['login_btn'])) {
         exit();
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -144,11 +145,6 @@ if(isset($_POST['login_btn'])) {
                 </div>
                 <button type="submit" name="login_btn" class="btn btn-green width-100">Log-in</button>
             </form>
-
-            <!-- Add this form for creating admin user if needed -->
-            <!-- <form action="login.php" method="POST" style="margin-top: 20px;">
-                <button type="submit" name="create_admin" class="login-btn" style="background-color: #2196F3;">Create Admin User</button>
-            </form> -->
         </div>
     </div>
 </body>

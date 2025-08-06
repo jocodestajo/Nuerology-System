@@ -1,12 +1,14 @@
 <?php
+// $activepage = "index";
 session_start();
-require 'config/dbcon.php';
-
 // Check if user is not logged in
 if(!isset($_SESSION['auth'])) {
     header("Location: login.php");
     exit();
 }
+
+require 'config/dbcon.php';
+
 
 // Add logout functionality
 if(isset($_GET['logout'])) {
